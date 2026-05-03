@@ -10,60 +10,85 @@ if (is_admin_authenticated()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - AskMe</title>
+    <title>Admin Login - AskMe Tour and Travel</title>
+    <link href="../assets/img/askme.png" rel="icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#7AB730',
+                            dark: '#527a20',
+                        },
+                        secondary: '#f4faec',
+                        dark: '#212121',
+                        light: '#FFFFFF',
+                        body: '#656565',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
     <style>
         body { font-family: 'Poppins', sans-serif; }
-        .glass {
-            background: rgba(255, 255, 255, 0.1);
+        .login-glass {
+            background: rgba(33, 33, 33, 0.95);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(122, 183, 48, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
-<body class="bg-slate-900 min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-    <!-- Animated Background Shapes -->
-    <div class="absolute top-0 -left-20 w-72 h-72 bg-emerald-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-    <div class="absolute top-0 -right-20 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-    <div class="absolute -bottom-20 left-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+<body class="bg-dark min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+    <!-- Background Decoration -->
+    <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+        <img src="../assets/img/carousel-1.jpg" class="w-full h-full object-cover">
+    </div>
+    <div class="absolute -top-24 -left-24 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse delay-700"></div>
 
-    <div class="glass w-full max-w-md p-10 rounded-3xl relative z-10">
-        <div class="text-center mb-10">
-            <h1 class="text-4xl font-black text-white mb-2">Ask<span class="text-emerald-500">Me</span></h1>
-            <p class="text-slate-400 font-medium">Administration Portal</p>
+    <div class="login-glass w-full max-w-md p-12 rounded-[40px] relative z-10">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-primary mb-3"><span class="text-white">Ask</span>Me</h1>
+            <div class="w-12 h-1 bg-primary mx-auto mb-6 rounded-full"></div>
+            <p class="text-gray-400 text-xs uppercase tracking-[5px] font-bold">Admin Login</p>
         </div>
 
-        <form id="loginForm" class="space-y-6">
-            <div>
-                <label class="block text-slate-300 text-sm font-bold mb-2 ml-1">Email Address</label>
+        <form id="loginForm" class="space-y-8">
+            <div class="space-y-2">
+                <label class="block text-gray-300 text-[10px] uppercase tracking-widest font-bold ml-1">Email Address</label>
                 <div class="relative">
-                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500">
+                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500">
                         <i class="fas fa-envelope"></i>
                     </span>
-                    <input type="email" id="email" required class="w-full pl-11 pr-4 py-4 bg-slate-800/50 border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all" placeholder="admin@askmetour.org">
+                    <input type="email" id="email" required class="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-gray-600 focus:outline-none focus:border-primary transition-all duration-300" placeholder="Email Address">
                 </div>
             </div>
 
-            <div>
-                <label class="block text-slate-300 text-sm font-bold mb-2 ml-1">Password</label>
+            <div class="space-y-2">
+                <label class="block text-gray-300 text-[10px] uppercase tracking-widest font-bold ml-1">Secure Password</label>
                 <div class="relative">
-                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500">
+                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500">
                         <i class="fas fa-lock"></i>
                     </span>
-                    <input type="password" id="password" required class="w-full pl-11 pr-4 py-4 bg-slate-800/50 border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all" placeholder="••••••••">
+                    <input type="password" id="password" required class="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-gray-600 focus:outline-none focus:border-primary transition-all duration-300" placeholder="••••••••">
                 </div>
             </div>
 
-            <button type="submit" id="submitBtn" class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl shadow-lg shadow-emerald-500/30 transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center">
-                <span>Sign In</span>
-                <i class="fas fa-arrow-right ml-2 text-sm"></i>
+            <button type="submit" id="submitBtn" class="w-full py-5 bg-primary hover:bg-primary-dark text-white font-bold rounded-2xl shadow-xl shadow-primary/20 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 flex items-center justify-center space-x-3">
+                <span>Access Dashboard</span>
+                <i class="fas fa-chevron-right text-xs"></i>
             </button>
         </form>
 
-        <div id="message" class="mt-6 text-center text-sm hidden"></div>
+        <div id="message" class="mt-8 text-center text-sm hidden animate-bounce"></div>
     </div>
 
     <script>
@@ -75,7 +100,7 @@ if (is_admin_authenticated()) {
             const msg = document.getElementById('message');
 
             btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Authenticating...</span>';
             msg.classList.add('hidden');
 
             try {
@@ -88,17 +113,17 @@ if (is_admin_authenticated()) {
                 const result = await response.json();
 
                 if (result.success) {
-                    msg.innerHTML = '<span class="text-emerald-500"><i class="fas fa-check-circle mr-1"></i> Success! Redirecting...</span>';
+                    msg.innerHTML = '<span class="text-primary font-bold"><i class="fas fa-check-circle mr-2"></i> Access Granted</span>';
                     msg.classList.remove('hidden');
                     setTimeout(() => window.location.href = 'dashboard.php', 1000);
                 } else {
                     throw new Error(result.message);
                 }
             } catch (err) {
-                msg.innerHTML = `<span class="text-rose-500"><i class="fas fa-exclamation-circle mr-1"></i> ${err.message}</span>`;
+                msg.innerHTML = `<span class="text-rose-500 font-bold"><i class="fas fa-times-circle mr-2"></i> ${err.message}</span>`;
                 msg.classList.remove('hidden');
                 btn.disabled = false;
-                btn.innerHTML = '<span>Sign In</span><i class="fas fa-arrow-right ml-2 text-sm"></i>';
+                btn.innerHTML = '<span>Access Dashboard</span><i class="fas fa-chevron-right text-xs"></i>';
             }
         });
     </script>
