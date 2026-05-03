@@ -16,13 +16,13 @@
                 <div>
                     <h5 class="text-white uppercase tracking-[5px] font-bold mb-8">Useful Links</h5>
                     <div class="flex flex-col space-y-3">
-                        <a href="about.php" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> About</a>
-                        <a href="destination.php" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Destination</a>
-                        <a href="service.php" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Services</a>
-                        <a href="package.php" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Packages</a>
-                        <a href="guide.php" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Guides</a>
-                        <a href="testimonial.php" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Testimonial</a>
-                        <a href="blog.php" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Blog</a>
+                        <a href="index.php?p=about" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> About</a>
+                        <a href="index.php?p=destination" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Destination</a>
+                        <a href="index.php?p=service" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Services</a>
+                        <a href="index.php?p=package" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Packages</a>
+                        <a href="index.php?p=guide" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Guides</a>
+                        <a href="index.php?p=testimonial" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Testimonial</a>
+                        <a href="index.php?p=blog" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Blog</a>
                     </div>
                 </div>
                 <div>
@@ -67,11 +67,11 @@
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="assets/lib/easing/easing.min.js"></script>
+    <script src="assets/lib/owlcarousel/owl.carousel.min.js"></script>
     
     <!-- Template Javascript -->
-    <script src="js/main.js"></script>
-    <script src="form.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/form.js"></script>
 </body>
 </html>

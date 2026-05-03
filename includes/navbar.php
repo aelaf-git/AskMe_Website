@@ -10,10 +10,10 @@
                 </button>
                 <div id="nav-content" class="hidden lg:flex w-full lg:w-auto flex-col lg:flex-row lg:items-center lg:ml-auto">
                     <div class="flex flex-col lg:flex-row">
-                        <a href="index.php" class="py-4 px-4 text-dark hover:text-primary font-medium transition-colors <?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'text-primary' : ''; ?>">Home</a>
-                        <a href="about.php" class="py-4 px-4 text-dark hover:text-primary font-medium transition-colors <?php echo (basename($_SERVER['PHP_SELF']) == 'about.php') ? 'text-primary' : ''; ?>">About</a>
-                        <a href="service.php" class="py-4 px-4 text-dark hover:text-primary font-medium transition-colors <?php echo (basename($_SERVER['PHP_SELF']) == 'service.php') ? 'text-primary' : ''; ?>">Services</a>
-                        <a href="package.php" class="py-4 px-4 text-dark hover:text-primary font-medium transition-colors <?php echo (basename($_SERVER['PHP_SELF']) == 'package.php') ? 'text-primary' : ''; ?>">Tour Packages</a>
+                        <a href="index.php" class="py-4 px-4 text-dark hover:text-primary font-medium transition-colors <?php echo (!isset($_GET['p']) || $_GET['p'] == 'home') ? 'text-primary' : ''; ?>">Home</a>
+                        <a href="index.php?p=about" class="py-4 px-4 text-dark hover:text-primary font-medium transition-colors <?php echo (isset($_GET['p']) && $_GET['p'] == 'about') ? 'text-primary' : ''; ?>">About</a>
+                        <a href="index.php?p=service" class="py-4 px-4 text-dark hover:text-primary font-medium transition-colors <?php echo (isset($_GET['p']) && $_GET['p'] == 'service') ? 'text-primary' : ''; ?>">Services</a>
+                        <a href="index.php?p=package" class="py-4 px-4 text-dark hover:text-primary font-medium transition-colors <?php echo (isset($_GET['p']) && $_GET['p'] == 'package') ? 'text-primary' : ''; ?>">Tour Packages</a>
                         
                         <!-- Dropdown -->
                         <div class="relative group">
@@ -21,15 +21,15 @@
                                 Pages <i class="fa fa-angle-down ml-2"></i>
                             </button>
                             <div class="lg:absolute lg:hidden group-hover:block bg-white lg:shadow-xl lg:min-w-[200px] left-0 top-full z-[100]">
-                                <a href="blog.php" class="block py-3 px-6 text-dark hover:bg-gray-100 hover:text-primary transition-colors">Blog Grid</a>
-                                <a href="single.php" class="block py-3 px-6 text-dark hover:bg-gray-100 hover:text-primary transition-colors">Blog Detail</a>
-                                <a href="destination.php" class="block py-3 px-6 text-dark hover:bg-gray-100 hover:text-primary transition-colors">Destination</a>
-                                <a href="guide.php" class="block py-3 px-6 text-dark hover:bg-gray-100 hover:text-primary transition-colors">Travel Guides</a>
-                                <a href="testimonial.php" class="block py-3 px-6 text-dark hover:bg-gray-100 hover:text-primary transition-colors">Testimonial</a>
+                                <a href="index.php?p=blog" class="block py-3 px-6 text-dark hover:bg-gray-100 hover:text-primary transition-colors">Blog Grid</a>
+                                <a href="index.php?p=single" class="block py-3 px-6 text-dark hover:bg-gray-100 hover:text-primary transition-colors">Blog Detail</a>
+                                <a href="index.php?p=destination" class="block py-3 px-6 text-dark hover:bg-gray-100 hover:text-primary transition-colors">Destination</a>
+                                <a href="index.php?p=guide" class="block py-3 px-6 text-dark hover:bg-gray-100 hover:text-primary transition-colors">Travel Guides</a>
+                                <a href="index.php?p=testimonial" class="block py-3 px-6 text-dark hover:bg-gray-100 hover:text-primary transition-colors">Testimonial</a>
                             </div>
                         </div>
 
-                        <a href="contact.php" class="py-4 px-4 text-dark hover:text-primary font-medium transition-colors <?php echo (basename($_SERVER['PHP_SELF']) == 'contact.php') ? 'text-primary' : ''; ?>">Contact</a>
+                        <a href="index.php?p=contact" class="py-4 px-4 text-dark hover:text-primary font-medium transition-colors <?php echo (isset($_GET['p']) && $_GET['p'] == 'contact') ? 'text-primary' : ''; ?>">Contact</a>
                     </div>
                 </div>
             </nav>
