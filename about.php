@@ -6,139 +6,82 @@
 ?>
 
     <!-- Header Start -->
-    <div class="container-fluid page-header">
-        <div class="container">
-            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
-                <h3 class="display-4 text-white text-uppercase">About</h3>
-                <div class="d-inline-flex text-white">
-                    <p class="m-0 text-uppercase"><a class="text-white" href="index.php">Home</a></p>
-                    <i class="fa fa-angle-double-right pt-1 px-3"></i>
-                    <p class="m-0 text-uppercase">About</p>
-                </div>
+    <div class="relative w-full py-24 bg-dark overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="img/carousel-1.jpg" class="w-full h-full object-cover opacity-40">
+        </div>
+        <div class="max-w-7xl mx-auto px-4 relative z-10 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-white uppercase mb-4">About Us</h1>
+            <div class="flex items-center justify-center text-white space-x-4 font-medium">
+                <a href="index.php" class="text-white hover:text-primary transition-colors">Home</a>
+                <i class="fa fa-angle-double-right text-xs pt-1"></i>
+                <span class="text-primary">About</span>
             </div>
         </div>
     </div>
     <!-- Header End -->
 
 
-    <!-- Booking Start -->
-    <div class="container-fluid booking mt-5 pb-5">
-        <div class="container pb-5">
-            <div class="bg-light shadow" style="padding: 30px;">
-                <div class="row align-items-center" style="min-height: 60px;">
-                    <div class="col-md-10">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="mb-3 mb-md-0">
-                                    <select class="custom-select px-4" style="height: 47px;">
-                                        <option selected>Destination</option>
-                                        <option value="1">Lalibela</option>
-                                        <option value="2">Gonder</option>
-                                        <option value="3">Axum</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3 mb-md-0">
-                                    <div class="date" id="date1" data-target-input="nearest">
-                                        <input type="text" class="form-control p-4 datetimepicker-input" placeholder="Depart Date" data-target="#date1" data-toggle="datetimepicker"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3 mb-md-0">
-                                    <div class="date" id="date2" data-target-input="nearest">
-                                        <input type="text" class="form-control p-4 datetimepicker-input" placeholder="Return Date" data-target="#date2" data-toggle="datetimepicker"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3 mb-md-0">
-                                    <select class="custom-select px-4" style="height: 47px;">
-                                        <option selected>Duration</option>
-                                        <option value="1">Duration 1</option>
-                                        <option value="2">Duration 2</option>
-                                        <option value="3">Duration 3</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-primary btn-block" type="submit" style="height: 47px; margin-top: -2px;">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Booking End -->
-
-
     <!-- About Start -->
-    <div class="container-fluid py-5">
-        <div class="container pt-5">
-            <div class="row">
-                <div class="col-lg-6" style="min-height: 500px;">
-                    <div class="position-relative h-100">
-                        <img class="position-absolute w-100 h-100" src="img/about.jpg" style="object-fit: cover;">
-                    </div>
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-wrap -mx-4 items-center">
+                <div class="w-full lg:w-1/2 px-4 mb-12 lg:mb-0 h-[500px]">
+                    <img class="w-full h-full object-cover shadow-2xl" src="img/about.jpg" alt="About">
                 </div>
-                <div class="col-lg-6 pt-5 pb-lg-5">
-                    <div class="about-text bg-white p-4 p-lg-5 my-lg-5">
-                        <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">About Us</h6>
-                        <h1 class="mb-3">We Provide Best Tour Packages In Your Budget</h1>
-                        <p>AskMe Tour and Travel is a premier travel agency dedicated to providing exceptional travel experiences. We specialize in curating unique itineraries that cater to the diverse interests of our clients, ensuring every journey is memorable and stress-free.</p>
-                        <div class="row mb-4">
-                            <div class="col-6">
-                                <img class="img-fluid" src="img/about-1.jpg" alt="">
-                            </div>
-                            <div class="col-6">
-                                <img class="img-fluid" src="img/about-2.jpg" alt="">
-                            </div>
+                <div class="w-full lg:w-1/2 px-4 lg:pl-12">
+                    <div class="bg-white p-8 md:p-12 shadow-xl border-l-4 border-primary">
+                        <h6 class="text-primary uppercase tracking-[5px] font-bold mb-4">About Us</h6>
+                        <h1 class="text-3xl md:text-4xl font-bold mb-6">We Provide Best Tour Packages In Your Budget</h1>
+                        <p class="text-gray-600 mb-8 leading-relaxed text-lg">AskMe Tour and Travel is a premier travel agency dedicated to providing exceptional travel experiences. We specialize in curating unique itineraries that cater to the diverse interests of our clients, ensuring every journey is memorable and stress-free.</p>
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <img class="w-full h-40 object-cover" src="img/about-1.jpg" alt="">
+                            <img class="w-full h-40 object-cover" src="img/about-2.jpg" alt="">
                         </div>
-                        <a href="index.php#Registration" class="btn btn-primary mt-1">Book Now</a>
+                        <a href="index.php#Registration" class="btn-primary">Book Now</a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section> 
     <!-- About End -->
 
+    <?php include 'includes/upcoming_events.php'; ?>
 
     <!-- Feature Start -->
-    <div class="container-fluid pb-5">
-        <div class="container pb-5">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="d-flex mb-4 mb-lg-0">
-                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-primary mr-3" style="height: 100px; width: 100px;">
-                            <i class="fa fa-2x fa-money-check-alt text-white"></i>
+    <div class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full md:w-1/3 px-4 mb-8 md:mb-0">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-20 h-20 bg-primary flex items-center justify-center text-white mr-4">
+                            <i class="fa fa-2x fa-money-check-alt"></i>
                         </div>
-                        <div class="d-flex flex-column">
-                            <h5 class="">Competitive Pricing</h5>
-                            <p class="m-0">We offer high quality travel experiences at prices that fit your budget.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="d-flex mb-4 mb-lg-0">
-                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-primary mr-3" style="height: 100px; width: 100px;">
-                            <i class="fa fa-2x fa-award text-white"></i>
-                        </div>
-                        <div class="d-flex flex-column">
-                            <h5 class="">Best Services</h5>
-                            <p class="m-0">Our dedicated team is committed to providing top-notch service throughout your trip.</p>
+                        <div>
+                            <h5 class="text-xl font-bold mb-2">Competitive Pricing</h5>
+                            <p class="text-gray-600 m-0">We offer high quality travel experiences at prices that fit your budget.</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="d-flex mb-4 mb-lg-0">
-                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-primary mr-3" style="height: 100px; width: 100px;">
-                            <i class="fa fa-2x fa-globe text-white"></i>
+                <div class="w-full md:w-1/3 px-4 mb-8 md:mb-0">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-20 h-20 bg-primary flex items-center justify-center text-white mr-4">
+                            <i class="fa fa-2x fa-award"></i>
                         </div>
-                        <div class="d-flex flex-column">
-                            <h5 class="">Worldwide Coverage</h5>
-                            <p class="m-0">Explore breathtaking destinations in Ethiopia and across the globe with our extensive network.</p>
+                        <div>
+                            <h5 class="text-xl font-bold mb-2">Best Services</h5>
+                            <p class="text-gray-600 m-0">Our dedicated team is committed to providing top-notch service throughout your trip.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/3 px-4">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-20 h-20 bg-primary flex items-center justify-center text-white mr-4">
+                            <i class="fa fa-2x fa-globe"></i>
+                        </div>
+                        <div>
+                            <h5 class="text-xl font-bold mb-2">Worldwide Coverage</h5>
+                            <p class="text-gray-600 m-0">Explore breathtaking destinations in Ethiopia and across the globe with our extensive network.</p>
                         </div>
                     </div>
                 </div>
@@ -147,140 +90,43 @@
     </div>
     <!-- Feature End -->
 
-
-    <!-- Registration Start -->
-    <div class="container-fluid bg-registration py-5" style="margin: 90px 0;">
-        <div class="container py-5">
-            <div class="row align-items-center">
-                <div class="col-lg-7 mb-5 mb-lg-0">
-                    <div class="mb-4">
-                        <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Mega Offer</h6>
-                        <h1 class="text-white"><span class="text-primary">30% OFF</span> For Honeymoon</h1>
-                    </div>
-                    <p class="text-white">Celebrate your love with an unforgettable honeymoon in Ethiopia. Enjoy a 30% discount on our exclusive honeymoon packages, featuring romantic stays and scenic tours.</p>
-                    <ul class="list-inline text-white m-0">
-                        <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>Romantic Destinations</li>
-                        <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>Luxury Accommodations</li>
-                        <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>Private Guided Tours</li>
-                    </ul>
-                </div>
-                <div class="col-lg-5">
-                    <div class="card border-0">
-                        <div class="card-header bg-primary text-center p-4">
-                            <h1 class="text-white m-0">Sign Up Now</h1>
-                        </div>
-                        <div class="card-body rounded-bottom bg-white p-5">
-                            <form id="registrationForm">
-                                <input type="hidden" name="sheetName" value="Registration">
-                                <div class="form-group">
-                                    <input type="text" name="Name" class="form-control p-4" placeholder="Your name" required="required" />
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" name="Email" class="form-control p-4" placeholder="Your email" required="required" />
-                                </div>
-                                <div class="form-group">
-                                    <select name="Destination" class="custom-select px-4" style="height: 47px;">
-                                        <option selected>Select a destination</option>
-                                        <option value="Lalibela">Lalibela</option>
-                                        <option value="Gonder">Gonder</option>
-                                        <option value="Axum">Axum</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <button class="btn btn-primary btn-block py-3" type="submit">Sign Up Now</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Registration End -->
-
-
     <!-- Team Start -->
-    <div class="container-fluid py-5">
-        <div class="container pt-5 pb-3">
-            <div class="text-center mb-3 pb-3">
-                <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Guides</h6>
-                <h1>Our Travel Guides</h1>
+    <section id="team" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Guides</h6>
+                <h1 class="text-4xl md:text-5xl font-bold text-dark">Our Travel Guides</h1>
             </div>
-            <div class="row">
-                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <div class="team-item bg-white mb-4">
-                        <div class="team-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="img/nobody.jpg" alt="">
-                            <div class="team-social">
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-instagram"></i></a>
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <h5 class="text-truncate">Aman K.</h5>
-                            <p class="m-0">Senior Guide</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <div class="team-item bg-white mb-4">
-                        <div class="team-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="img/nobody.jpg" alt="">
-                            <div class="team-social">
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-instagram"></i></a>
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <h5 class="text-truncate">Selam T.</h5>
-                            <p class="m-0">Cultural Expert</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <?php
+                $guides = [
+                    ['Aman K.', 'Senior Guide', 'img/nobody.jpg'],
+                    ['Selam T.', 'Cultural Expert', 'img/nobody.jpg'],
+                    ['Dawit M.', 'Adventure Specialist', 'img/nobody.jpg'],
+                    ['Aster W.', 'Wildlife Expert', 'img/nobody.jpg'],
+                ];
+                foreach ($guides as $guide):
+                ?>
+                <div class="bg-white shadow-lg overflow-hidden group">
+                    <div class="relative overflow-hidden aspect-square">
+                        <img src="<?php echo $guide[2]; ?>" alt="<?php echo $guide[0]; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <a href="#" class="w-10 h-10 bg-white/20 hover:bg-primary text-white flex items-center justify-center transition-colors border border-white/30"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="w-10 h-10 bg-white/20 hover:bg-primary text-white flex items-center justify-center transition-colors border border-white/30"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="w-10 h-10 bg-white/20 hover:bg-primary text-white flex items-center justify-center transition-colors border border-white/30"><i class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <div class="team-item bg-white mb-4">
-                        <div class="team-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="img/nobody.jpg" alt="">
-                            <div class="team-social">
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-instagram"></i></a>
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <h5 class="text-truncate">Dawit M.</h5>
-                            <p class="m-0">Adventure Specialist</p>
-                        </div>
+                    <div class="text-center p-6">
+                        <h5 class="text-xl font-bold mb-1"><?php echo $guide[0]; ?></h5>
+                        <p class="text-gray-500 m-0"><?php echo $guide[1]; ?></p>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <div class="team-item bg-white mb-4">
-                        <div class="team-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="img/nobody.jpg" alt="">
-                            <div class="team-social">
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-instagram"></i></a>
-                                <a class="btn btn-outline-primary btn-square" href=""><i class="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <h5 class="text-truncate">Aster W.</h5>
-                            <p class="m-0">Wildlife Expert</p>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
-    </div>
+    </section>
     <!-- Team End -->
 
 <?php 
     include 'includes/footer.php';
-    include 'includes/scripts.php';
 ?>

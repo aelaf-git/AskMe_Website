@@ -6,111 +6,59 @@
 ?>
 
     <!-- Header Start -->
-    <div class="container-fluid page-header">
-        <div class="container">
-            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
-                <h3 class="display-4 text-white text-uppercase">Contact</h3>
-                <div class="d-inline-flex text-white">
-                    <p class="m-0 text-uppercase"><a class="text-white" href="index.php">Home</a></p>
-                    <i class="fa fa-angle-double-right pt-1 px-3"></i>
-                    <p class="m-0 text-uppercase">Contact</p>
-                </div>
+    <div class="relative w-full py-24 bg-dark overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="img/carousel-1.jpg" class="w-full h-full object-cover opacity-40">
+        </div>
+        <div class="max-w-7xl mx-auto px-4 relative z-10 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-white uppercase mb-4">Contact Us</h1>
+            <div class="flex items-center justify-center text-white space-x-4 font-medium">
+                <a href="index.php" class="text-white hover:text-primary transition-colors">Home</a>
+                <i class="fa fa-angle-double-right text-xs pt-1"></i>
+                <span class="text-primary">Contact</span>
             </div>
         </div>
     </div>
     <!-- Header End -->
 
 
-    <!-- Booking Start -->
-    <div class="container-fluid booking mt-5 pb-5">
-        <div class="container pb-5">
-            <div class="bg-light shadow" style="padding: 30px;">
-                <div class="row align-items-center" style="min-height: 60px;">
-                    <div class="col-md-10">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="mb-3 mb-md-0">
-                                    <select class="custom-select px-4" style="height: 47px;">
-                                        <option selected>Destination</option>
-                                        <option value="1">Lalibela</option>
-                                        <option value="2">Gonder</option>
-                                        <option value="3">Axum</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3 mb-md-0">
-                                    <div class="date" id="date1" data-target-input="nearest">
-                                        <input type="text" class="form-control p-4 datetimepicker-input" placeholder="Depart Date" data-target="#date1" data-toggle="datetimepicker"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3 mb-md-0">
-                                    <div class="date" id="date2" data-target-input="nearest">
-                                        <input type="text" class="form-control p-4 datetimepicker-input" placeholder="Return Date" data-target="#date2" data-toggle="datetimepicker"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3 mb-md-0">
-                                    <select class="custom-select px-4" style="height: 47px;">
-                                        <option selected>Duration</option>
-                                        <option value="1">Duration 1</option>
-                                        <option value="2">Duration 2</option>
-                                        <option value="3">Duration 3</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-primary btn-block" type="submit" style="height: 47px; margin-top: -2px;">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Booking End -->
-
-
     <!-- Contact Start -->
-    <div class="container-fluid py-5">
-        <div class="container py-5">
-            <div class="text-center mb-3 pb-3">
-                <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Contact</h6>
-                <h1>Contact For Any Query</h1>
+    <div class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Contact</h6>
+                <h1 class="text-4xl md:text-5xl font-bold text-dark">Contact For Any Query</h1>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="contact-form bg-white" style="padding: 30px;">
+            <div class="flex justify-center">
+                <div class="w-full lg:w-8/12">
+                    <div class="bg-white p-8 md:p-12 shadow-xl">
                         <div id="success"></div>
-                        <form name="sentMessage" id="contactForm" novalidate="novalidate">
-                            <div class="form-row">
-                                <div class="control-group col-sm-6">
-                                    <input type="text" class="form-control p-4" id="name" placeholder="Your Name"
+                        <form name="sentMessage" id="contactForm" novalidate="novalidate" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="control-group">
+                                    <input type="text" class="w-full p-4 bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-colors" id="name" placeholder="Your Name"
                                         required="required" data-validation-required-message="Please enter your name" />
-                                    <p class="help-block text-danger"></p>
+                                    <p class="help-block text-red-500 text-xs mt-1"></p>
                                 </div>
-                                <div class="control-group col-sm-6">
-                                    <input type="email" class="form-control p-4" id="email" placeholder="Your Email"
+                                <div class="control-group">
+                                    <input type="email" class="w-full p-4 bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-colors" id="email" placeholder="Your Email"
                                         required="required" data-validation-required-message="Please enter your email" />
-                                    <p class="help-block text-danger"></p>
+                                    <p class="help-block text-red-500 text-xs mt-1"></p>
                                 </div>
                             </div>
                             <div class="control-group">
-                                <input type="text" class="form-control p-4" id="subject" placeholder="Subject"
+                                <input type="text" class="w-full p-4 bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-colors" id="subject" placeholder="Subject"
                                     required="required" data-validation-required-message="Please enter a subject" />
-                                <p class="help-block text-danger"></p>
+                                <p class="help-block text-red-500 text-xs mt-1"></p>
                             </div>
                             <div class="control-group">
-                                <textarea class="form-control py-3 px-4" rows="5" id="message" placeholder="Message"
+                                <textarea class="w-full p-4 bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-colors" rows="5" id="message" placeholder="Message"
                                     required="required"
                                     data-validation-required-message="Please enter your message"></textarea>
-                                <p class="help-block text-danger"></p>
+                                <p class="help-block text-red-500 text-xs mt-1"></p>
                             </div>
                             <div class="text-center">
-                                <button class="btn btn-primary py-3 px-4" type="submit" id="sendMessageButton">Send Message</button>
+                                <button class="btn-primary" type="submit" id="sendMessageButton">Send Message</button>
                             </div>
                         </form>
                     </div>
@@ -122,5 +70,4 @@
 
 <?php 
     include 'includes/footer.php';
-    include 'includes/scripts.php';
 ?>
