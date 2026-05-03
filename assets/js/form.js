@@ -10,7 +10,7 @@ if (regForm) {
         regBtn.innerText = "Sending...";
         regBtn.disabled = true;
 
-        fetch(scriptURL, { method: 'POST', body: new FormData(regForm)})
+        fetch('api/register.php', { method: 'POST', body: new FormData(regForm)})
             .then(response => {
                 alert("Success! Your registration is complete.");
                 regForm.reset(); 
@@ -36,7 +36,7 @@ if (newsForm) {
         btn.innerText = "Joining...";
         btn.disabled = true;
 
-        fetch(scriptURL, { method: 'POST', body: new FormData(newsForm)})
+        fetch('api/newsletter.php', { method: 'POST', body: new FormData(newsForm)})
             .then(response => {
                 alert("Thanks for subscribing to our newsletter!");
                 newsForm.reset(); 
