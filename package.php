@@ -29,7 +29,7 @@
                 <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Packages</h6>
                 <h1 class="text-4xl md:text-5xl font-bold text-dark">Perfect Tour Packages</h1>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
                 <?php
                 $packages = [
                     ['Lalibela', '3 days', '2 Person', 'Explore the ancient rock-hewn churches of Lalibela.', '4.5', '250', '$350', 'img/package-1.jpg'],
@@ -59,6 +59,33 @@
                             </div>
                             <h5 class="text-2xl font-bold text-primary"><?php echo $pkg[6]; ?></h5>
                         </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+
+            <!-- Destination Start (From original package.php) -->
+            <div class="text-center mb-16">
+                <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Destination</h6>
+                <h1 class="text-4xl md:text-5xl font-bold text-dark">Explore Top Destinations</h1>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <?php
+                $destinations = [
+                    ['Lalibela', 'Historic rock-hewn churches', 'img/destination-1.jpg'],
+                    ['Semien Mountains', 'Breathtaking landscapes and wildlife', 'img/destination-2.jpg'],
+                    ['Axum', 'Ancient obelisks and heritage', 'img/destination-3.jpg'],
+                    ['Danakil Depression', 'One of the hottest and lowest places on Earth', 'img/destination-4.jpg'],
+                    ['Gondar', 'The "Camelot of Africa" with its historic castles', 'img/destination-5.jpg'],
+                    ['Omo Valley', 'Diverse cultures and ancient traditions', 'img/destination-6.jpg'],
+                ];
+                foreach ($destinations as $dest):
+                ?>
+                <div class="relative group overflow-hidden h-80 shadow-lg">
+                    <img src="<?php echo $dest[2]; ?>" alt="<?php echo $dest[0]; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 px-6 text-center">
+                        <h5 class="text-white text-2xl font-bold mb-2"><?php echo $dest[0]; ?></h5>
+                        <p class="text-white/90 text-sm"><?php echo $dest[1]; ?></p>
                     </div>
                 </div>
                 <?php endforeach; ?>

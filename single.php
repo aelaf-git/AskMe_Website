@@ -6,183 +6,118 @@
 ?>
 
     <!-- Header Start -->
-    <div class="container-fluid page-header">
-        <div class="container">
-            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
-                <h3 class="display-4 text-white text-uppercase">Blog Detail</h3>
-                <div class="d-inline-flex text-white">
-                    <p class="m-0 text-uppercase"><a class="text-white" href="index.php">Home</a></p>
-                    <i class="fa fa-angle-double-right pt-1 px-3"></i>
-                    <p class="m-0 text-uppercase">Blog Detail</p>
-                </div>
+    <div class="relative w-full py-24 bg-dark overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="img/carousel-1.jpg" class="w-full h-full object-cover opacity-40">
+        </div>
+        <div class="max-w-7xl mx-auto px-4 relative z-10 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-white uppercase mb-4">Blog Detail</h1>
+            <div class="flex items-center justify-center text-white space-x-4 font-medium">
+                <a href="index.php" class="text-white hover:text-primary transition-colors">Home</a>
+                <i class="fa fa-angle-double-right text-xs pt-1"></i>
+                <span class="text-primary">Blog Detail</span>
             </div>
         </div>
     </div>
     <!-- Header End -->
 
 
-    <!-- Booking Start -->
-    <div class="container-fluid booking mt-5 pb-5">
-        <div class="container pb-5">
-            <div class="bg-light shadow" style="padding: 30px;">
-                <div class="row align-items-center" style="min-height: 60px;">
-                    <div class="col-md-10">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="mb-3 mb-md-0">
-                                    <select class="custom-select px-4" style="height: 47px;">
-                                        <option selected>Destination</option>
-                                        <option value="1">Lalibela</option>
-                                        <option value="2">Gonder</option>
-                                        <option value="3">Axum</option>
-                                    </select>
-                                </div>
+    <!-- Blog Detail Start -->
+    <div class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-wrap -mx-4">
+                <div class="w-full lg:w-8/12 px-4">
+                    <div class="bg-white shadow-lg overflow-hidden mb-12">
+                        <img src="img/blog-1.jpg" alt="" class="w-full h-auto">
+                        <div class="p-8 md:p-12">
+                            <div class="flex items-center text-primary text-xs uppercase font-bold mb-6">
+                                <span>Admin</span>
+                                <span class="mx-2">|</span>
+                                <span>Tours & Travel</span>
+                                <span class="mx-2">|</span>
+                                <span>Jan 01, 2026</span>
                             </div>
-                            <div class="col-md-3">
-                                <div class="mb-3 mb-md-0">
-                                    <div class="date" id="date1" data-target-input="nearest">
-                                        <input type="text" class="form-control p-4 datetimepicker-input" placeholder="Depart Date" data-target="#date1" data-toggle="datetimepicker"/>
-                                    </div>
+                            <h2 class="text-3xl md:text-4xl font-bold mb-8">Exploring the ancient mysteries of Lalibela</h2>
+                            <div class="prose prose-lg max-w-none text-gray-600 leading-relaxed space-y-6">
+                                <p>AskMe Tour and Travel invites you to explore the breathtaking rock-hewn churches of Lalibela. This UNESCO World Heritage site is a testament to the rich history and spiritual heritage of Ethiopia.</p>
+                                <p>Our guided tours provide deep insights into the architecture and legends of these monolithic structures, carved out of solid rock in the 12th century.</p>
+                                <h4 class="text-2xl font-bold text-dark mt-10 mb-4">A Spiritual Journey</h4>
+                                <div class="flex flex-wrap md:flex-nowrap gap-6 my-8">
+                                    <img src="img/blog-2.jpg" class="w-full md:w-1/2 object-cover rounded shadow-md">
+                                    <p>Lalibela is not just a destination; it's a spiritual experience. Walk through the narrow passages and tunnels connecting the churches, and feel the ancient atmosphere that has drawn pilgrims for centuries.</p>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3 mb-md-0">
-                                    <div class="date" id="date2" data-target-input="nearest">
-                                        <input type="text" class="form-control p-4 datetimepicker-input" placeholder="Return Date" data-target="#date2" data-toggle="datetimepicker"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3 mb-md-0">
-                                    <select class="custom-select px-4" style="height: 47px;">
-                                        <option selected>Duration</option>
-                                        <option value="1">Duration 1</option>
-                                        <option value="2">Duration 2</option>
-                                        <option value="3">Duration 3</option>
-                                    </select>
+                                <h4 class="text-2xl font-bold text-dark mt-10 mb-4">Unforgettable Memories</h4>
+                                <div class="flex flex-wrap md:flex-nowrap gap-6 my-8">
+                                    <p>From the iconic St. George's Church (Bete Giyorgis) to the grand Bete Medhane Alem, every corner of Lalibela tells a story. Join us for a journey that will stay with you forever.</p>
+                                    <img src="img/blog-3.jpg" class="w-full md:w-1/2 object-cover rounded shadow-md order-first md:order-last">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-primary btn-block" type="submit" style="height: 47px; margin-top: -2px;">Submit</button>
+                    
+                    <!-- Comments -->
+                    <div class="bg-white p-8 md:p-12 shadow-lg mb-12">
+                        <h4 class="text-xl font-bold uppercase tracking-widest mb-8 border-b pb-4">Comments</h4>
+                        <div class="flex space-x-4">
+                            <img src="img/nobody.jpg" class="w-12 h-12 rounded-full object-cover">
+                            <div>
+                                <h6 class="font-bold">Samuel G. <small class="text-gray-400 font-normal ml-2 italic">01 Jan 2026</small></h6>
+                                <p class="text-gray-600 mt-2">An incredible experience! The guides were so knowledgeable and the sites were beyond anything I could have imagined.</p>
+                                <button class="text-primary font-bold text-xs uppercase mt-2 hover:underline">Reply</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Booking End -->
 
-
-    <!-- Blog Start -->
-    <div class="container-fluid py-5">
-        <div class="container py-5">
-            <div class="row">
-                <div class="col-lg-8">
-                    <!-- Blog Detail Start -->
-                    <div class="pb-3">
-                        <div class="blog-item">
-                            <div class="position-relative">
-                                <img class="img-fluid w-100" src="img/blog-1.jpg" alt="">
-                                <div class="blog-date">
-                                    <h6 class="font-weight-bold mb-n1">01</h6>
-                                    <small class="text-white text-uppercase">Jan</small>
+                    <!-- Comment Form -->
+                    <div class="bg-white p-8 md:p-12 shadow-lg">
+                        <h4 class="text-xl font-bold uppercase tracking-widest mb-8 border-b pb-4">Leave a Comment</h4>
+                        <form class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Name *</label>
+                                    <input type="text" class="w-full p-4 bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Email *</label>
+                                    <input type="email" class="w-full p-4 bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-colors">
                                 </div>
                             </div>
-                        </div>
-                        <div class="bg-white mb-3" style="padding: 30px;">
-                            <div class="d-flex mb-3">
-                                <a class="text-primary text-uppercase text-decoration-none" href="">Admin</a>
-                                <span class="text-primary px-2">|</span>
-                                <a class="text-primary text-uppercase text-decoration-none" href="">Tours & Travel</a>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Message *</label>
+                                <textarea rows="5" class="w-full p-4 bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-colors"></textarea>
                             </div>
-                            <h2 class="mb-3">Exploring the ancient mysteries of Lalibela</h2>
-                            <p>AskMe Tour and Travel invites you to explore the breathtaking rock-hewn churches of Lalibela. This UNESCO World Heritage site is a testament to the rich history and spiritual heritage of Ethiopia.</p>
-                            <p>Our guided tours provide deep insights into the architecture and legends of these monolithic structures, carved out of solid rock in the 12th century.</p>
-                            <h4 class="mb-3">A Spiritual Journey</h4>
-                            <img class="img-fluid w-50 float-left mr-4 mb-2" src="img/blog-2.jpg">
-                            <p>Lalibela is not just a destination; it's a spiritual experience. Walk through the narrow passages and tunnels connecting the churches, and feel the ancient atmosphere that has drawn pilgrims for centuries.</p>
-                            <h5 class="mb-3">Unforgettable Memories</h5>
-                            <img class="img-fluid w-50 float-right ml-4 mb-2" src="img/blog-3.jpg">
-                            <p>From the iconic St. George's Church (Bete Giyorgis) to the grand Bete Medhane Alem, every corner of Lalibela tells a story. Join us for a journey that will stay with you forever.</p>
-                        </div>
-                    </div>
-                    <!-- Blog Detail End -->
-    
-                    <!-- Comment List Start -->
-                    <div class="bg-white" style="padding: 30px; margin-bottom: 30px;">
-                        <h4 class="text-uppercase mb-4" style="letter-spacing: 5px;">Comments</h4>
-                        <div class="media mb-4">
-                            <img src="img/nobody.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-                            <div class="media-body">
-                                <h6><a href="">Samuel G.</a> <small><i>01 Jan 2026</i></small></h6>
-                                <p>An incredible experience! The guides were so knowledgeable and the sites were beyond anything I could have imagined.</p>
-                                <button class="btn btn-sm btn-outline-primary">Reply</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Comment List End -->
-    
-                    <!-- Comment Form Start -->
-                    <div class="bg-white mb-3" style="padding: 30px;">
-                        <h4 class="text-uppercase mb-4" style="letter-spacing: 5px;">Leave a comment</h4>
-                        <form>
-                            <div class="form-group">
-                                <label for="name">Name *</label>
-                                <input type="text" class="form-control" id="name">
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email *</label>
-                                <input type="email" class="form-control" id="email">
-                            </div>
-                            <div class="form-group">
-                                <label for="message">Message *</label>
-                                <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
-                            </div>
-                            <div class="form-group mb-0">
-                                <input type="submit" value="Leave a comment"
-                                    class="btn btn-primary font-weight-semi-bold py-2 px-3">
-                            </div>
+                            <button class="btn-primary" type="submit">Post Comment</button>
                         </form>
                     </div>
-                    <!-- Comment Form End -->
                 </div>
     
-                <div class="col-lg-4 mt-5 mt-lg-0">
-                    <!-- Author Bio -->
-                    <div class="d-flex flex-column text-center bg-white mb-5 py-5 px-4">
-                        <img src="img/nobody.jpg" class="img-fluid mx-auto mb-3" style="width: 100px;">
-                        <h3 class="text-primary mb-3">AskMe Team</h3>
-                        <p>Our team is dedicated to providing you with the best travel insights and experiences in Ethiopia.</p>
-                        <div class="d-flex justify-content-center">
-                            <a class="text-primary px-2" href="">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                            <a class="text-primary px-2" href="">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                            <a class="text-primary px-2" href="">
-                                <i class="fab fa-linkedin-in"></i>
-                            </a>
-                            <a class="text-primary px-2" href="">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                            <a class="text-primary px-2" href="">
-                                <i class="fab fa-youtube"></i>
-                            </a>
+                <!-- Sidebar -->
+                <div class="w-full lg:w-4/12 px-4 mt-12 lg:mt-0">
+                    <!-- Author -->
+                    <div class="bg-white p-8 shadow-lg text-center mb-10">
+                        <img src="img/nobody.jpg" class="w-24 h-24 mx-auto mb-6 rounded-full object-cover">
+                        <h3 class="text-2xl font-bold text-primary mb-4">AskMe Team</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">Our team is dedicated to providing you with the best travel insights and experiences in Ethiopia.</p>
+                        <div class="flex justify-center space-x-3 text-primary">
+                            <a href="#" class="hover:text-dark transition-colors"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="hover:text-dark transition-colors"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="hover:text-dark transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="hover:text-dark transition-colors"><i class="fab fa-instagram"></i></a>
                         </div>
                     </div>
     
                     <!-- Recent Post -->
-                    <div class="mb-5">
-                        <h4 class="text-uppercase mb-4" style="letter-spacing: 5px;">Recent Post</h4>
-                        <a class="d-flex align-items-center text-decoration-none bg-white mb-3" href="">
-                            <img class="img-fluid" src="img/blog-100x100.jpg" alt="">
-                            <div class="pl-3">
-                                <h6 class="m-1">Exploring the ancient mysteries of Lalibela.</h6>
-                                <small>Jan 01, 2026</small>
-                            </div>
-                        </a>
+                    <div class="bg-white p-8 shadow-lg">
+                        <h4 class="text-xl font-bold uppercase tracking-widest mb-6 border-b pb-4">Recent Posts</h4>
+                        <div class="space-y-6">
+                            <a href="#" class="flex items-center group">
+                                <img src="img/blog-100x100.jpg" class="w-20 h-20 object-cover">
+                                <div class="ml-4">
+                                    <h6 class="font-bold group-hover:text-primary transition-colors leading-tight">Exploring the ancient mysteries of Lalibela.</h6>
+                                    <small class="text-gray-500">Jan 01, 2026</small>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -192,5 +127,4 @@
 
 <?php 
     include 'includes/footer.php';
-    include 'includes/scripts.php';
 ?>

@@ -31,17 +31,21 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 <?php
-                $guides = [
-                    ['Aman K.', 'Senior Guide', 'img/nobody.jpg'],
-                    ['Selam T.', 'Cultural Expert', 'img/nobody.jpg'],
-                    ['Dawit M.', 'Adventure Specialist', 'img/nobody.jpg'],
-                    ['Aster W.', 'Wildlife Expert', 'img/nobody.jpg'],
+                $team = [
+                    ['Ketema Bahiru', 'Founder and Director', 'img/ketema.jpg'],
+                    ['Dereje Shiferaw', 'Board Chairman', 'img/dereje.jpg'],
+                    ['Dawit Zegeye', 'Board Vise Chairman', 'img/dawit.jpg'],
+                    ['Aelaf Eskindir', 'ICT Officer', 'img/aelaf.jpg'],
+                    ['Hareg Belachew', 'Marketing', 'img/hareg.jpg'],
+                    ['Yihunegn Mohammed', 'Advisor', 'img/yihunegn.jpg'],
+                    ['Redwan Tesfaye', 'Tour Coordinator', 'img/redwan.jpg'],
+                    ['Fetelewirk Mitiku', 'Marketing Officer', 'img/Fetelewirk.jpg'],
                 ];
-                foreach ($guides as $guide):
+                foreach ($team as $member):
                 ?>
                 <div class="bg-white shadow-lg overflow-hidden group">
                     <div class="relative overflow-hidden aspect-square">
-                        <img src="<?php echo $guide[2]; ?>" alt="<?php echo $guide[0]; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <img src="<?php echo $member[2]; ?>" alt="<?php echo $member[0]; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         <div class="absolute inset-0 bg-black/40 flex items-center justify-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <a href="#" class="w-10 h-10 bg-white/20 hover:bg-primary text-white flex items-center justify-center transition-colors border border-white/30"><i class="fab fa-facebook-f"></i></a>
                             <a href="#" class="w-10 h-10 bg-white/20 hover:bg-primary text-white flex items-center justify-center transition-colors border border-white/30"><i class="fab fa-instagram"></i></a>
@@ -49,8 +53,8 @@
                         </div>
                     </div>
                     <div class="text-center p-6">
-                        <h5 class="text-xl font-bold mb-1"><?php echo $guide[0]; ?></h5>
-                        <p class="text-gray-500 m-0"><?php echo $guide[1]; ?></p>
+                        <h5 class="text-xl font-bold mb-1 text-truncate px-2"><?php echo $member[0]; ?></h5>
+                        <p class="text-gray-500 m-0"><?php echo $member[1]; ?></p>
                     </div>
                 </div>
                 <?php endforeach; ?>

@@ -137,13 +137,20 @@
                     ['Indonesia', '2 Cities', 'img/Indonesia.jpg'],
                     ['Ethiopia', '11 Cities', 'img/ethiopia.jpg'],
                     ['Tanzania', '3 Cities', 'img/tanzania.jpg'],
+                    ['Brazil', '6 Cities', 'img/brazil.jpg'],
+                    ['Kenya', '3 Cities', 'img/kenya.jpg'],
+                    ['Singapore', '1 City', 'img/singapore.jpg'],
+                    ['Japan', '4 Cities', 'img/japan.jpg'],
+                    ['United States', '11 Cities', 'img/usa.jpg'],
+                    ['China', '7 Cities', 'img/china.jpg'],
+                    ['Botswana', '3 Cities', 'img/botswana.jpg'],
                 ];
                 foreach ($destinations as $dest):
                 ?>
                 <div class="relative group overflow-hidden h-64 shadow-lg">
                     <img src="<?php echo $dest[2]; ?>" alt="<?php echo $dest[0]; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    <a href="" class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 no-underline">
-                        <h5 class="text-white text-xl font-bold mb-1"><?php echo $dest[0]; ?></h5>
+                    <a href="" class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 no-underline text-center px-4">
+                        <h5 class="text-white text-xl font-bold mb-1 leading-tight"><?php echo $dest[0]; ?></h5>
                         <span class="text-white/80"><?php echo $dest[1]; ?></span>
                     </a>
                 </div>
@@ -243,6 +250,10 @@
                     ['Dereje Shiferaw', 'Board Chairman', 'img/dereje.jpg'],
                     ['Dawit Zegeye', 'Board Vise Chairman', 'img/dawit.jpg'],
                     ['Aelaf Eskindir', 'ICT Officer', 'img/aelaf.jpg'],
+                    ['Hareg Belachew', 'Marketing', 'img/hareg.jpg'],
+                    ['Yihunegn Mohammed', 'Advisor', 'img/yihunegn.jpg'],
+                    ['Redwan Tesfaye', 'Tour Coordinator', 'img/redwan.jpg'],
+                    ['Fetelewirk Mitiku', 'Marketing Officer', 'img/Fetelewirk.jpg'],
                 ];
                 foreach ($team as $member):
                 ?>
@@ -256,7 +267,7 @@
                         </div>
                     </div>
                     <div class="text-center p-6">
-                        <h5 class="text-xl font-bold mb-1"><?php echo $member[0]; ?></h5>
+                        <h5 class="text-xl font-bold mb-1 text-truncate px-2"><?php echo $member[0]; ?></h5>
                         <p class="text-gray-500 m-0"><?php echo $member[1]; ?></p>
                     </div>
                 </div>
@@ -266,79 +277,40 @@
     </section>
     <!-- Team End -->
 
-    <!-- Footer Start -->
-    <footer class="bg-dark text-gray-400 pt-20">
-        <div class="max-w-7xl mx-auto px-4 pb-20">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                <div>
-                    <a href="" class="block mb-8">
-                        <h1 class="text-3xl font-bold text-primary"><span class="text-white">Ask</span>Me</h1>
-                    </a>
-                    <p class="mb-8 leading-relaxed">Discover Ethiopia and beyond with AskMe Tour and Travel, your trusted partner for unforgettable, safe, and culturally immersive travel experiences.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="w-12 h-12 border border-white/20 flex items-center justify-center hover:bg-primary hover:text-white transition-all"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="w-12 h-12 border border-white/20 flex items-center justify-center hover:bg-primary hover:text-white transition-all"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="w-12 h-12 border border-white/20 flex items-center justify-center hover:bg-primary hover:text-white transition-all"><i class="fab fa-instagram"></i></a>
+    <!-- Testimonial Start -->
+    <section id="testimonial" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Testimonial</h6>
+                <h1 class="text-4xl md:text-5xl font-bold text-dark">What Our Clients Say</h1>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <?php
+                $testimonials = [
+                    ['Melaku Debru', 'Corporate Event Planner', '“AskMe Tour and Travel handled every detail flawlessly, turning a complex business trip into an enjoyable experience.”'],
+                    ['Sara Tesfaye', 'High School Teacher', '“Their customized itinerary made my educational tour both stress free and incredibly enriching for my students.”'],
+                    ['Shemsedin Ahmed', 'Software Engineer', '“AskMe Tour and Travel turned my dream vacation into reality with exceptional planning and friendly service.”'],
+                    ['Rakeb Teklu', 'Photographer', '“Thanks to their expertise, I captured stunning locations I never would have found on my own.”'],
+                ];
+                foreach ($testimonials as $t):
+                ?>
+                <div class="bg-white p-8 md:p-12 shadow-xl relative group">
+                    <i class="fa fa-quote-right absolute top-8 right-8 text-primary/10 text-6xl group-hover:text-primary/20 transition-colors"></i>
+                    <p class="text-gray-600 italic mb-8 leading-relaxed text-lg relative z-10"><?php echo $t[2]; ?></p>
+                    <div class="flex items-center">
+                        <img src="img/nobody.jpg" class="w-16 h-16 rounded-full object-cover border-4 border-gray-50 mr-4">
+                        <div>
+                            <h5 class="text-xl font-bold text-dark leading-tight"><?php echo $t[0]; ?></h5>
+                            <small class="text-primary font-bold uppercase tracking-wider text-[10px]"><?php echo $t[1]; ?></small>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <h5 class="text-white uppercase tracking-[5px] font-bold mb-8">Useful Links</h5>
-                    <div class="flex flex-col space-y-3">
-                        <a href="#about" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> About</a>
-                        <a href="#destination" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Destination</a>
-                        <a href="#services" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Services</a>
-                        <a href="#team" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Our Team</a>
-                        <a href="#testimonial" class="hover:text-primary transition-colors flex items-center"><i class="fa fa-angle-right mr-2"></i> Testimonial</a>
-                    </div>
-                </div>
-                <div>
-                    <h5 class="text-white uppercase tracking-[5px] font-bold mb-8">Contact Us</h5>
-                    <div class="space-y-4">
-                        <p class="flex items-center"><i class="fa fa-map-marker-alt mr-3 text-primary"></i> Addis Ababa, Ethiopia</p>
-                        <p class="flex items-center"><i class="fa fa-phone-alt mr-3 text-primary"></i> +251 91 112 4715</p>
-                        <p class="flex items-center"><i class="fa fa-envelope mr-3 text-primary"></i> info@askmetour.org</p>
-                    </div>
-                    <div class="mt-8">
-                        <h6 class="text-white uppercase tracking-[5px] font-bold mb-4">Newsletter</h6>
-                        <form id="newsletterForm" class="flex">
-                            <input name="Email" type="email" class="w-full p-4 bg-white/10 border-0 focus:ring-0 text-white placeholder-gray-500" placeholder="Your Email" required>
-                            <button class="bg-primary text-white px-6 hover:bg-primary-dark transition-colors" type="submit">Sign Up</button>
-                        </form>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
-        <div class="border-t border-white/10 py-6">
-            <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
-                <p class="m-0 text-sm">Copyright &copy; <a href="www.askmetour.org" class="text-white hover:text-primary">AskMe Tour and Travel</a>. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer End -->
+    </section>
+    <!-- Testimonial End -->
 
-    <!-- Back to Top -->
-    <a href="#" id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 bg-primary text-white flex items-center justify-center shadow-2xl opacity-0 transition-opacity duration-300 z-[1000]">
-        <i class="fa fa-angle-double-up"></i>
-    </a>
-
-    <script>
-        window.onscroll = function() {
-            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-                document.getElementById('back-to-top').classList.add('opacity-100');
-            } else {
-                document.getElementById('back-to-top').classList.remove('opacity-100');
-            }
-        };
-    </script>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <!-- Removed Bootstrap Bundle -->
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
-    <script src="form.js"></script>
+    <?php include 'includes/footer.php'; ?>
 </body>
 </html>
