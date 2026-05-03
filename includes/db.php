@@ -1,6 +1,6 @@
 <?php
 // Database Configuration
-$host = 'localhost';
+$host = '127.0.0.1';
 $db   = 'askme_tour';
 $user = 'root';
 $pass = ''; // Default for XAMPP is empty
