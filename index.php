@@ -70,7 +70,7 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
                     <div class="navbar-nav ml-auto py-0">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
+                        <a href="index.php" class="nav-item nav-link active">Home</a>
                         <a href="#about" class="nav-item nav-link">About</a>
                         <a href="#services" class="nav-item nav-link">Services</a>
                         <a href="#destination" class="nav-item nav-link">Destinations</a>
@@ -78,8 +78,8 @@
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More</a>
                             <div class="dropdown-menu border-0 rounded-0 m-0">
                                 <a href="#blog" class="dropdown-item">Blogs</a>
-                                <!--<a href="single.html" class="dropdown-item">Blog Detail</a>
-                                <a href="destination.html" class="dropdown-item">Destination</a>-->
+                                <!--<a href="single.php" class="dropdown-item">Blog Detail</a>
+                                <a href="destination.php" class="dropdown-item">Destination</a>-->
                                 <a href="#team" class="dropdown-item">Our Team</a>
                                 <a href="#testimonial" class="dropdown-item">Testimonial</a>
                             </div>
