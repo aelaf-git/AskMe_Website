@@ -58,9 +58,9 @@ if (!is_admin_authenticated()) {
                 <i class="fas fa-th-large"></i>
                 <span class="font-semibold">Dashboard</span>
             </a>
-            <a href="#" class="sidebar-link flex items-center space-x-4 p-4 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300">
+            <a href="events.php" class="sidebar-link flex items-center space-x-4 p-4 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300">
                 <i class="fas fa-calendar-alt"></i>
-                <span class="font-semibold">Registrations</span>
+                <span class="font-semibold">Events</span>
             </a>
             <a href="#" class="sidebar-link flex items-center space-x-4 p-4 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300">
                 <i class="fas fa-envelope"></i>

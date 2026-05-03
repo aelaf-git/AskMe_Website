@@ -11,6 +11,7 @@
         'package' => 'Tour Packages',
         'service' => 'Our Services',
         'single' => 'Blog Detail',
+        'event_detail' => 'Event Detail',
         'testimonial' => 'Testimonials'
     ];
 
@@ -105,22 +106,28 @@
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                        <!-- Event 1 -->
+                        <?php
+                        require_once 'includes/db.php';
+                        try {
+                            $stmt = $pdo->query("SELECT * FROM events ORDER BY event_date ASC LIMIT 3");
+                            while ($event = $stmt->fetch()) {
+                                $date = new DateTime($event['event_date']);
+                        ?>
                         <div class="bg-white rounded-2xl shadow-2xl overflow-hidden group hover:-translate-y-4 transition-all duration-500 border border-gray-100">
                             <div class="relative h-72 overflow-hidden">
-                                <img src="assets/img/dallol.jpg" alt="Enkutatash" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <img src="<?php echo $event['image_path']; ?>" alt="<?php echo $event['title']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
                                 <div class="absolute top-6 left-6 backdrop-blur-md bg-primary/90 text-white px-5 py-2 rounded-lg font-bold shadow-2xl border border-white/20">
-                                    <span class="block text-2xl leading-none">11</span>
-                                    <span class="text-xs uppercase tracking-widest">Sep</span>
+                                    <span class="block text-2xl leading-none"><?php echo $date->format('d'); ?></span>
+                                    <span class="text-xs uppercase tracking-widest"><?php echo $date->format('M'); ?></span>
                                 </div>
                             </div>
                             <div class="p-10">
-                                <h3 class="text-2xl font-bold mb-4 group-hover:text-primary transition-colors leading-tight">Ethiopian New Year (Enkutatash)</h3>
-                                <p class="text-gray-500 mb-8 leading-relaxed">Join us in celebrating the vibrant Ethiopian New Year with traditional music, dancing, and the beautiful yellow Meskel daisies.</p>
-                                <a href="#Registration" class="group/btn inline-flex items-center gap-3 text-primary font-bold">
+                                <h3 class="text-2xl font-bold mb-4 group-hover:text-primary transition-colors leading-tight"><?php echo $event['title']; ?></h3>
+                                <p class="text-gray-500 mb-8 leading-relaxed"><?php echo $event['short_description']; ?></p>
+                                <a href="index.php?p=event_detail&id=<?php echo $event['id']; ?>" class="group/btn inline-flex items-center gap-3 text-primary font-bold">
                                     <span class="relative">
-                                        Book Your Spot
+                                        Learn More
                                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover/btn:w-full transition-all duration-300"></span>
                                     </span>
                                     <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover/btn:bg-primary group-hover/btn:text-white transition-all">
@@ -129,56 +136,12 @@
                                 </a>
                             </div>
                         </div>
-
-                        <!-- Event 2 -->
-                        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden group hover:-translate-y-4 transition-all duration-500 border border-gray-100">
-                            <div class="relative h-72 overflow-hidden">
-                                <img src="assets/img/ertale.jpg" alt="Meskel" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
-                                <div class="absolute top-6 left-6 backdrop-blur-md bg-primary/90 text-white px-5 py-2 rounded-lg font-bold shadow-2xl border border-white/20">
-                                    <span class="block text-2xl leading-none">27</span>
-                                    <span class="text-xs uppercase tracking-widest">Sep</span>
-                                </div>
-                            </div>
-                            <div class="p-10">
-                                <h3 class="text-2xl font-bold mb-4 group-hover:text-primary transition-colors leading-tight">Meskel Festival</h3>
-                                <p class="text-gray-500 mb-8 leading-relaxed">Experience the magnificent bonfire lighting ceremony (Demera) in Meskel Square, a UNESCO inscribed cultural heritage.</p>
-                                <a href="#Registration" class="group/btn inline-flex items-center gap-3 text-primary font-bold">
-                                    <span class="relative">
-                                        Book Your Spot
-                                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover/btn:w-full transition-all duration-300"></span>
-                                    </span>
-                                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover/btn:bg-primary group-hover/btn:text-white transition-all">
-                                        <i class="fa fa-arrow-right text-sm"></i>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Event 3 -->
-                        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden group hover:-translate-y-4 transition-all duration-500 border border-gray-100">
-                            <div class="relative h-72 overflow-hidden">
-                                <img src="assets/img/addisababa.jpg" alt="Great Run" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
-                                <div class="absolute top-6 left-6 backdrop-blur-md bg-primary/90 text-white px-5 py-2 rounded-lg font-bold shadow-2xl border border-white/20">
-                                    <span class="block text-2xl leading-none">17</span>
-                                    <span class="text-xs uppercase tracking-widest">Nov</span>
-                                </div>
-                            </div>
-                            <div class="p-10">
-                                <h3 class="text-2xl font-bold mb-4 group-hover:text-primary transition-colors leading-tight">Great Ethiopian Run</h3>
-                                <p class="text-gray-500 mb-8 leading-relaxed">Participate in Africa's biggest 10km road race through the heart of Addis Ababa with over 45,000 other runners.</p>
-                                <a href="#Registration" class="group/btn inline-flex items-center gap-3 text-primary font-bold">
-                                    <span class="relative">
-                                        Book Your Spot
-                                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover/btn:w-full transition-all duration-300"></span>
-                                    </span>
-                                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover/btn:bg-primary group-hover/btn:text-white transition-all">
-                                        <i class="fa fa-arrow-right text-sm"></i>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
+                        <?php
+                            }
+                        } catch (PDOException $e) {
+                            echo '<p class="text-rose-500">Error loading events.</p>';
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
