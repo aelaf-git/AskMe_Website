@@ -4,101 +4,7 @@ $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $form_message = '';
 $form_success = false;
 
-function ensure_event_registrations_schema($pdo) {
-    $pdo->exec("CREATE TABLE IF NOT EXISTS event_registrations (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        event_id INT NOT NULL,
-        full_name VARCHAR(255) NOT NULL,
-        gender VARCHAR(20) NOT NULL,
-        dob DATE NOT NULL,
-        nationality VARCHAR(100) NOT NULL,
-        passport_number VARCHAR(50) NOT NULL,
-        passport_expiry DATE NOT NULL,
-        phone VARCHAR(50) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        address TEXT NOT NULL,
-        occupation VARCHAR(255) NOT NULL,
-        company VARCHAR(255),
-        industry VARCHAR(255),
-        experience_years INT DEFAULT 0,
-        purpose TEXT NOT NULL,
-        areas_of_interest TEXT,
-        has_passport TINYINT(1) DEFAULT 1,
-        traveled_before TINYINT(1) DEFAULT 0,
-        previous_international_destinations TEXT,
-        has_trip_visa TINYINT(1) DEFAULT 0,
-        requires_visa TINYINT(1) DEFAULT 0,
-        needs_invitation TINYINT(1) DEFAULT 0,
-        special_notes TEXT,
-        passport_issue_date DATE DEFAULT NULL,
-        passport_issue_place VARCHAR(255) DEFAULT NULL,
-        passport_scan_path VARCHAR(255) DEFAULT NULL,
-        profile_photo_path VARCHAR(255) DEFAULT NULL,
-        emergency_contact_name VARCHAR(255) DEFAULT NULL,
-        emergency_contact_phone VARCHAR(50) DEFAULT NULL,
-        emergency_contact_relationship VARCHAR(100) DEFAULT NULL,
-        country_of_residence VARCHAR(100) DEFAULT NULL,
-        city_of_residence VARCHAR(100) DEFAULT NULL,
-        accommodation_preference VARCHAR(100) DEFAULT NULL,
-        room_type_preference VARCHAR(100) DEFAULT NULL,
-        dietary_requirements TEXT,
-        medical_conditions TEXT,
-        insurance_provider VARCHAR(255) NOT NULL DEFAULT '',
-        insurance_policy_number VARCHAR(120) NOT NULL DEFAULT '',
-        insurance_doc_path VARCHAR(255) DEFAULT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )");
 
-    $requiredColumns = [
-        'event_id' => "INT NULL",
-        'full_name' => "VARCHAR(255) NOT NULL DEFAULT ''",
-        'gender' => "VARCHAR(20) NOT NULL DEFAULT ''",
-        'dob' => "DATE NULL",
-        'nationality' => "VARCHAR(100) NOT NULL DEFAULT ''",
-        'passport_number' => "VARCHAR(50) NOT NULL DEFAULT ''",
-        'passport_expiry' => "DATE NULL",
-        'phone' => "VARCHAR(50) NOT NULL DEFAULT ''",
-        'email' => "VARCHAR(255) NOT NULL DEFAULT ''",
-        'address' => "TEXT NULL",
-        'occupation' => "VARCHAR(255) NOT NULL DEFAULT ''",
-        'company' => "VARCHAR(255) NULL",
-        'industry' => "VARCHAR(255) NULL",
-        'experience_years' => "INT DEFAULT 0",
-        'purpose' => "TEXT NULL",
-        'areas_of_interest' => "TEXT NULL",
-        'has_passport' => "TINYINT(1) DEFAULT 1",
-        'traveled_before' => "TINYINT(1) DEFAULT 0",
-        'previous_international_destinations' => "TEXT NULL",
-        'has_trip_visa' => "TINYINT(1) DEFAULT 0",
-        'requires_visa' => "TINYINT(1) DEFAULT 0",
-        'needs_invitation' => "TINYINT(1) DEFAULT 0",
-        'special_notes' => "TEXT NULL",
-        'passport_issue_date' => "DATE DEFAULT NULL",
-        'passport_issue_place' => "VARCHAR(255) DEFAULT NULL",
-        'passport_scan_path' => "VARCHAR(255) DEFAULT NULL",
-        'profile_photo_path' => "VARCHAR(255) DEFAULT NULL",
-        'emergency_contact_name' => "VARCHAR(255) DEFAULT NULL",
-        'emergency_contact_phone' => "VARCHAR(50) DEFAULT NULL",
-        'emergency_contact_relationship' => "VARCHAR(100) DEFAULT NULL",
-        'country_of_residence' => "VARCHAR(100) DEFAULT NULL",
-        'city_of_residence' => "VARCHAR(100) DEFAULT NULL",
-        'accommodation_preference' => "VARCHAR(100) DEFAULT NULL",
-        'room_type_preference' => "VARCHAR(100) DEFAULT NULL",
-        'dietary_requirements' => "TEXT NULL",
-        'medical_conditions' => "TEXT NULL",
-        'insurance_provider' => "VARCHAR(255) NOT NULL DEFAULT ''",
-        'insurance_policy_number' => "VARCHAR(120) NOT NULL DEFAULT ''",
-        'insurance_doc_path' => "VARCHAR(255) DEFAULT NULL"
-    ];
-
-    foreach ($requiredColumns as $column => $definition) {
-        $check = $pdo->prepare("SHOW COLUMNS FROM event_registrations LIKE ?");
-        $check->execute([$column]);
-        if (!$check->fetch()) {
-            $pdo->exec("ALTER TABLE event_registrations ADD COLUMN {$column} {$definition}");
-        }
-    }
-}
 
 function normalize_upload_name($name) {
     $safe = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($name));
@@ -151,10 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
     if ($ev && $ev['registration_deadline'] && date('Y-m-d') > $ev['registration_deadline']) {
         $form_message = 'Registration for this event has closed.';
     } else {
-        $areas = isset($_POST['areas_of_interest']) ? implode(', ', $_POST['areas_of_interest']) : '';
-        if (!empty($_POST['areas_other'])) {
-            $areas .= ($areas ? ', ' : '') . trim($_POST['areas_other']);
-        }
 
         $passportUpload = save_registration_upload('passport_scan', true);
         $photoUpload = save_registration_upload('profile_photo', true);
@@ -172,31 +74,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
         try {
             $insertValues = [
                 $eid, $_POST['full_name'], $_POST['gender'], $_POST['dob'], $_POST['nationality'],
-                $_POST['passport_number'], $_POST['passport_issue_date'], $_POST['passport_expiry'], $_POST['passport_issue_place'],
+                $_POST['passport_number'], $_POST['passport_issue_date'], $_POST['passport_expiry'], $_POST['passport_issuing_country'],
                 $passportUpload['path'], $photoUpload['path'],
-                $_POST['phone'], $_POST['email'], $_POST['address'], $_POST['country_of_residence'], $_POST['city_of_residence'],
-                $_POST['emergency_contact_name'], $_POST['emergency_contact_phone'], $_POST['emergency_contact_relationship'],
-                $_POST['occupation'], $_POST['company'] ?? '', $_POST['industry'] ?? '', (int)($_POST['experience_years'] ?? 0),
-                $_POST['purpose'], $areas,
+                $_POST['phone'], $_POST['whatsapp'] ?? '', $_POST['email'], $_POST['address'], $_POST['city'], $_POST['country'],
+                $_POST['emergency_name'], $_POST['emergency_phone'], $_POST['emergency_relation'],
+                $_POST['purpose'],
                 isset($_POST['has_valid_passport']) ? 1 : 0, isset($_POST['traveled_before']) ? 1 : 0,
-                isset($_POST['has_trip_visa']) ? 1 : 0, isset($_POST['requires_visa']) ? 1 : 0, isset($_POST['needs_invitation']) ? 1 : 0,
-                $_POST['accommodation_preference'] ?? '', $_POST['dietary_requirements'] ?? '', $_POST['medical_conditions'] ?? '', $_POST['room_type_preference'] ?? '',
-                $_POST['special_notes'] ?? '',
-                $_POST['insurance_provider'], $_POST['insurance_policy_number']
+                isset($_POST['requires_visa']) ? 1 : 0, isset($_POST['needs_invitation']) ? 1 : 0,
+                $_POST['dietary_requirements'] ?? '', $_POST['medical_conditions'] ?? '', $_POST['room_preference'] ?? '',
+                $_POST['special_notes'] ?? ''
             ];
             $placeholders = implode(',', array_fill(0, count($insertValues), '?'));
 
             $stmt = $pdo->prepare("INSERT INTO event_registrations (
                 event_id, full_name, gender, dob, nationality,
-                passport_number, passport_issue_date, passport_expiry, passport_issue_place,
-                passport_scan_path, profile_photo_path,
-                phone, email, address, country_of_residence, city_of_residence,
-                emergency_contact_name, emergency_contact_phone, emergency_contact_relationship,
-                occupation, company, industry, experience_years,
-                purpose, areas_of_interest,
-                has_passport, traveled_before, has_trip_visa, requires_visa, needs_invitation,
-                accommodation_preference, dietary_requirements, medical_conditions, room_type_preference, special_notes,
-                insurance_provider, insurance_policy_number
+                passport_number, passport_issue_date, passport_expiry, passport_issuing_country,
+                passport_scan, profile_photo,
+                phone, whatsapp, email, address, city, country,
+                emergency_name, emergency_phone, emergency_relation,
+                purpose,
+                has_valid_passport, traveled_before, requires_visa, needs_invitation,
+                dietary_requirements, medical_conditions, room_preference, special_notes
             ) VALUES ({$placeholders})");
             $stmt->execute($insertValues);
             
@@ -381,13 +279,7 @@ try {
             <div class="p-10 md:p-16 border-b border-gray-100">
                 <h3 class="text-2xl font-black text-secondary mb-2">3. Travel Purpose</h3>
                 <p class="text-gray-400 text-sm mb-8">Tell us why you are joining this event.</p>
-                <div class="mb-6"><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Occupation / Title *</label><input type="text" name="occupation" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Organisation / Company</label><input type="text" name="company" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
-                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Industry Sector</label><input type="text" name="industry" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
-                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Years of Experience</label><input type="number" name="experience_years" min="0" max="60" value="0" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
-                </div>
-                <div class="mt-6 mb-6"><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Purpose of Joining the Trip *</label><textarea name="purpose" required rows="3" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></textarea></div>
+                <textarea name="purpose" required rows="5" placeholder="Briefly describe your reason for attending, what you hope to gain, and how this event aligns with your goals..." class="w-full p-5 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium text-gray-700 leading-relaxed"></textarea>
             </div>
 
             <!-- Section 4: International Travel & Visa History -->

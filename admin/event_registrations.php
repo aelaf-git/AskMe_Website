@@ -192,14 +192,7 @@ $regs = $stmt->fetchAll();
                                         <div class="col-span-2"><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Emergency Relationship</span><span class="font-bold text-secondary"><?php echo $r['emergency_relation'] ?: '-'; ?></span></div>
 
                                         <div class="col-span-2 border-t border-slate-100 pt-5 mt-2"></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Occupation</span><span class="font-bold text-secondary"><?php echo $r['occupation']; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Company</span><span class="font-bold text-secondary"><?php echo $r['company'] ?: '-'; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Industry</span><span class="font-bold text-secondary"><?php echo $r['industry'] ?: '-'; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Experience</span><span class="font-bold text-secondary"><?php echo $r['experience_years']; ?> years</span></div>
-
-                                        <div class="col-span-2 border-t border-slate-100 pt-5 mt-2"></div>
                                         <div class="col-span-2"><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Purpose</span><span class="font-bold text-secondary"><?php echo $r['purpose']; ?></span></div>
-                                        <div class="col-span-2"><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Areas of Interest</span><span class="font-bold text-secondary"><?php echo $r['areas_of_interest'] ?: '-'; ?></span></div>
 
                                         <div class="col-span-2 border-t border-slate-100 pt-5 mt-2"></div>
                                         <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Valid Passport</span><span class="font-bold <?php echo $r['has_valid_passport'] ? 'text-emerald-600' : 'text-rose-500'; ?>"><?php echo $r['has_valid_passport'] ? 'Yes' : 'No'; ?></span></div>
