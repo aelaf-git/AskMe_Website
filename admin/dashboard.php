@@ -11,8 +11,8 @@ if (!is_admin_authenticated()) {
 $page_title = "Admin Dashboard";
 
 // Fetch Traffic Stats
-$totalTraffic = $pdo->query("SELECT COUNT(*) FROM site_traffic")->fetchColumn();
-$todayTraffic = $pdo->query("SELECT COUNT(*) FROM site_traffic WHERE DATE(viewed_at) = CURDATE()")->fetchColumn();
+$totalTraffic = $pdo->query("SELECT COUNT(DISTINCT session_id) FROM site_traffic")->fetchColumn();
+$todayTraffic = $pdo->query("SELECT COUNT(DISTINCT session_id) FROM site_traffic WHERE DATE(viewed_at) = CURDATE()")->fetchColumn();
 
 // Fetch Core Business Stats
 $totalBookings = $pdo->query("SELECT COUNT(*) FROM registrations")->fetchColumn();
@@ -25,7 +25,7 @@ $trafficLabels = [];
 $trafficValues = [];
 for ($i = 6; $i >= 0; $i--) {
     $date = date('Y-m-d', strtotime("-$i days"));
-    $count = $pdo->query("SELECT COUNT(*) FROM site_traffic WHERE DATE(viewed_at) = '$date'")->fetchColumn();
+    $count = $pdo->query("SELECT COUNT(DISTINCT session_id) FROM site_traffic WHERE DATE(viewed_at) = '$date'")->fetchColumn();
     $trafficLabels[] = date('M d', strtotime($date));
     $trafficValues[] = $count;
 }

@@ -5,10 +5,14 @@
  */
 
 function track_visit($pdo) {
-    // Check if visitor has already been logged in this session
-    if (isset($_SESSION['has_been_logged']) && $_SESSION['has_been_logged'] === true) {
-        return; // Skip logging if already recorded for this session
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
     }
+
+    if (!isset($_SESSION['visitor_session_id'])) {
+        $_SESSION['visitor_session_id'] = bin2hex(random_bytes(16));
+    }
+    $session_id = $_SESSION['visitor_session_id'];
 
     // 1. Capture Basic Info
     $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
@@ -59,11 +63,8 @@ function track_visit($pdo) {
 
     // 4. Log to Database
     try {
-        $stmt = $pdo->prepare("INSERT INTO site_traffic (ip_address, user_agent, device_type, page_url, referrer, country, city) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$ip, $user_agent, $device_type, $page_url, $referrer, $country, $city]);
-        
-        // Mark as logged for this session
-        $_SESSION['has_been_logged'] = true;
+        $stmt = $pdo->prepare("INSERT INTO site_traffic (ip_address, session_id, user_agent, device_type, page_url, referrer, country, city) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$ip, $session_id, $user_agent, $device_type, $page_url, $referrer, $country, $city]);
     } catch (PDOException $e) {
         // Silently fail to not interrupt user experience
     }
@@ -71,9 +72,6 @@ function track_visit($pdo) {
 
 // Automatically run if $pdo is available
 if (isset($pdo)) {
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
     track_visit($pdo);
 }
 ?>
