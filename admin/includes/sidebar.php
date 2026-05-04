@@ -45,7 +45,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </a>
             <a href="registrations.php" class="sidebar-link <?php echo ($current_page == 'registrations.php') ? 'active' : ''; ?> flex items-center space-x-4 p-4 text-slate-400 hover:text-secondary hover:bg-slate-50 rounded-2xl transition-all duration-300">
                 <i class="fas fa-id-card w-5 text-lg"></i>
-                <span class="font-bold text-sm">Registrations</span>
+                <span class="font-bold text-sm">Tour Bookings</span>
+            </a>
+            <a href="event_registrations.php" class="sidebar-link <?php echo ($current_page == 'event_registrations.php') ? 'active' : ''; ?> flex items-center space-x-4 p-4 text-slate-400 hover:text-secondary hover:bg-slate-50 rounded-2xl transition-all duration-300">
+                <i class="fas fa-clipboard-list w-5 text-lg"></i>
+                <span class="font-bold text-sm">Event Bookings</span>
             </a>
             <a href="newsletter.php" class="sidebar-link <?php echo ($current_page == 'newsletter.php') ? 'active' : ''; ?> flex items-center space-x-4 p-4 text-slate-400 hover:text-secondary hover:bg-slate-50 rounded-2xl transition-all duration-300">
                 <i class="fas fa-paper-plane w-5 text-lg"></i>

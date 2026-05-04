@@ -1,21 +1,55 @@
 <?php
 require_once 'includes/db.php';
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$form_message = '';
+$form_success = false;
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
+    $eid = (int)$_POST['event_id'];
+    // Check deadline
+    $chk = $pdo->prepare("SELECT registration_deadline FROM events WHERE id = ?");
+    $chk->execute([$eid]);
+    $ev = $chk->fetch();
+    if ($ev && $ev['registration_deadline'] && date('Y-m-d') > $ev['registration_deadline']) {
+        $form_message = 'Registration for this event has closed.';
+    } else {
+        $areas = isset($_POST['areas_of_interest']) ? implode(', ', $_POST['areas_of_interest']) : '';
+        if (isset($_POST['areas_other']) && !empty($_POST['areas_other'])) {
+            $areas .= ($areas ? ', ' : '') . $_POST['areas_other'];
+        }
+        try {
+            $stmt = $pdo->prepare("INSERT INTO event_registrations (event_id, full_name, gender, dob, nationality, passport_number, passport_expiry, phone, email, address, occupation, company, industry, experience_years, purpose, areas_of_interest, has_passport, traveled_before, requires_visa, needs_invitation, special_notes) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            $stmt->execute([
+                $eid, $_POST['full_name'], $_POST['gender'], $_POST['dob'], $_POST['nationality'],
+                $_POST['passport_number'], $_POST['passport_expiry'], $_POST['phone'], $_POST['email'],
+                $_POST['address'], $_POST['occupation'], $_POST['company'] ?? '', $_POST['industry'] ?? '',
+                (int)($_POST['experience_years'] ?? 0), $_POST['purpose'], $areas,
+                isset($_POST['has_passport']) ? 1 : 0, isset($_POST['traveled_before']) ? 1 : 0,
+                isset($_POST['requires_visa']) ? 1 : 0, isset($_POST['needs_invitation']) ? 1 : 0,
+                $_POST['special_notes'] ?? ''
+            ]);
+            $form_success = true;
+            $form_message = 'Your application has been submitted successfully!';
+        } catch (PDOException $e) {
+            $form_message = 'Error submitting form. Please try again.';
+        }
+    }
+    $id = $eid;
+}
 
 try {
     $stmt = $pdo->prepare("SELECT * FROM events WHERE id = ?");
     $stmt->execute([$id]);
     $event = $stmt->fetch();
-
-    if (!$event) {
-        echo '<div class="py-40 text-center text-4xl font-bold">Event Not Found</div>';
-        return;
-    }
-    
+    if (!$event) { echo '<div class="py-40 text-center text-4xl font-bold">Event Not Found</div>'; return; }
     $date = new DateTime($event['event_date']);
-} catch (PDOException $e) {
-    die("Error: " . $e->getMessage());
-}
+    $deadline = $event['registration_deadline'] ? $event['registration_deadline'] : null;
+    $is_open = !$deadline || date('Y-m-d') <= $deadline;
+    $reg_count = $pdo->prepare("SELECT COUNT(*) FROM event_registrations WHERE event_id = ?");
+    $reg_count->execute([$id]);
+    $total_registered = $reg_count->fetchColumn();
+} catch (PDOException $e) { die("Error: " . $e->getMessage()); }
 ?>
 
 <!-- Header Start -->
@@ -29,6 +63,8 @@ try {
         <h1 class="text-5xl md:text-8xl font-black text-white tracking-tighter mb-8 animate-slide-up"><?php echo $event['title']; ?></h1>
         <div class="flex items-center justify-center space-x-4">
             <a href="index.php" class="text-white/50 hover:text-primary font-bold transition-colors">Home</a>
+            <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+            <a href="index.php?p=events" class="text-white/50 hover:text-primary font-bold transition-colors">Events</a>
             <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
             <span class="text-primary font-bold uppercase tracking-widest text-xs">Event Detail</span>
         </div>
@@ -54,19 +90,13 @@ try {
                         <div class="flex items-center space-x-4 text-primary font-bold uppercase tracking-[3px] text-xs mb-8">
                             <span><i class="far fa-calendar-alt mr-2"></i> <?php echo $date->format('F d, Y'); ?></span>
                             <span class="text-gray-200">|</span>
-                            <span><i class="far fa-clock mr-2"></i> Annual Festival</span>
+                            <span><i class="fas fa-users mr-2"></i> <?php echo $total_registered; ?> Registered</span>
                         </div>
                         <h2 class="text-3xl md:text-5xl font-black text-secondary mb-10 leading-tight"><?php echo $event['title']; ?></h2>
                         <div class="prose prose-xl max-w-none text-gray-600 leading-relaxed space-y-8">
-                            <p class="font-semibold text-xl text-secondary leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 rounded-r-xl">
-                                <?php echo $event['short_description']; ?>
-                            </p>
-                            <div class="text-lg whitespace-pre-line">
-                                <?php echo $event['long_description']; ?>
-                            </div>
+                            <p class="font-semibold text-xl text-secondary leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 rounded-r-xl"><?php echo $event['short_description']; ?></p>
+                            <div class="text-lg whitespace-pre-line"><?php echo $event['long_description']; ?></div>
                         </div>
-                        
-                        <!-- Share -->
                         <div class="mt-16 pt-10 border-t border-gray-100 flex items-center justify-between flex-wrap gap-6">
                             <div class="flex items-center space-x-4">
                                 <span class="font-bold text-secondary uppercase tracking-widest text-xs">Share this event:</span>
@@ -76,7 +106,11 @@ try {
                                     <a href="#" class="w-10 h-10 bg-gray-100 text-secondary flex items-center justify-center rounded-full hover:bg-primary hover:text-white transition-all"><i class="fab fa-linkedin-in"></i></a>
                                 </div>
                             </div>
-                            <a href="index.php?p=contact" class="btn-primary">Inquire About This Event</a>
+                            <?php if ($is_open): ?>
+                            <a href="#registration-form" class="btn-primary">Register Now <i class="fas fa-arrow-down ml-2"></i></a>
+                            <?php else: ?>
+                            <span class="px-6 py-3 bg-rose-100 text-rose-600 font-bold rounded-xl text-sm">Registration Closed</span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -85,17 +119,12 @@ try {
             <!-- Sidebar -->
             <div class="w-full lg:w-4/12 px-8 mt-16 lg:mt-0">
                 <div class="bg-dark rounded-3xl p-10 text-white shadow-2xl sticky top-10">
-                    <h4 class="text-2xl font-bold mb-8 flex items-center">
-                        <span class="w-8 h-1 bg-primary mr-4 rounded-full"></span>
-                        Recent Events
-                    </h4>
+                    <h4 class="text-2xl font-bold mb-8 flex items-center"><span class="w-8 h-1 bg-primary mr-4 rounded-full"></span>Recent Events</h4>
                     <div class="space-y-8">
                         <?php
                         $stmtRecent = $pdo->prepare("SELECT * FROM events WHERE id != ? ORDER BY event_date DESC LIMIT 3");
                         $stmtRecent->execute([$id]);
-                        while ($recent = $stmtRecent->fetch()) {
-                            $rDate = new DateTime($recent['event_date']);
-                        ?>
+                        while ($recent = $stmtRecent->fetch()) { $rDate = new DateTime($recent['event_date']); ?>
                         <a href="index.php?p=event_detail&id=<?php echo $recent['id']; ?>" class="group flex items-center space-x-4">
                             <div class="w-20 h-20 flex-shrink-0 rounded-2xl overflow-hidden shadow-lg border border-white/10">
                                 <img src="<?php echo $recent['image_path']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
@@ -107,7 +136,6 @@ try {
                         </a>
                         <?php } ?>
                     </div>
-
                     <div class="mt-12 p-8 bg-white/5 rounded-2xl border border-white/10">
                         <h5 class="text-xl font-bold mb-4">Book a Customized Tour</h5>
                         <p class="text-gray-400 text-sm mb-6 leading-relaxed">Let us plan your perfect journey to experience these events in person.</p>
@@ -119,3 +147,127 @@ try {
     </div>
 </div>
 <!-- Event Detail End -->
+
+<!-- Registration Form Start -->
+<?php if ($is_open): ?>
+<div id="registration-form" class="py-24 bg-slate-50">
+    <div class="max-w-5xl mx-auto px-4">
+        <?php if ($form_message): ?>
+        <div class="mb-10 p-6 rounded-2xl font-bold text-lg text-center <?php echo $form_success ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'; ?>">
+            <i class="fas <?php echo $form_success ? 'fa-check-circle' : 'fa-exclamation-circle'; ?> mr-2"></i> <?php echo $form_message; ?>
+        </div>
+        <?php endif; ?>
+
+        <?php if (!$form_success): ?>
+        <div class="text-center mb-16">
+            <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px] mb-4">Application</div>
+            <h2 class="text-4xl md:text-6xl font-black text-secondary tracking-tighter">Registration <span class="text-primary">Form</span></h2>
+            <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Complete the form below to register for <strong><?php echo $event['title']; ?></strong>.</p>
+            <?php if ($deadline): ?>
+            <p class="text-rose-500 font-bold mt-2 text-sm uppercase tracking-widest"><i class="fas fa-clock mr-1"></i> Deadline: <?php echo date('F d, Y', strtotime($deadline)); ?></p>
+            <?php endif; ?>
+        </div>
+
+        <form action="index.php?p=event_detail&id=<?php echo $id; ?>" method="POST" class="bg-white rounded-[40px] shadow-2xl border border-gray-100 overflow-hidden">
+            <input type="hidden" name="event_id" value="<?php echo $id; ?>">
+            <input type="hidden" name="event_register" value="1">
+
+            <!-- Section 1: Personal -->
+            <div class="p-10 md:p-16 border-b border-gray-100">
+                <h3 class="text-2xl font-black text-secondary mb-2">1. Personal Information</h3>
+                <p class="text-gray-400 text-sm mb-8">Your basic identity details.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Full Name *</label><input type="text" name="full_name" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Gender *</label><select name="gender" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"><option value="">Select</option><option>Male</option><option>Female</option></select></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Date of Birth *</label><input type="date" name="dob" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Nationality *</label><input type="text" name="nationality" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Passport Number *</label><input type="text" name="passport_number" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Passport Expiry Date *</label><input type="date" name="passport_expiry" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                </div>
+            </div>
+
+            <!-- Section 2: Contact -->
+            <div class="p-10 md:p-16 border-b border-gray-100">
+                <h3 class="text-2xl font-black text-secondary mb-2">2. Contact Information</h3>
+                <p class="text-gray-400 text-sm mb-8">How we can reach you.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Phone Number *</label><input type="tel" name="phone" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Email Address *</label><input type="email" name="email" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                </div>
+                <div class="mt-6"><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Address *</label><textarea name="address" required rows="2" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></textarea></div>
+            </div>
+
+            <!-- Section 3: Professional -->
+            <div class="p-10 md:p-16 border-b border-gray-100">
+                <h3 class="text-2xl font-black text-secondary mb-2">3. Professional Information</h3>
+                <p class="text-gray-400 text-sm mb-8">Your career and business background.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Occupation / Title *</label><input type="text" name="occupation" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Organization / Company</label><input type="text" name="company" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Industry Sector</label><input type="text" name="industry" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Years of Experience</label><input type="number" name="experience_years" min="0" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                </div>
+            </div>
+
+            <!-- Section 4: Business Interest -->
+            <div class="p-10 md:p-16 border-b border-gray-100">
+                <h3 class="text-2xl font-black text-secondary mb-2">4. Business Interest</h3>
+                <p class="text-gray-400 text-sm mb-8">Your goals for the trip.</p>
+                <div class="mb-6"><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Purpose of Joining the Trip *</label><textarea name="purpose" required rows="3" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></textarea></div>
+                <label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-4">Areas of Interest</label>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <?php foreach (['Trade','Investment','Technology','Manufacturing','Partnership'] as $area): ?>
+                    <label class="flex items-center space-x-3 p-4 bg-slate-50 rounded-2xl border border-slate-200 cursor-pointer hover:border-primary transition group">
+                        <input type="checkbox" name="areas_of_interest[]" value="<?php echo $area; ?>" class="w-5 h-5 accent-primary">
+                        <span class="font-bold text-sm text-gray-600 group-hover:text-primary transition"><?php echo $area; ?></span>
+                    </label>
+                    <?php endforeach; ?>
+                    <div class="col-span-2 md:col-span-1"><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Other</label><input type="text" name="areas_other" placeholder="Specify..." class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                </div>
+            </div>
+
+            <!-- Section 5: Travel -->
+            <div class="p-10 md:p-16 border-b border-gray-100">
+                <h3 class="text-2xl font-black text-secondary mb-2">5. Travel Information</h3>
+                <p class="text-gray-400 text-sm mb-8">Passport and visa details.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <label class="flex items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-200 cursor-pointer"><span class="font-bold text-sm text-gray-600">Valid passport?</span><input type="checkbox" name="has_passport" value="1" checked class="w-5 h-5 accent-primary"></label>
+                    <label class="flex items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-200 cursor-pointer"><span class="font-bold text-sm text-gray-600">Traveled to China?</span><input type="checkbox" name="traveled_before" value="1" class="w-5 h-5 accent-primary"></label>
+                    <label class="flex items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-200 cursor-pointer"><span class="font-bold text-sm text-gray-600">Need visa support?</span><input type="checkbox" name="requires_visa" value="1" class="w-5 h-5 accent-primary"></label>
+                </div>
+            </div>
+
+            <!-- Section 6: Additional -->
+            <div class="p-10 md:p-16 border-b border-gray-100">
+                <h3 class="text-2xl font-black text-secondary mb-2">6. Additional Information</h3>
+                <p class="text-gray-400 text-sm mb-8">Any extra requirements.</p>
+                <label class="flex items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-200 cursor-pointer mb-6 max-w-md"><span class="font-bold text-sm text-gray-600">Need invitation letter?</span><input type="checkbox" name="needs_invitation" value="1" class="w-5 h-5 accent-primary"></label>
+                <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Special Requests or Notes</label><textarea name="special_notes" rows="3" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></textarea></div>
+            </div>
+
+            <!-- Section 7: Declaration & Submit -->
+            <div class="p-10 md:p-16">
+                <label class="flex items-start space-x-4 mb-10 cursor-pointer">
+                    <input type="checkbox" required class="w-5 h-5 accent-primary mt-1">
+                    <span class="text-gray-600 font-medium leading-relaxed">I confirm that the information provided is accurate and I agree to comply with the program requirements.</span>
+                </label>
+                <button type="submit" class="w-full py-6 bg-secondary text-white font-black rounded-3xl shadow-xl shadow-secondary/20 hover:-translate-y-1 transition-all uppercase tracking-[4px] text-sm">
+                    <i class="fas fa-paper-plane mr-3"></i> Submit Application
+                </button>
+            </div>
+        </form>
+        <?php endif; ?>
+    </div>
+</div>
+<?php else: ?>
+<div class="py-20 bg-slate-50">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+        <div class="bg-white p-16 rounded-[40px] shadow-lg border border-gray-100">
+            <div class="w-20 h-20 bg-rose-100 text-rose-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl"><i class="fas fa-lock"></i></div>
+            <h3 class="text-3xl font-black text-secondary mb-4">Registration Closed</h3>
+            <p class="text-gray-500">The registration deadline for this event was <strong><?php echo date('F d, Y', strtotime($deadline)); ?></strong>.</p>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<!-- Registration Form End -->

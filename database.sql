@@ -47,8 +47,37 @@ CREATE TABLE IF NOT EXISTS events (
     short_description VARCHAR(500) NOT NULL,
     long_description TEXT NOT NULL,
     event_date DATE NOT NULL,
+    registration_deadline DATE DEFAULT NULL,
     image_path VARCHAR(255) DEFAULT 'assets/img/carousel-1.jpg',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table for Event Registrations (Applications)
+CREATE TABLE IF NOT EXISTS event_registrations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    event_id INT NOT NULL,
+    full_name VARCHAR(255) NOT NULL,
+    gender VARCHAR(20) NOT NULL,
+    dob DATE NOT NULL,
+    nationality VARCHAR(100) NOT NULL,
+    passport_number VARCHAR(50) NOT NULL,
+    passport_expiry DATE NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    address TEXT NOT NULL,
+    occupation VARCHAR(255) NOT NULL,
+    company VARCHAR(255),
+    industry VARCHAR(255),
+    experience_years INT DEFAULT 0,
+    purpose TEXT NOT NULL,
+    areas_of_interest TEXT,
+    has_passport TINYINT(1) DEFAULT 1,
+    traveled_before TINYINT(1) DEFAULT 0,
+    requires_visa TINYINT(1) DEFAULT 0,
+    needs_invitation TINYINT(1) DEFAULT 0,
+    special_notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
 );
 
 -- Table for Tour Packages

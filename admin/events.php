@@ -29,17 +29,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $short = $_POST['short_description'];
     $long = $_POST['long_description'];
     $date = $_POST['event_date'];
+    $reg_deadline = !empty($_POST['registration_deadline']) ? $_POST['registration_deadline'] : null;
     
     $image_path = handle_image_upload($_FILES['image'], $_POST['current_image'] ?: 'assets/img/carousel-1.jpg');
 
     try {
         if ($id > 0) {
-            $stmt = $pdo->prepare("UPDATE events SET title=?, short_description=?, long_description=?, event_date=?, image_path=? WHERE id=?");
-            $stmt->execute([$title, $short, $long, $date, $image_path, $id]);
+            $stmt = $pdo->prepare("UPDATE events SET title=?, short_description=?, long_description=?, event_date=?, registration_deadline=?, image_path=? WHERE id=?");
+            $stmt->execute([$title, $short, $long, $date, $reg_deadline, $image_path, $id]);
             $message = "Event updated successfully!";
         } else {
-            $stmt = $pdo->prepare("INSERT INTO events (title, short_description, long_description, event_date, image_path) VALUES (?, ?, ?, ?, ?)");
-            $stmt->execute([$title, $short, $long, $date, $image_path]);
+            $stmt = $pdo->prepare("INSERT INTO events (title, short_description, long_description, event_date, registration_deadline, image_path) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$title, $short, $long, $date, $reg_deadline, $image_path]);
             $message = "Event added successfully!";
         }
         $action = 'list';
@@ -160,7 +161,7 @@ if ($action == 'edit' && isset($_GET['id'])) {
                             <input type="hidden" name="id" value="<?php echo $editEvent['id'] ?? ''; ?>">
                             <input type="hidden" name="current_image" value="<?php echo $editEvent['image_path'] ?? ''; ?>">
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                                 <div class="space-y-3">
                                     <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">Event Title</label>
                                     <input type="text" name="title" required value="<?php echo $editEvent['title'] ?? ''; ?>" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl focus:border-primary focus:bg-white focus:outline-none transition-all font-bold">
@@ -168,6 +169,11 @@ if ($action == 'edit' && isset($_GET['id'])) {
                                 <div class="space-y-3">
                                     <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">Event Date</label>
                                     <input type="date" name="event_date" required value="<?php echo $editEvent['event_date'] ?? ''; ?>" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl focus:border-primary focus:bg-white focus:outline-none transition-all font-bold">
+                                </div>
+                                <div class="space-y-3">
+                                    <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">Registration Deadline</label>
+                                    <input type="date" name="registration_deadline" value="<?php echo $editEvent['registration_deadline'] ?? ''; ?>" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl focus:border-primary focus:bg-white focus:outline-none transition-all font-bold">
+                                    <p class="text-[9px] text-slate-400 font-bold">Leave blank = always open</p>
                                 </div>
                             </div>
 
