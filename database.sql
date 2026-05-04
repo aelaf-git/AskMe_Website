@@ -9,6 +9,13 @@ CREATE TABLE IF NOT EXISTS admins (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- IMPORTANT: After importing this file, create your admin account:
+-- Option 1: Use phpMyAdmin to insert a row into 'admins' table
+-- Option 2: Run this SQL (replace with your own password hash):
+-- INSERT INTO admins (email, password_hash) VALUES ('your_email@example.com', '$2y$12$YOUR_HASH_HERE');
+--
+-- To generate a hash, run: php -r "echo password_hash('YourPassword', PASSWORD_DEFAULT);"
+
 -- Table for Registrations/Bookings
 CREATE TABLE IF NOT EXISTS registrations (
     id INT AUTO_INCREMENT PRIMARY KEY,

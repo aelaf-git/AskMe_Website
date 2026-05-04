@@ -12,7 +12,7 @@ if (file_exists($envFile)) {
 
 // Admin Configuration
 define('ADMIN_EMAIL', getenv('ADMIN_EMAIL') ?: 'admin@askmetour.org');
-// Hashed version of 'AskMe@2026!Admin'
+// Hashed version of 'AskMe@2026!Admin' - stored in DB via database.sql
 define('ADMIN_PASSWORD_HASH', password_hash(getenv('ADMIN_PASS') ?: 'AskMe@2026!Admin', PASSWORD_DEFAULT));
 define('JWT_SECRET', getenv('JWT_SECRET') ?: '8f9b0c1d2e3f4g5h6i7j8k9l0m1n2o3p4q5r6s7t8u9v0w1x2y3z4a5b6c7d8e9f0');
 
