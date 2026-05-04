@@ -18,6 +18,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <i class="fas fa-chart-line w-5 text-lg"></i>
             <span class="font-bold text-sm">Dashboard</span>
         </a>
+        <a href="traffic.php" class="sidebar-link <?php echo ($current_page == 'traffic.php') ? 'active' : ''; ?> flex items-center space-x-4 p-4 text-gray-400 hover:text-white hover:bg-white/5 rounded-2xl transition-all duration-300">
+            <i class="fas fa-tower-broadcast w-5 text-lg"></i>
+            <span class="font-bold text-sm">Traffic Analysis</span>
+        </a>
 
         <div class="pt-6 pb-2 px-4 text-[10px] font-black uppercase tracking-[2px] text-gray-500">Inventory</div>
         <a href="packages.php" class="sidebar-link <?php echo ($current_page == 'packages.php') ? 'active' : ''; ?> flex items-center space-x-4 p-4 text-gray-400 hover:text-white hover:bg-white/5 rounded-2xl transition-all duration-300">

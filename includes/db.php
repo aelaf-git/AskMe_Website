@@ -15,6 +15,8 @@ $options = [
 
 try {
      $pdo = new PDO($dsn, $user, $pass, $options);
+     // Auto-track visits
+     require_once __DIR__ . '/traffic_tracker.php';
 } catch (\PDOException $e) {
      // For local development, we show the error. In production, log it.
      die("Database connection failed: " . $e->getMessage());

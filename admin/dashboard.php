@@ -10,30 +10,22 @@ if (!is_admin_authenticated()) {
 
 $page_title = "Admin Dashboard";
 
-// Fetch stats
-$totalBookings = $pdo->query("SELECT COUNT(*) FROM registrations")->fetchColumn();
-$totalMessages = $pdo->query("SELECT COUNT(*) FROM messages")->fetchColumn();
-$totalNewsletter = $pdo->query("SELECT COUNT(*) FROM newsletter")->fetchColumn();
-$totalEvents = $pdo->query("SELECT COUNT(*) FROM events")->fetchColumn();
-$totalPackages = $pdo->query("SELECT COUNT(*) FROM packages")->fetchColumn();
-$totalTeam = $pdo->query("SELECT COUNT(*) FROM team")->fetchColumn();
+// Fetch Traffic Stats
+$totalTraffic = $pdo->query("SELECT COUNT(*) FROM site_traffic")->fetchColumn();
+$todayTraffic = $pdo->query("SELECT COUNT(*) FROM site_traffic WHERE DATE(viewed_at) = CURDATE()")->fetchColumn();
 
-// Fetch Engagement Data for Graph (Last 7 Days)
-$graphData = [];
+// Fetch Traffic Data for Graph (Last 7 Days)
+$trafficLabels = [];
+$trafficValues = [];
 for ($i = 6; $i >= 0; $i--) {
     $date = date('Y-m-d', strtotime("-$i days"));
-    $msgCount = $pdo->query("SELECT COUNT(*) FROM messages WHERE DATE(created_at) = '$date'")->fetchColumn();
-    $regCount = $pdo->query("SELECT COUNT(*) FROM registrations WHERE DATE(created_at) = '$date'")->fetchColumn();
-    $subCount = $pdo->query("SELECT COUNT(*) FROM newsletter WHERE DATE(created_at) = '$date'")->fetchColumn();
-    
-    $graphData[] = [
-        'label' => date('M d', strtotime($date)),
-        'total' => $msgCount + $regCount + $subCount
-    ];
+    $count = $pdo->query("SELECT COUNT(*) FROM site_traffic WHERE DATE(viewed_at) = '$date'")->fetchColumn();
+    $trafficLabels[] = date('M d', strtotime($date));
+    $trafficValues[] = $count;
 }
 
-$labels = json_encode(array_column($graphData, 'label'));
-$data = json_encode(array_column($graphData, 'total'));
+$labels = json_encode($trafficLabels);
+$data = json_encode($trafficValues);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,21 +77,21 @@ $data = json_encode(array_column($graphData, 'total'));
         <!-- Topbar -->
         <header class="bg-white border-b border-slate-100 px-10 py-8 flex items-center justify-between sticky top-0 z-50">
             <div>
-                <h2 class="text-3xl font-black text-secondary tracking-tighter">System <span class="text-primary">Intelligence</span></h2>
-                <p class="text-slate-400 text-xs font-black uppercase tracking-[4px] mt-1">Real-time business analytics</p>
+                <h2 class="text-3xl font-black text-secondary tracking-tighter">Intelligence <span class="text-primary">Command</span></h2>
+                <p class="text-slate-400 text-xs font-black uppercase tracking-[4px] mt-1">Real-time visitor analytics</p>
             </div>
             <div class="flex items-center space-x-8">
                 <div class="hidden lg:flex flex-col items-end">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Last Update</p>
-                    <p class="text-xs font-bold text-secondary"><?php echo date('F d, H:i A'); ?></p>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Live Feed</p>
+                    <p class="text-xs font-bold text-secondary"><?php echo $todayTraffic; ?> visitors today</p>
                 </div>
                 <div class="flex items-center space-x-4 p-2 bg-slate-50 rounded-[24px] border border-slate-100">
                     <div class="h-12 w-12 rounded-[18px] bg-secondary text-white flex items-center justify-center font-black shadow-lg shadow-secondary/20 text-xl">
-                        <i class="fas fa-shield-halved"></i>
+                        <i class="fas fa-tower-broadcast"></i>
                     </div>
                     <div class="pr-6">
-                        <p class="text-sm font-black text-secondary leading-none">Super Admin</p>
-                        <p class="text-[10px] text-primary font-black uppercase tracking-widest mt-1.5">Authenticated</p>
+                        <p class="text-sm font-black text-secondary leading-none">Global Reach</p>
+                        <p class="text-[10px] text-primary font-black uppercase tracking-widest mt-1.5">Tracking Enabled</p>
                     </div>
                 </div>
             </div>
@@ -112,70 +104,64 @@ $data = json_encode(array_column($graphData, 'total'));
                 <div class="stat-card bg-white p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
                     <div class="relative z-10">
                         <div class="w-14 h-14 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-                            <i class="fas fa-suitcase-rolling text-2xl"></i>
+                            <i class="fas fa-users text-2xl"></i>
                         </div>
-                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-[3px] mb-2">Total Packages</p>
-                        <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($totalPackages); ?></h3>
+                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-[3px] mb-2">Total Visitors</p>
+                        <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($totalTraffic); ?></h3>
                     </div>
                     <div class="absolute -right-6 -bottom-6 text-slate-50 text-8xl opacity-50 group-hover:text-primary/10 transition-colors">
-                        <i class="fas fa-globe"></i>
+                        <i class="fas fa-chart-line"></i>
                     </div>
                 </div>
 
                 <div class="stat-card bg-white p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
                     <div class="relative z-10">
                         <div class="w-14 h-14 bg-secondary/10 text-secondary rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-                            <i class="fas fa-ticket-alt text-2xl"></i>
+                            <i class="fas fa-eye text-2xl"></i>
                         </div>
-                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-[3px] mb-2">Total Bookings</p>
-                        <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($totalBookings); ?></h3>
+                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-[3px] mb-2">Today's Traffic</p>
+                        <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($todayTraffic); ?></h3>
                     </div>
                     <div class="absolute -right-6 -bottom-6 text-slate-50 text-8xl opacity-50 group-hover:text-secondary/10 transition-colors">
-                        <i class="fas fa-plane-departure"></i>
+                        <i class="fas fa-clock"></i>
                     </div>
                 </div>
 
                 <div class="stat-card bg-white p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
                     <div class="relative z-10">
                         <div class="w-14 h-14 bg-amber-500/10 text-amber-500 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-                            <i class="fas fa-comment-dots text-2xl"></i>
+                            <i class="fas fa-ticket-alt text-2xl"></i>
                         </div>
-                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-[3px] mb-2">New Messages</p>
-                        <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($totalMessages); ?></h3>
+                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-[3px] mb-2">Total Bookings</p>
+                        <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($totalBookings); ?></h3>
                     </div>
                     <div class="absolute -right-6 -bottom-6 text-slate-50 text-8xl opacity-50 group-hover:text-amber-500/10 transition-colors">
-                        <i class="fas fa-envelope"></i>
+                        <i class="fas fa-plane-departure"></i>
                     </div>
                 </div>
 
                 <div class="stat-card bg-white p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
                     <div class="relative z-10">
                         <div class="w-14 h-14 bg-indigo-500/10 text-indigo-500 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-                            <i class="fas fa-at text-2xl"></i>
+                            <i class="fas fa-comment-dots text-2xl"></i>
                         </div>
-                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-[3px] mb-2">Subscribers</p>
-                        <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($totalNewsletter); ?></h3>
+                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-[3px] mb-2">Inquiries</p>
+                        <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($totalMessages); ?></h3>
                     </div>
                     <div class="absolute -right-6 -bottom-6 text-slate-50 text-8xl opacity-50 group-hover:text-indigo-500/10 transition-colors">
-                        <i class="fas fa-paper-plane"></i>
+                        <i class="fas fa-envelope"></i>
                     </div>
                 </div>
             </div>
 
             <!-- Analytics and Charts -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                <!-- Main Engagement Chart -->
+                <!-- Main Traffic Chart -->
                 <div class="lg:col-span-2 bg-white p-12 rounded-[60px] shadow-sm border border-slate-100">
                     <div class="flex items-center justify-between mb-12">
                         <div>
-                            <h3 class="text-2xl font-black text-secondary">Engagement Analytics</h3>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Activity trends across all modules</p>
-                        </div>
-                        <div class="flex space-x-4">
-                            <div class="flex items-center space-x-2">
-                                <span class="w-3 h-3 bg-primary rounded-full"></span>
-                                <span class="text-[10px] font-black uppercase tracking-widest">Growth Rate</span>
-                            </div>
+                            <h3 class="text-2xl font-black text-secondary">Traffic Analytics</h3>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Daily visitor trends</p>
                         </div>
                     </div>
                     <div class="h-96">
@@ -183,35 +169,36 @@ $data = json_encode(array_column($graphData, 'total'));
                     </div>
                 </div>
 
-                <!-- Recent Activity Feed -->
+                <!-- Device Distribution -->
                 <div class="bg-dark rounded-[60px] p-12 text-white shadow-2xl relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl"></div>
                     <h3 class="text-2xl font-black mb-10 tracking-tight flex items-center">
                         <span class="w-10 h-1.5 bg-primary mr-4 rounded-full"></span>
-                        Recent Activity
+                        Live Traffic
                     </h3>
-                    <div class="space-y-8 max-h-[450px] overflow-y-auto custom-scrollbar pr-4">
+                    <div class="space-y-6 max-h-[500px] overflow-y-auto custom-scrollbar pr-4">
                         <?php
-                        $stmt = $pdo->query("SELECT name, 'Registration' as type, created_at FROM registrations UNION SELECT name, 'Message' as type, created_at FROM messages ORDER BY created_at DESC LIMIT 6");
+                        $stmt = $pdo->query("SELECT * FROM site_traffic ORDER BY viewed_at DESC LIMIT 8");
                         while ($row = $stmt->fetch()):
-                            $isReg = $row['type'] == 'Registration';
+                            $deviceIcon = 'fa-desktop';
+                            if ($row['device_type'] == 'Mobile') $deviceIcon = 'fa-mobile-screen';
+                            if ($row['device_type'] == 'Tablet') $deviceIcon = 'fa-tablet-screen';
                         ?>
-                        <div class="flex items-start space-x-5 group cursor-pointer">
-                            <div class="w-12 h-12 <?php echo $isReg ? 'bg-primary' : 'bg-secondary'; ?> rounded-2xl flex items-center justify-center text-xl shadow-lg transition-transform group-hover:scale-110">
-                                <i class="fas <?php echo $isReg ? 'fa-id-card' : 'fa-envelope'; ?>"></i>
+                        <div class="flex items-center space-x-5 p-4 rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all">
+                            <div class="w-10 h-10 bg-primary/20 text-primary rounded-xl flex items-center justify-center text-lg">
+                                <i class="fas <?php echo $deviceIcon; ?>"></i>
                             </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-black group-hover:text-primary transition-colors"><?php echo $row['name']; ?></p>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1"><?php echo $row['type']; ?></p>
-                                <p class="text-[10px] text-slate-500 font-bold mt-2 italic"><?php echo date('M d, H:i A', strtotime($row['created_at'])); ?></p>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-xs font-black truncate"><?php echo $row['city'] . ', ' . $row['country']; ?></p>
+                                    <span class="text-[9px] text-slate-500 font-bold"><?php echo date('H:i', strtotime($row['viewed_at'])); ?></span>
+                                </div>
+                                <p class="text-[10px] text-slate-400 truncate mt-1"><?php echo $row['page_url']; ?></p>
                             </div>
                         </div>
                         <?php endwhile; ?>
                     </div>
-                    <div class="mt-12 pt-8 border-t border-white/10">
-                        <a href="messages.php" class="block text-center py-5 bg-white/5 rounded-[24px] border border-white/10 font-black text-xs uppercase tracking-[3px] hover:bg-primary transition-all duration-500">
-                            View All History
-                        </a>
+                    <div class="mt-8 pt-8 border-t border-white/10">
+                        <a href="traffic.php" class="block text-center py-4 bg-primary text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:scale-105 transition-all">Detailed Analytics</a>
                     </div>
                 </div>
             </div>
@@ -265,16 +252,16 @@ $data = json_encode(array_column($graphData, 'total'));
             data: {
                 labels: <?php echo $labels; ?>,
                 datasets: [{
-                    label: 'Total Activity',
+                    label: 'Visitors',
                     data: <?php echo $data; ?>,
                     borderColor: '#89C23D',
                     backgroundColor: 'rgba(137, 194, 61, 0.05)',
                     borderWidth: 6,
                     fill: true,
-                    tension: 0.4,
+                    tension: 0.45,
                     pointBackgroundColor: '#fff',
                     pointBorderColor: '#89C23D',
-                    pointBorderWidth: 3,
+                    pointBorderWidth: 4,
                     pointRadius: 8,
                     pointHoverRadius: 12,
                     pointHoverBackgroundColor: '#89C23D',
@@ -289,12 +276,13 @@ $data = json_encode(array_column($graphData, 'total'));
                     legend: { display: false },
                     tooltip: {
                         backgroundColor: '#0f172a',
-                        titleFont: { family: 'Outfit', size: 14, weight: 'bold' },
-                        bodyFont: { family: 'Outfit', size: 12 },
-                        padding: 16,
+                        titleFont: { family: 'Outfit', size: 14, weight: '900' },
+                        bodyFont: { family: 'Outfit', size: 13, weight: 'bold' },
+                        padding: 20,
                         displayColors: false,
+                        cornerRadius: 15,
                         callbacks: {
-                            label: (context) => ` Total Activity: ${context.raw}`
+                            label: (context) => ` ${context.raw} Active Visitors`
                         }
                     }
                 },
@@ -302,11 +290,11 @@ $data = json_encode(array_column($graphData, 'total'));
                     y: {
                         beginAtZero: true,
                         grid: { color: 'rgba(0,0,0,0.03)', drawBorder: false },
-                        ticks: { font: { family: 'Outfit', weight: 'bold', size: 12 }, padding: 10 }
+                        ticks: { font: { family: 'Outfit', weight: 'bold', size: 12 }, padding: 15 }
                     },
                     x: {
                         grid: { display: false },
-                        ticks: { font: { family: 'Outfit', weight: 'bold', size: 12 }, padding: 10 }
+                        ticks: { font: { family: 'Outfit', weight: 'bold', size: 12 }, padding: 15 }
                     }
                 }
             }
