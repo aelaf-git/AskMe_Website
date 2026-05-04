@@ -47,16 +47,16 @@ $registrations = $stmt->fetchAll();
 <body class="flex min-h-screen bg-slate-50 text-slate-600">
     <?php include 'includes/sidebar.php'; ?>
 
-    <div class="flex-1 flex flex-col">
-        <header class="h-24 bg-white border-b border-slate-100 flex items-center justify-between px-10">
+    <div class="flex-1 flex flex-col min-w-0">
+        <header class="bg-white border-b border-slate-100 px-10 py-8 flex items-center justify-between sticky top-0 z-50">
             <div>
-                <h2 class="text-3xl font-black text-secondary tracking-tighter">Tour <span class="text-primary">Registrations</span></h2>
-                <p class="text-slate-400 text-xs font-black uppercase tracking-[4px] mt-1">Passenger list and booking management</p>
+                <h2 class="text-3xl font-black text-secondary tracking-tighter italic uppercase">Tour <span class="text-primary">Registrations</span></h2>
+                <p class="text-slate-400 text-[10px] font-black uppercase tracking-[5px] mt-1">Passenger list and booking management</p>
             </div>
-            <div class="flex items-center space-x-6">
-                 <div class="text-right">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Inquiry Center</p>
-                    <p class="text-sm font-black text-secondary"><?php echo count($registrations); ?> Total</p>
+            <div class="flex items-center space-x-4">
+                <div class="px-6 py-3 bg-slate-50 rounded-[20px] border border-slate-100 flex flex-col items-end">
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Bookings</p>
+                    <p class="text-xl font-black text-secondary leading-none"><?php echo count($registrations); ?></p>
                 </div>
             </div>
         </header>

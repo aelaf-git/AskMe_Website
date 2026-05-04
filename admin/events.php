@@ -87,17 +87,19 @@ if ($action == 'edit' && isset($_GET['id'])) {
 <body class="flex min-h-screen text-slate-600">
     <?php include 'includes/sidebar.php'; ?>
 
-    <div class="flex-1 flex flex-col">
-        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 px-10 py-6 flex items-center justify-between sticky top-0 z-50">
+    <div class="flex-1 flex flex-col min-w-0">
+        <header class="bg-white border-b border-slate-100 px-10 py-8 flex items-center justify-between sticky top-0 z-50">
             <div>
-                <h2 class="text-2xl font-black text-secondary tracking-tighter">Upcoming Events</h2>
-                <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Content Management</p>
+                <h2 class="text-3xl font-black text-secondary tracking-tighter italic uppercase">Global <span class="text-primary">Events</span></h2>
+                <p class="text-slate-400 text-[10px] font-black uppercase tracking-[5px] mt-1">Cultural & Adventure Highlights</p>
             </div>
-            <?php if ($action == 'list'): ?>
-                <a href="events.php?action=add" class="bg-primary text-white px-8 py-3 rounded-2xl font-black shadow-lg shadow-primary/20 hover:-translate-y-1 transition-all text-sm uppercase tracking-widest">Add New Event</a>
-            <?php else: ?>
-                <a href="events.php" class="text-slate-400 font-black hover:text-secondary transition-colors text-sm uppercase tracking-widest"><i class="fas fa-arrow-left mr-2"></i> Back to List</a>
-            <?php endif; ?>
+            <div class="flex items-center space-x-4">
+                <?php if ($action == 'list'): ?>
+                    <a href="events.php?action=add" class="bg-primary text-white px-8 py-3 rounded-[20px] font-black shadow-lg shadow-primary/20 hover:-translate-y-1 transition-all text-xs uppercase tracking-widest">Add New Event</a>
+                <?php else: ?>
+                    <a href="events.php" class="text-slate-400 font-black hover:text-secondary transition-colors text-xs uppercase tracking-widest"><i class="fas fa-arrow-left mr-2"></i> Back to List</a>
+                <?php endif; ?>
+            </div>
         </header>
 
         <main class="p-10 flex-1 overflow-y-auto">

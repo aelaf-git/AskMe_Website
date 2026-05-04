@@ -14,6 +14,12 @@ $page_title = "Admin Dashboard";
 $totalTraffic = $pdo->query("SELECT COUNT(*) FROM site_traffic")->fetchColumn();
 $todayTraffic = $pdo->query("SELECT COUNT(*) FROM site_traffic WHERE DATE(viewed_at) = CURDATE()")->fetchColumn();
 
+// Fetch Core Business Stats
+$totalBookings = $pdo->query("SELECT COUNT(*) FROM registrations")->fetchColumn();
+$totalMessages = $pdo->query("SELECT COUNT(*) FROM messages")->fetchColumn();
+$totalPackages = $pdo->query("SELECT COUNT(*) FROM packages")->fetchColumn();
+$totalTeam = $pdo->query("SELECT COUNT(*) FROM team")->fetchColumn();
+
 // Fetch Traffic Data for Graph (Last 7 Days)
 $trafficLabels = [];
 $trafficValues = [];

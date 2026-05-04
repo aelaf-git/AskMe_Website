@@ -5,6 +5,11 @@
  */
 
 function track_visit($pdo) {
+    // Check if visitor has already been logged in this session
+    if (isset($_SESSION['has_been_logged']) && $_SESSION['has_been_logged'] === true) {
+        return; // Skip logging if already recorded for this session
+    }
+
     // 1. Capture Basic Info
     $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
     $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
@@ -20,21 +25,23 @@ function track_visit($pdo) {
     }
 
     // 3. Geolocation (Country/City) - Using ip-api.com (Free)
-    // We use a small cache or just check once per session to be polite to the API
     if (!isset($_SESSION['visitor_geo'])) {
         try {
-            // Localhost check
             if ($ip === '127.0.0.1' || $ip === '::1') {
                 $country = 'Localhost';
                 $city = 'Development';
             } else {
-                $ctx = stream_context_create(['http' => ['timeout' => 2]]); // 2s timeout
-                $geo_data = file_get_contents("http://ip-api.com/json/{$ip}", false, $ctx);
-                $geo = json_decode($geo_data, true);
-                
-                if ($geo && $geo['status'] === 'success') {
-                    $country = $geo['country'] ?? 'Unknown';
-                    $city = $geo['city'] ?? 'Unknown';
+                $ctx = stream_context_create(['http' => ['timeout' => 2]]);
+                $geo_data = @file_get_contents("http://ip-api.com/json/{$ip}", false, $ctx);
+                if ($geo_data) {
+                    $geo = json_decode($geo_data, true);
+                    if ($geo && $geo['status'] === 'success') {
+                        $country = $geo['country'] ?? 'Unknown';
+                        $city = $geo['city'] ?? 'Unknown';
+                    } else {
+                        $country = 'Unknown';
+                        $city = 'Unknown';
+                    }
                 } else {
                     $country = 'Unknown';
                     $city = 'Unknown';
@@ -54,6 +61,9 @@ function track_visit($pdo) {
     try {
         $stmt = $pdo->prepare("INSERT INTO site_traffic (ip_address, user_agent, device_type, page_url, referrer, country, city) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$ip, $user_agent, $device_type, $page_url, $referrer, $country, $city]);
+        
+        // Mark as logged for this session
+        $_SESSION['has_been_logged'] = true;
     } catch (PDOException $e) {
         // Silently fail to not interrupt user experience
     }
@@ -61,6 +71,9 @@ function track_visit($pdo) {
 
 // Automatically run if $pdo is available
 if (isset($pdo)) {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     track_visit($pdo);
 }
 ?>
