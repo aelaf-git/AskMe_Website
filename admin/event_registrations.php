@@ -8,7 +8,8 @@ if (!is_admin_authenticated()) { header('Location: login.php'); exit(); }
 $page_title = "Event Registrations";
 $load_error = '';
 
-function ensure_event_registrations_schema($pdo) {
+try {
+    // Ensure the table exists with correct schema
     $pdo->exec("CREATE TABLE IF NOT EXISTS event_registrations (
         id INT AUTO_INCREMENT PRIMARY KEY,
         event_id INT NOT NULL,
@@ -17,47 +18,39 @@ function ensure_event_registrations_schema($pdo) {
         dob DATE NOT NULL,
         nationality VARCHAR(100) NOT NULL,
         passport_number VARCHAR(50) NOT NULL,
+        passport_issue_date DATE DEFAULT NULL,
         passport_expiry DATE NOT NULL,
+        passport_issuing_country VARCHAR(100) DEFAULT NULL,
+        passport_scan VARCHAR(255) DEFAULT NULL,
+        profile_photo VARCHAR(255) DEFAULT NULL,
         phone VARCHAR(50) NOT NULL,
+        whatsapp VARCHAR(50) DEFAULT NULL,
         email VARCHAR(255) NOT NULL,
         address TEXT NOT NULL,
+        city VARCHAR(100) DEFAULT NULL,
+        country VARCHAR(100) DEFAULT NULL,
+        emergency_name VARCHAR(255) DEFAULT NULL,
+        emergency_phone VARCHAR(50) DEFAULT NULL,
+        emergency_relation VARCHAR(100) DEFAULT NULL,
         occupation VARCHAR(255) NOT NULL,
-        company VARCHAR(255),
-        industry VARCHAR(255),
+        company VARCHAR(255) DEFAULT NULL,
+        industry VARCHAR(255) DEFAULT NULL,
         experience_years INT DEFAULT 0,
         purpose TEXT NOT NULL,
         areas_of_interest TEXT,
-        has_passport TINYINT(1) DEFAULT 1,
+        has_valid_passport TINYINT(1) DEFAULT 1,
         traveled_before TINYINT(1) DEFAULT 0,
-        previous_international_destinations TEXT,
-        has_trip_visa TINYINT(1) DEFAULT 0,
         requires_visa TINYINT(1) DEFAULT 0,
         needs_invitation TINYINT(1) DEFAULT 0,
-        special_notes TEXT,
-        passport_issue_date DATE DEFAULT NULL,
-        passport_issue_place VARCHAR(255) DEFAULT NULL,
-        passport_scan_path VARCHAR(255) DEFAULT NULL,
-        profile_photo_path VARCHAR(255) DEFAULT NULL,
-        emergency_contact_name VARCHAR(255) DEFAULT NULL,
-        emergency_contact_phone VARCHAR(50) DEFAULT NULL,
-        emergency_contact_relationship VARCHAR(100) DEFAULT NULL,
-        country_of_residence VARCHAR(100) DEFAULT NULL,
-        city_of_residence VARCHAR(100) DEFAULT NULL,
-        accommodation_preference VARCHAR(100) DEFAULT NULL,
-        room_type_preference VARCHAR(100) DEFAULT NULL,
         dietary_requirements TEXT,
         medical_conditions TEXT,
-        insurance_provider VARCHAR(255) NOT NULL DEFAULT '',
-        insurance_policy_number VARCHAR(120) NOT NULL DEFAULT '',
-        insurance_doc_path VARCHAR(255) DEFAULT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )");
-}
-
-try {
-    ensure_event_registrations_schema($pdo);
+        room_preference VARCHAR(100) DEFAULT NULL,
+        special_notes TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+    ) SELECT * FROM (SELECT 1) t WHERE 0");
 } catch (PDOException $e) {
-    $load_error = 'Could not prepare event registrations table.';
+    // Table already exists - that's fine
 }
 
 // Handle Delete
@@ -185,17 +178,18 @@ $regs = $stmt->fetchAll();
                                         <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Date of Birth</span><span class="font-bold text-secondary"><?php echo date('M d, Y', strtotime($r['dob'])); ?></span></div>
                                         <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Nationality</span><span class="font-bold text-secondary"><?php echo $r['nationality']; ?></span></div>
                                         <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Passport #</span><span class="font-bold text-secondary"><?php echo $r['passport_number']; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Passport Expiry</span><span class="font-bold text-secondary"><?php echo date('M d, Y', strtotime($r['passport_expiry'])); ?></span></div>
                                         <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Passport Issue Date</span><span class="font-bold text-secondary"><?php echo !empty($r['passport_issue_date']) ? date('M d, Y', strtotime($r['passport_issue_date'])) : '-'; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Passport Issue Place</span><span class="font-bold text-secondary"><?php echo !empty($r['passport_issue_place']) ? $r['passport_issue_place'] : '-'; ?></span></div>
+                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Passport Expiry</span><span class="font-bold text-secondary"><?php echo date('M d, Y', strtotime($r['passport_expiry'])); ?></span></div>
+                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Issuing Country</span><span class="font-bold text-secondary"><?php echo $r['passport_issuing_country'] ?: '-'; ?></span></div>
                                         <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Phone</span><span class="font-bold text-secondary"><?php echo $r['phone']; ?></span></div>
+                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">WhatsApp</span><span class="font-bold text-secondary"><?php echo $r['whatsapp'] ?: '-'; ?></span></div>
                                         <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Email</span><span class="font-bold text-primary"><?php echo $r['email']; ?></span></div>
                                         <div class="col-span-2"><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Address</span><span class="font-bold text-secondary"><?php echo $r['address']; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Country of Residence</span><span class="font-bold text-secondary"><?php echo !empty($r['country_of_residence']) ? $r['country_of_residence'] : '-'; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">City of Residence</span><span class="font-bold text-secondary"><?php echo !empty($r['city_of_residence']) ? $r['city_of_residence'] : '-'; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Emergency Contact</span><span class="font-bold text-secondary"><?php echo !empty($r['emergency_contact_name']) ? $r['emergency_contact_name'] : '-'; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Emergency Phone</span><span class="font-bold text-secondary"><?php echo !empty($r['emergency_contact_phone']) ? $r['emergency_contact_phone'] : '-'; ?></span></div>
-                                        <div class="col-span-2"><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Emergency Relationship</span><span class="font-bold text-secondary"><?php echo !empty($r['emergency_contact_relationship']) ? $r['emergency_contact_relationship'] : '-'; ?></span></div>
+                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">City</span><span class="font-bold text-secondary"><?php echo $r['city'] ?: '-'; ?></span></div>
+                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Country</span><span class="font-bold text-secondary"><?php echo $r['country'] ?: '-'; ?></span></div>
+                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Emergency Contact</span><span class="font-bold text-secondary"><?php echo $r['emergency_name'] ?: '-'; ?></span></div>
+                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Emergency Phone</span><span class="font-bold text-secondary"><?php echo $r['emergency_phone'] ?: '-'; ?></span></div>
+                                        <div class="col-span-2"><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Emergency Relationship</span><span class="font-bold text-secondary"><?php echo $r['emergency_relation'] ?: '-'; ?></span></div>
 
                                         <div class="col-span-2 border-t border-slate-100 pt-5 mt-2"></div>
                                         <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Occupation</span><span class="font-bold text-secondary"><?php echo $r['occupation']; ?></span></div>
@@ -208,24 +202,19 @@ $regs = $stmt->fetchAll();
                                         <div class="col-span-2"><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Areas of Interest</span><span class="font-bold text-secondary"><?php echo $r['areas_of_interest'] ?: '-'; ?></span></div>
 
                                         <div class="col-span-2 border-t border-slate-100 pt-5 mt-2"></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Valid Passport</span><span class="font-bold <?php echo $r['has_passport'] ? 'text-emerald-600' : 'text-rose-500'; ?>"><?php echo $r['has_passport'] ? 'Yes' : 'No'; ?></span></div>
+                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Valid Passport</span><span class="font-bold <?php echo $r['has_valid_passport'] ? 'text-emerald-600' : 'text-rose-500'; ?>"><?php echo $r['has_valid_passport'] ? 'Yes' : 'No'; ?></span></div>
                                         <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Traveled Before</span><span class="font-bold text-secondary"><?php echo $r['traveled_before'] ? 'Yes' : 'No'; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Visa for This Trip</span><span class="font-bold text-secondary"><?php echo !empty($r['has_trip_visa']) ? 'Yes' : 'No'; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Need Visa Support</span><span class="font-bold text-secondary"><?php echo !empty($r['requires_visa']) ? 'Yes' : 'No'; ?></span></div>
-                                        <div class="col-span-2"><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Previous International Destinations</span><span class="font-bold text-secondary"><?php echo !empty($r['previous_international_destinations']) ? $r['previous_international_destinations'] : '-'; ?></span></div>
+                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Need Visa Support</span><span class="font-bold <?php echo $r['requires_visa'] ? 'text-amber-600' : 'text-secondary'; ?>"><?php echo $r['requires_visa'] ? 'Yes' : 'No'; ?></span></div>
                                         <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Invitation Letter</span><span class="font-bold <?php echo $r['needs_invitation'] ? 'text-amber-600' : 'text-secondary'; ?>"><?php echo $r['needs_invitation'] ? 'Yes' : 'No'; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Accommodation</span><span class="font-bold text-secondary"><?php echo !empty($r['accommodation_preference']) ? $r['accommodation_preference'] : '-'; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Room Type</span><span class="font-bold text-secondary"><?php echo !empty($r['room_type_preference']) ? $r['room_type_preference'] : '-'; ?></span></div>
-                                        <div class="col-span-2"><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Dietary Requirements</span><span class="font-bold text-secondary"><?php echo !empty($r['dietary_requirements']) ? $r['dietary_requirements'] : '-'; ?></span></div>
-                                        <div class="col-span-2"><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Medical Conditions</span><span class="font-bold text-secondary"><?php echo !empty($r['medical_conditions']) ? $r['medical_conditions'] : '-'; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Insurance Provider</span><span class="font-bold text-secondary"><?php echo !empty($r['insurance_provider']) ? $r['insurance_provider'] : '-'; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Policy Number</span><span class="font-bold text-secondary"><?php echo !empty($r['insurance_policy_number']) ? $r['insurance_policy_number'] : '-'; ?></span></div>
+                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Room Preference</span><span class="font-bold text-secondary"><?php echo $r['room_preference'] ?: '-'; ?></span></div>
+                                        <div class="col-span-2"><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Dietary Requirements</span><span class="font-bold text-secondary"><?php echo $r['dietary_requirements'] ?: '-'; ?></span></div>
+                                        <div class="col-span-2"><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Medical Conditions</span><span class="font-bold text-secondary"><?php echo $r['medical_conditions'] ?: '-'; ?></span></div>
+
                                         <div class="col-span-2 border-t border-slate-100 pt-5 mt-2"></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Passport File</span><span class="font-bold text-secondary"><?php echo !empty($r['passport_scan_path']) ? '<a class="text-primary underline" target="_blank" href="../' . $r['passport_scan_path'] . '">View</a>' : '-'; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Profile Photo</span><span class="font-bold text-secondary"><?php echo !empty($r['profile_photo_path']) ? '<a class="text-primary underline" target="_blank" href="../' . $r['profile_photo_path'] . '">View</a>' : '-'; ?></span></div>
-                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Insurance Document</span><span class="font-bold text-secondary"><?php echo !empty($r['insurance_doc_path']) ? '<a class="text-primary underline" target="_blank" href="../' . $r['insurance_doc_path'] . '">View</a>' : '-'; ?></span></div>
+                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Passport Scan</span><span class="font-bold"><?php echo !empty($r['passport_scan']) ? '<a class="text-primary underline" target="_blank" href="../' . htmlspecialchars($r['passport_scan']) . '">View File</a>' : '<span class="text-slate-400">Not uploaded</span>'; ?></span></div>
+                                        <div><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Profile Photo</span><span class="font-bold"><?php echo !empty($r['profile_photo']) ? '<a class="text-primary underline" target="_blank" href="../' . htmlspecialchars($r['profile_photo']) . '">View File</a>' : '<span class="text-slate-400">Not uploaded</span>'; ?></span></div>
                                         <?php if ($r['special_notes']): ?>
-                                        <div class="col-span-2 border-t border-slate-100 pt-5 mt-2"><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Special Notes</span><span class="font-bold text-secondary"><?php echo $r['special_notes']; ?></span></div>
+                                        <div class="col-span-2 border-t border-slate-100 pt-5 mt-2"><span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Special Notes</span><span class="font-bold text-secondary"><?php echo htmlspecialchars($r['special_notes']); ?></span></div>
                                         <?php endif; ?>
                                     </div>
                                 </div>
