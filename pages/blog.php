@@ -1,14 +1,16 @@
 <!-- Header Start -->
-<div class="relative w-full py-24 bg-dark overflow-hidden">
+<div class="relative w-full pt-32 md:pt-48 pb-24 bg-dark overflow-hidden">
     <div class="absolute inset-0 z-0">
-        <img src="assets/img/carousel-1.jpg" class="w-full h-full object-cover opacity-40">
+        <img src="assets/img/carousel-1.jpg" class="w-full h-full object-cover opacity-20 scale-110">
+        <div class="absolute inset-0 bg-gradient-to-b from-dark via-transparent to-dark"></div>
     </div>
     <div class="max-w-7xl mx-auto px-4 relative z-10 text-center">
-        <h1 class="text-4xl md:text-6xl font-bold text-white uppercase mb-4"><?php echo $pageTitle; ?></h1>
-        <div class="flex items-center justify-center text-white space-x-4 font-medium">
-            <a href="index.php" class="text-white hover:text-primary transition-colors">Home</a>
-            <i class="fa fa-angle-double-right text-xs pt-1"></i>
-            <span class="text-primary"><?php echo $pageTitle; ?></span>
+        <div class="inline-block px-4 py-2 glass rounded-xl text-xs font-black uppercase tracking-[3px] text-primary mb-6 animate-fade-in">AskMe Experience</div>
+        <h1 class="text-5xl md:text-8xl font-black text-white tracking-tighter mb-8 animate-slide-up"><?php echo $pageTitle; ?></h1>
+        <div class="flex items-center justify-center space-x-4">
+            <a href="index.php" class="text-white/50 hover:text-primary font-bold transition-colors">Home</a>
+            <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+            <span class="text-primary font-bold uppercase tracking-widest text-xs"><?php echo $pageTitle; ?></span>
         </div>
     </div>
 </div>

@@ -10,14 +10,12 @@
     <link href="assets/img/askme.png" rel="icon">
 
     <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -28,20 +26,82 @@
                     colors: {
                         primary: {
                             DEFAULT: '#7AB730',
+                            vibrant: '#88e01b',
                             dark: '#527a20',
                         },
-                        secondary: '#f4faec',
-                        dark: '#212121',
-                        light: '#FFFFFF',
-                        body: '#656565',
+                        dark: {
+                            DEFAULT: '#0f172a',
+                            lighter: '#1e293b',
+                        },
+                        accent: '#facc15',
                     },
                     fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
+                        sans: ['Outfit', 'sans-serif'],
                     },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(122, 183, 48, 0.4)',
+                        'glow-heavy': '0 0 40px rgba(122, 183, 48, 0.6)',
+                    }
                 }
             }
         }
     </script>
+    <style>
+        :root {
+            --primary: #7AB730;
+            --primary-vibrant: #88e01b;
+        }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            scroll-behavior: smooth;
+            background-color: #f8fafc;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(122, 183, 48, 0.5);
+        }
+        .btn-futuristic {
+            @apply relative overflow-hidden transition-all duration-300;
+        }
+        .btn-futuristic::after {
+            content: '';
+            @apply absolute inset-0 bg-white/20 translate-x-[-100%] transition-transform duration-500;
+        }
+        .btn-futuristic:hover::after {
+            @apply translate-x-[100%];
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { 
+            background: #cbd5e1; 
+            border-radius: 5px;
+            border: 2px solid #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        .hover-lift {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .hover-lift:hover {
+            transform: translateY(-8px);
+        }
+        section {
+            scroll-margin-top: 100px;
+        }
+    </style>
 </head>
 
 <body>

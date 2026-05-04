@@ -21,42 +21,67 @@
 ?>
 
 <body>
-    <?php include 'includes/topbar.php'; ?>
     <?php include 'includes/navbar.php'; ?>
 
     <?php 
         if ($page == 'home') {
     ?>
-            <!-- Carousel Start -->
-            <div class="relative w-full h-[500px] lg:h-[800px] overflow-hidden">
-                <div id="carousel-inner" class="flex transition-transform duration-700 ease-in-out h-full">
+            <!-- Hero Start -->
+            <div class="relative w-full h-screen overflow-hidden">
+                <div id="carousel-inner" class="flex transition-transform duration-1000 ease-[cubic-bezier(0.87,0,0.13,1)] h-full">
                     <div class="min-w-full h-full relative">
-                        <img class="w-full h-full object-cover" src="assets/img/addisababa.jpg" alt="Image">
-                        <div class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center p-4">
-                            <div class="max-w-[900px]">
-                                <h4 class="text-white uppercase tracking-[5px] mb-4">AskMe Tour & Travel</h4>
-                                <h1 class="text-4xl md:text-7xl font-bold text-white mb-8">Let's Discover The World Together</h1>
-
+                        <img class="w-full h-full object-cover scale-110" src="assets/img/addisababa.jpg" alt="Image">
+                        <div class="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/40 to-transparent flex items-center p-8 lg:p-24 pt-32 lg:pt-40">
+                            <div class="max-w-[800px] space-y-8 animate-fade-in-left">
+                                <div class="inline-flex items-center space-x-3 px-4 py-2 glass rounded-full border-primary/30">
+                                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                                    <span class="text-xs font-black uppercase tracking-[3px] text-primary">Discover Ethiopia</span>
+                                </div>
+                                <h1 class="text-5xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter">
+                                    Let's Explore The <span class="text-primary text-glow">Future</span> Together
+                                </h1>
+                                <p class="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
+                                    Embark on a journey where tradition meets innovation. AskMe Tour & Travel brings you the most immersive experiences across the globe.
+                                </p>
+                                <div class="flex flex-wrap gap-4 pt-4">
+                                    <a href="index.php?p=package" class="px-8 py-4 bg-primary text-white font-bold rounded-2xl shadow-glow hover:shadow-glow-heavy hover:scale-105 transition-all duration-300">Start Your Journey</a>
+                                    <a href="#about" class="px-8 py-4 glass text-white font-bold rounded-2xl hover:bg-white/20 transition-all duration-300">Learn More</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="min-w-full h-full relative">
-                        <img class="w-full h-full object-cover" src="assets/img/fasiledes.jpg" alt="Image">
-                        <div class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center p-4">
-                            <div class="max-w-[900px]">
-                                <h4 class="text-white uppercase tracking-[5px] mb-4">AskMe Tour & Travel</h4>
-                                <h1 class="text-4xl md:text-7xl font-bold text-white mb-8">Discover Amazing Places With Us</h1>
-
+                        <img class="w-full h-full object-cover scale-110" src="assets/img/fasiledes.jpg" alt="Image">
+                        <div class="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/40 to-transparent flex items-center p-8 lg:p-24 pt-32 lg:pt-40">
+                            <div class="max-w-[800px] space-y-8">
+                                <div class="inline-flex items-center space-x-3 px-4 py-2 glass rounded-full border-primary/30">
+                                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                                    <span class="text-xs font-black uppercase tracking-[3px] text-primary">Unique Adventures</span>
+                                </div>
+                                <h1 class="text-5xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter">
+                                    Unforgettable <span class="text-primary text-glow">Memories</span> Await
+                                </h1>
+                                <p class="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
+                                    From ancient wonders to modern marvels, we curate every step of your adventure to perfection.
+                                </p>
+                                <div class="flex flex-wrap gap-4 pt-4">
+                                    <a href="index.php?p=package" class="px-8 py-4 bg-primary text-white font-bold rounded-2xl shadow-glow hover:shadow-glow-heavy hover:scale-105 transition-all duration-300">View Packages</a>
+                                    <a href="#about" class="px-8 py-4 glass text-white font-bold rounded-2xl hover:bg-white/20 transition-all duration-300">Our Story</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button id="prev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-primary w-12 h-12 flex items-center justify-center text-white transition-all rounded-none">
-                    <i class="fa fa-chevron-left"></i>
-                </button>
-                <button id="next" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-primary w-12 h-12 flex items-center justify-center text-white transition-all rounded-none">
-                    <i class="fa fa-chevron-right"></i>
-                </button>
+                
+                <!-- Controls -->
+                <div class="absolute bottom-12 right-12 flex space-x-4 z-50">
+                    <button id="prev" class="w-16 h-16 glass rounded-2xl flex items-center justify-center text-white hover:bg-primary transition-all duration-300">
+                        <i class="fa fa-chevron-left"></i>
+                    </button>
+                    <button id="next" class="w-16 h-16 glass rounded-2xl flex items-center justify-center text-white hover:bg-primary transition-all duration-300">
+                        <i class="fa fa-chevron-right"></i>
+                    </button>
+                </div>
             </div>
             <script>
                 const inner = document.getElementById('carousel-inner');
@@ -67,27 +92,59 @@
                 }
                 document.getElementById('prev').onclick = () => showCarouselSlide(carouselIndex - 1);
                 document.getElementById('next').onclick = () => showCarouselSlide(carouselIndex + 1);
-                setInterval(() => showCarouselSlide(carouselIndex + 1), 5000);
+                setInterval(() => showCarouselSlide(carouselIndex + 1), 8000);
             </script>
-            <!-- Carousel End -->
+            <!-- Hero End -->
 
             <!-- About Start -->
-            <section id="about" class="py-20 bg-white">
+            <section id="about" class="py-32 bg-white relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-[120px] -mr-20 -mt-20"></div>
                 <div class="max-w-7xl mx-auto px-4">
                     <div class="flex flex-wrap -mx-4 items-center">
-                        <div class="w-full lg:w-1/2 px-4 mb-12 lg:mb-0 h-[500px]">
-                            <img class="w-full h-full object-cover shadow-2xl" src="assets/img/ertale.jpg" alt="About">
-                        </div>
-                        <div class="w-full lg:w-1/2 px-4 lg:pl-12">
-                            <div class="bg-white p-8 md:p-12 shadow-xl border-l-4 border-primary">
-                                <h6 class="text-primary uppercase tracking-[5px] font-bold mb-4">About Us</h6>
-                                <h1 class="text-3xl md:text-4xl font-bold mb-6">We Provide Best Tour Packages In Your Budget</h1>
-                                <p class="text-gray-600 mb-8 leading-relaxed text-lg">Discover Ethiopia and beyond with AskMe Tour and Travel, your trusted partner for unforgettable, safe, and culturally immersive travel experiences. With professional service, modern travel solutions, and customized tour packages, we turn every journey into a memorable adventure.</p>
-                                <div class="grid grid-cols-2 gap-4 mb-8">
-                                    <img class="w-full h-40 object-cover" src="assets/img/gorgora.jpg" alt="">
-                                    <img class="w-full h-40 object-cover" src="assets/img/moscow.jpg" alt="">
+                        <div class="w-full lg:w-1/2 px-4 mb-16 lg:mb-0 relative">
+                            <div class="relative h-[600px] group">
+                                <img class="w-full h-full object-cover rounded-[40px] shadow-2xl transition-transform duration-700 group-hover:scale-[1.02]" src="assets/img/ertale.jpg" alt="About">
+                                <div class="absolute -bottom-10 -right-10 w-64 h-64 glass p-4 rounded-[30px] shadow-2xl hidden md:block animate-bounce-slow">
+                                    <div class="w-full h-full rounded-[20px] bg-primary/10 flex flex-col items-center justify-center text-center p-6">
+                                        <span class="text-5xl font-black text-primary mb-2">15+</span>
+                                        <span class="text-sm font-bold text-dark uppercase tracking-widest">Years Experience</span>
+                                    </div>
                                 </div>
-
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-1/2 px-4 lg:pl-20">
+                            <div class="space-y-8">
+                                <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px]">Our Philosophy</div>
+                                <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter leading-none">
+                                    Redefining the way you <span class="text-primary italic">Explore</span> the world.
+                                </h1>
+                                <p class="text-lg text-slate-500 leading-relaxed font-medium">
+                                    AskMe Tour and Travel isn't just a travel agency; we are architects of memories. We believe travel should be seamless, immersive, and transformative.
+                                </p>
+                                <div class="grid grid-cols-2 gap-6">
+                                    <div class="p-6 rounded-3xl bg-slate-50 border border-slate-100 hover:border-primary/30 transition-colors">
+                                        <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-4 text-primary">
+                                            <i class="fas fa-shield-alt text-xl"></i>
+                                        </div>
+                                        <h4 class="font-bold text-dark mb-2">Safe Travels</h4>
+                                        <p class="text-sm text-slate-500">Your safety is our top priority at every destination.</p>
+                                    </div>
+                                    <div class="p-6 rounded-3xl bg-slate-50 border border-slate-100 hover:border-primary/30 transition-colors">
+                                        <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-4 text-primary">
+                                            <i class="fas fa-globe-africa text-xl"></i>
+                                        </div>
+                                        <h4 class="font-bold text-dark mb-2">Global Network</h4>
+                                        <p class="text-sm text-slate-500">Access to exclusive locations and experiences.</p>
+                                    </div>
+                                </div>
+                                <div class="pt-4">
+                                    <a href="index.php?p=about" class="inline-flex items-center space-x-3 text-dark font-black group">
+                                        <span class="text-lg font-bold">Read Our Story</span>
+                                        <span class="w-12 h-12 rounded-full border-2 border-slate-100 flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-white transition-all duration-300">
+                                            <i class="fas fa-arrow-right text-sm"></i>
+                                        </span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -95,14 +152,15 @@
             </section> 
             <!-- About End -->
 
-            <!-- Upcoming Events Start -->
-            <div class="w-full py-24 bg-gray-50 overflow-hidden">
+            <!-- Events Start -->
+            <section class="py-32 bg-slate-50 overflow-hidden relative">
                 <div class="max-w-7xl mx-auto px-4">
-                    <div class="text-center mb-20 relative">
-                        <h6 class="text-primary uppercase tracking-[5px] font-bold mb-3">Events</h6>
-                        <h1 class="text-4xl md:text-6xl font-black text-dark leading-tight">Upcoming Events</h1>
-                        <div class="w-24 h-1.5 bg-primary mx-auto mt-6 rounded-full"></div>
-                        <div class="absolute -top-10 left-1/2 -translate-x-1/2 text-gray-200 text-8xl font-black -z-10 opacity-20 uppercase">Festivals</div>
+                    <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 space-y-6 md:space-y-0">
+                        <div class="space-y-4">
+                            <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px]">Calendar</div>
+                            <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter">Upcoming <span class="text-primary">Events</span></h1>
+                        </div>
+                        <a href="index.php?p=blog" class="px-8 py-4 glass text-dark font-bold rounded-2xl hover:bg-primary hover:text-white transition-all duration-300 border border-slate-200">View All Events</a>
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -113,27 +171,22 @@
                             while ($event = $stmt->fetch()) {
                                 $date = new DateTime($event['event_date']);
                         ?>
-                        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden group hover:-translate-y-4 transition-all duration-500 border border-gray-100">
-                            <div class="relative h-72 overflow-hidden">
-                                <img src="<?php echo $event['image_path']; ?>" alt="<?php echo $event['title']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
-                                <div class="absolute top-6 left-6 backdrop-blur-md bg-primary/90 text-white px-5 py-2 rounded-lg font-bold shadow-2xl border border-white/20">
-                                    <span class="block text-2xl leading-none"><?php echo $date->format('d'); ?></span>
-                                    <span class="text-xs uppercase tracking-widest"><?php echo $date->format('M'); ?></span>
-                                </div>
-                            </div>
-                            <div class="p-10">
-                                <h3 class="text-2xl font-bold mb-4 group-hover:text-primary transition-colors leading-tight"><?php echo $event['title']; ?></h3>
-                                <p class="text-gray-500 mb-8 leading-relaxed"><?php echo $event['short_description']; ?></p>
-                                <a href="index.php?p=event_detail&id=<?php echo $event['id']; ?>" class="group/btn inline-flex items-center gap-3 text-primary font-bold">
-                                    <span class="relative">
-                                        Learn More
-                                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover/btn:w-full transition-all duration-300"></span>
-                                    </span>
-                                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover/btn:bg-primary group-hover/btn:text-white transition-all">
-                                        <i class="fa fa-arrow-right text-sm"></i>
+                        <div class="group relative hover-lift">
+                            <div class="relative h-[500px] overflow-hidden rounded-[40px] shadow-2xl">
+                                <img src="<?php echo $event['image_path']; ?>" alt="<?php echo $event['title']; ?>" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/20 to-transparent p-10 flex flex-col justify-end">
+                                    <div class="backdrop-blur-md bg-white/10 p-2 rounded-2xl border border-white/20 inline-block w-fit mb-6">
+                                        <div class="bg-primary px-4 py-2 rounded-xl text-white font-black text-center">
+                                            <span class="block text-2xl leading-none"><?php echo $date->format('d'); ?></span>
+                                            <span class="text-[10px] uppercase tracking-widest"><?php echo $date->format('M'); ?></span>
+                                        </div>
                                     </div>
-                                </a>
+                                    <h3 class="text-3xl font-black text-white mb-4 leading-tight group-hover:text-primary transition-colors"><?php echo $event['title']; ?></h3>
+                                    <p class="text-white/70 line-clamp-2 font-medium mb-8"><?php echo $event['short_description']; ?></p>
+                                    <a href="index.php?p=event_detail&id=<?php echo $event['id']; ?>" class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-dark hover:bg-primary hover:text-white transition-all duration-300">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <?php
@@ -144,59 +197,45 @@
                         ?>
                     </div>
                 </div>
-            </div>
-            <!-- Upcoming Events End -->
+            </section>
+            <!-- Events End -->
 
             <!-- Feature Start -->
-            <div class="py-20 bg-white">
+            <section class="py-32 bg-white relative">
                 <div class="max-w-7xl mx-auto px-4">
-                    <div class="flex flex-wrap -mx-4">
-                        <div class="w-full md:w-1/3 px-4 mb-8 md:mb-0">
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 w-20 h-20 bg-primary flex items-center justify-center text-white mr-4">
-                                    <i class="fa fa-2x fa-money-check-alt"></i>
-                                </div>
-                                <div>
-                                    <h5 class="text-xl font-bold mb-2">Competitive Pricing</h5>
-                                    <p class="text-gray-600 m-0">Enjoy exceptional travel experiences at the best possible rates, giving you maximum value for every journey.</p>
-                                </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                        <div class="flex flex-col items-start p-10 rounded-[40px] bg-slate-50 border border-slate-100 group hover:border-primary/30 transition-all duration-500">
+                            <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-primary shadow-sm mb-8 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow transition-all duration-500">
+                                <i class="fa fa-money-check-alt text-3xl"></i>
                             </div>
+                            <h5 class="text-2xl font-black text-dark mb-4">Competitive Pricing</h5>
+                            <p class="text-slate-500 leading-relaxed font-medium">Enjoy exceptional travel experiences at the best possible rates, giving you maximum value for every journey.</p>
                         </div>
-                        <div class="w-full md:w-1/3 px-4 mb-8 md:mb-0">
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 w-20 h-20 bg-primary flex items-center justify-center text-white mr-4">
-                                    <i class="fa fa-2x fa-award"></i>
-                                </div>
-                                <div>
-                                    <h5 class="text-xl font-bold mb-2">Best Services</h5>
-                                    <p class="text-gray-600 m-0">We provide reliable, customer-focused services designed to make your travel smooth, comfortable, and worry-free.</p>
-                                </div>
+                        <div class="flex flex-col items-start p-10 rounded-[40px] bg-slate-50 border border-slate-100 group hover:border-primary/30 transition-all duration-500">
+                            <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-primary shadow-sm mb-8 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow transition-all duration-500">
+                                <i class="fa fa-award text-3xl"></i>
                             </div>
+                            <h5 class="text-2xl font-black text-dark mb-4">Best Services</h5>
+                            <p class="text-slate-500 leading-relaxed font-medium">We provide reliable, customer-focused services designed to make your travel smooth, comfortable, and worry-free.</p>
                         </div>
-                        <div class="w-full md:w-1/3 px-4">
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0 w-20 h-20 bg-primary flex items-center justify-center text-white mr-4">
-                                    <i class="fa fa-2x fa-globe"></i>
-                                </div>
-                                <div>
-                                    <h5 class="text-xl font-bold mb-2">Worldwide Coverage</h5>
-                                    <p class="text-gray-600 m-0">Explore destinations across the globe with our extensive network and expertly curated travel options.</p>
-                                </div>
+                        <div class="flex flex-col items-start p-10 rounded-[40px] bg-slate-50 border border-slate-100 group hover:border-primary/30 transition-all duration-500">
+                            <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-primary shadow-sm mb-8 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow transition-all duration-500">
+                                <i class="fa fa-globe text-3xl"></i>
                             </div>
+                            <h5 class="text-2xl font-black text-dark mb-4">Worldwide Coverage</h5>
+                            <p class="text-slate-500 leading-relaxed font-medium">Explore destinations across the globe with our extensive network and expertly curated travel options.</p>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
             <!-- Feature End -->
 
             <!-- Destination Start -->
-            <section id="destination" class="py-20 bg-gray-50">
-                <div class="max-w-7xl mx-auto px-4">
-                    <div class="text-center mb-16">
-                        <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Destinations</h6>
-                        <h1 class="text-4xl md:text-5xl font-bold text-dark">Explore Top Destinations</h1>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <section id="destination" class="py-32 bg-white">
+                <div class="max-w-7xl mx-auto px-4 text-center">
+                    <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px] mb-6">Explore</div>
+                    <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter mb-20">Top <span class="text-primary">Destinations</span></h1>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         <?php
                         $destinations = [
                             ['South Korea', '3 Cities', 'assets/img/southkorea.jpg'],
@@ -207,22 +246,16 @@
                             ['Indonesia', '2 Cities', 'assets/img/Indonesia.jpg'],
                             ['Ethiopia', '11 Cities', 'assets/img/ethiopia.jpg'],
                             ['Tanzania', '3 Cities', 'assets/img/tanzania.jpg'],
-                            ['Brazil', '6 Cities', 'assets/img/brazil.jpg'],
-                            ['Kenya', '3 Cities', 'assets/img/kenya.jpg'],
-                            ['Singapore', '1 City', 'assets/img/singapore.jpg'],
-                            ['Japan', '4 Cities', 'assets/img/japan.jpg'],
-                            ['United States', '11 Cities', 'assets/img/usa.jpg'],
-                            ['China', '7 Cities', 'assets/img/china.jpg'],
-                            ['Botswana', '3 Cities', 'assets/img/botswana.jpg'],
                         ];
                         foreach ($destinations as $dest):
                         ?>
-                        <div class="relative group overflow-hidden h-64 shadow-lg">
-                            <img src="<?php echo $dest[2]; ?>" alt="<?php echo $dest[0]; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <a href="" class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 no-underline text-center px-4">
-                                <h5 class="text-white text-xl font-bold mb-1 leading-tight"><?php echo $dest[0]; ?></h5>
-                                <span class="text-white/80"><?php echo $dest[1]; ?></span>
-                            </a>
+                        <div class="relative group overflow-hidden h-[400px] rounded-[40px] shadow-xl hover-lift">
+                            <img src="<?php echo $dest[2]; ?>" alt="<?php echo $dest[0]; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent flex flex-col items-center justify-end p-8">
+                                <h5 class="text-white text-2xl font-black mb-1"><?php echo $dest[0]; ?></h5>
+                                <span class="text-primary font-bold text-sm tracking-widest uppercase"><?php echo $dest[1]; ?></span>
+                                <div class="h-0.5 w-0 bg-primary mt-4 group-hover:w-full transition-all duration-500 rounded-full"></div>
+                            </div>
                         </div>
                         <?php endforeach; ?>
                     </div>
@@ -231,24 +264,34 @@
             <!-- Destination End -->
 
             <!-- Service Start -->
-            <section id="services" class="py-20 bg-white">
+            <section id="services" class="py-32 bg-slate-50 relative overflow-hidden">
+                <div class="absolute bottom-0 left-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-[120px] -ml-20 -mb-20"></div>
                 <div class="max-w-7xl mx-auto px-4">
-                    <div class="text-center mb-16">
-                        <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Services</h6>
-                        <h1 class="text-4xl md:text-5xl font-bold text-dark">Tours & Travel Services</h1>
+                    <div class="text-center mb-20">
+                        <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px] mb-6">Expertise</div>
+                        <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter">Our Premium <span class="text-primary">Services</span></h1>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="bg-white p-10 shadow-xl text-center group hover:bg-primary transition-colors duration-300">
-                            <i class="fa fa-3x fa-route text-primary group-hover:text-white mb-6"></i>
-                            <h5 class="text-2xl font-bold mb-4 group-hover:text-white">Travel Guide</h5>
+                        <div class="glass p-12 rounded-[50px] text-center group hover:bg-primary transition-all duration-500 hover:shadow-glow-heavy hover:-translate-y-4">
+                            <div class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center text-primary mx-auto mb-8 group-hover:bg-white group-hover:text-primary transition-colors">
+                                <i class="fa fa-route text-3xl"></i>
+                            </div>
+                            <h5 class="text-2xl font-black mb-4 group-hover:text-white transition-colors">Travel Guide</h5>
+                            <p class="text-slate-500 group-hover:text-white/80 transition-colors">Expert guides to lead your journey with deep local knowledge.</p>
                         </div>
-                        <div class="bg-white p-10 shadow-xl text-center group hover:bg-primary transition-colors duration-300">
-                            <i class="fa fa-3x fa-ticket-alt text-primary group-hover:text-white mb-6"></i>
-                            <h5 class="text-2xl font-bold mb-4 group-hover:text-white">Ticket Booking</h5>
+                        <div class="glass p-12 rounded-[50px] text-center group hover:bg-primary transition-all duration-500 hover:shadow-glow-heavy hover:-translate-y-4">
+                            <div class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center text-primary mx-auto mb-8 group-hover:bg-white group-hover:text-primary transition-colors">
+                                <i class="fa fa-ticket-alt text-3xl"></i>
+                            </div>
+                            <h5 class="text-2xl font-black mb-4 group-hover:text-white transition-colors">Ticket Booking</h5>
+                            <p class="text-slate-500 group-hover:text-white/80 transition-colors">Seamless flight and transport arrangements at the best prices.</p>
                         </div>
-                        <div class="bg-white p-10 shadow-xl text-center group hover:bg-primary transition-colors duration-300">
-                            <i class="fa fa-3x fa-hotel text-primary group-hover:text-white mb-6"></i>
-                            <h5 class="text-2xl font-bold mb-4 group-hover:text-white">Hotel Booking</h5>
+                        <div class="glass p-12 rounded-[50px] text-center group hover:bg-primary transition-all duration-500 hover:shadow-glow-heavy hover:-translate-y-4">
+                            <div class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center text-primary mx-auto mb-8 group-hover:bg-white group-hover:text-primary transition-colors">
+                                <i class="fa fa-hotel text-3xl"></i>
+                            </div>
+                            <h5 class="text-2xl font-black mb-4 group-hover:text-white transition-colors">Hotel Booking</h5>
+                            <p class="text-slate-500 group-hover:text-white/80 transition-colors">Hand-picked luxury stays tailored to your specific comfort.</p>
                         </div>
                     </div>
                 </div>
@@ -307,11 +350,12 @@
             <!-- Registration End -->
 
             <!-- Team Start -->
-            <section id="team" class="py-20 bg-white">
+            <section id="team" class="py-32 bg-white relative overflow-hidden">
+                <div class="absolute top-1/2 left-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-[120px] -ml-20"></div>
                 <div class="max-w-7xl mx-auto px-4">
-                    <div class="text-center mb-16">
-                        <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Team</h6>
-                        <h1 class="text-4xl md:text-5xl font-bold text-dark">Our Team</h1>
+                    <div class="text-center mb-20">
+                        <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px] mb-6">Our Experts</div>
+                        <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter">Meet The <span class="text-primary text-glow">Visionaries</span></h1>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         <?php
@@ -327,18 +371,20 @@
                         ];
                         foreach ($team as $member):
                         ?>
-                        <div class="bg-white shadow-lg overflow-hidden group">
-                            <div class="relative overflow-hidden aspect-square">
-                                <img src="<?php echo $member[2]; ?>" alt="<?php echo $member[0]; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                                <div class="absolute inset-0 bg-black/40 flex items-center justify-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    <a href="#" class="w-10 h-10 bg-white/20 hover:bg-primary text-white flex items-center justify-center transition-colors border border-white/30"><i class="fab fa-facebook-f"></i></a>
-                                    <a href="#" class="w-10 h-10 bg-white/20 hover:bg-primary text-white flex items-center justify-center transition-colors border border-white/30"><i class="fab fa-instagram"></i></a>
-                                    <a href="#" class="w-10 h-10 bg-white/20 hover:bg-primary text-white flex items-center justify-center transition-colors border border-white/30"><i class="fab fa-linkedin-in"></i></a>
+                        <div class="group relative hover-lift">
+                            <div class="relative overflow-hidden aspect-[4/5] rounded-[40px] shadow-2xl">
+                                <img src="<?php echo $member[2]; ?>" alt="<?php echo $member[0]; ?>" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/20 to-transparent flex flex-col justify-end p-8 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                    <div class="flex flex-col space-y-1 mb-4">
+                                        <h5 class="text-xl font-black text-white"><?php echo $member[0]; ?></h5>
+                                        <p class="text-primary text-xs font-bold uppercase tracking-widest"><?php echo $member[1]; ?></p>
+                                    </div>
+                                    <div class="flex space-x-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                                        <a href="#" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-facebook-f text-sm"></i></a>
+                                        <a href="#" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-instagram text-sm"></i></a>
+                                        <a href="#" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-linkedin-in text-sm"></i></a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="text-center p-6">
-                                <h5 class="text-xl font-bold mb-1 text-truncate px-2"><?php echo $member[0]; ?></h5>
-                                <p class="text-gray-500 m-0"><?php echo $member[1]; ?></p>
                             </div>
                         </div>
                         <?php endforeach; ?>
@@ -348,13 +394,14 @@
             <!-- Team End -->
 
             <!-- Testimonial Start -->
-            <section id="testimonial" class="py-20 bg-gray-50">
+            <section id="testimonial" class="py-32 bg-slate-50 relative overflow-hidden">
+                <div class="absolute bottom-0 right-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-[120px] -mr-20 -mb-20"></div>
                 <div class="max-w-7xl mx-auto px-4">
-                    <div class="text-center mb-16">
-                        <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Testimonial</h6>
-                        <h1 class="text-4xl md:text-5xl font-bold text-dark">What Our Clients Say</h1>
+                    <div class="text-center mb-20">
+                        <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px] mb-6">Testimonials</div>
+                        <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter">What Our <span class="text-primary text-glow">Clients</span> Say</h1>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <?php
                         $testimonials = [
                             ['Melaku Debru', 'Corporate Event Planner', '“AskMe Tour and Travel handled every detail flawlessly, turning a complex business trip into an enjoyable experience.”'],
@@ -364,14 +411,20 @@
                         ];
                         foreach ($testimonials as $t):
                         ?>
-                        <div class="bg-white p-8 md:p-12 shadow-xl relative group">
-                            <i class="fa fa-quote-right absolute top-8 right-8 text-primary/10 text-6xl group-hover:text-primary/20 transition-colors"></i>
-                            <p class="text-gray-600 italic mb-8 leading-relaxed text-lg relative z-10"><?php echo $t[2]; ?></p>
-                            <div class="flex items-center">
-                                <img src="assets/img/nobody.jpg" class="w-16 h-16 rounded-full object-cover border-4 border-gray-50 mr-4">
+                        <div class="glass p-10 md:p-14 rounded-[50px] relative group hover:-translate-y-2 transition-all duration-500">
+                            <div class="absolute top-10 right-10 text-primary/10 group-hover:text-primary/20 transition-colors">
+                                <i class="fa fa-quote-right text-6xl"></i>
+                            </div>
+                            <p class="text-xl text-slate-600 italic mb-10 leading-relaxed font-medium relative z-10">
+                                <?php echo $t[2]; ?>
+                            </p>
+                            <div class="flex items-center space-x-5">
+                                <div class="w-16 h-16 rounded-2xl overflow-hidden shadow-lg">
+                                    <img src="assets/img/nobody.jpg" class="w-full h-full object-cover">
+                                </div>
                                 <div>
-                                    <h5 class="text-xl font-bold text-dark leading-tight"><?php echo $t[0]; ?></h5>
-                                    <small class="text-primary font-bold uppercase tracking-wider text-[10px]"><?php echo $t[1]; ?></small>
+                                    <h5 class="text-xl font-black text-dark leading-tight"><?php echo $t[0]; ?></h5>
+                                    <small class="text-primary font-bold uppercase tracking-widest text-[10px]"><?php echo $t[1]; ?></small>
                                 </div>
                             </div>
                         </div>
