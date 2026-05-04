@@ -17,6 +17,7 @@
                     <a href="index.php?p=about" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 <?php echo (isset($_GET['p']) && $_GET['p'] == 'about') ? 'bg-primary text-white shadow-md' : 'text-slate-600 hover:bg-primary/10 hover:text-primary'; ?>">About</a>
                     <a href="index.php?p=service" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 <?php echo (isset($_GET['p']) && $_GET['p'] == 'service') ? 'bg-primary text-white shadow-md' : 'text-slate-600 hover:bg-primary/10 hover:text-primary'; ?>">Services</a>
                     <a href="index.php?p=package" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 <?php echo (isset($_GET['p']) && $_GET['p'] == 'package') ? 'bg-primary text-white shadow-md' : 'text-slate-600 hover:bg-primary/10 hover:text-primary'; ?>">Packages</a>
+                    <a href="index.php?p=custom_trip" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 <?php echo (isset($_GET['p']) && $_GET['p'] == 'custom_trip') ? 'bg-primary text-white shadow-md' : 'text-slate-600 hover:bg-primary/10 hover:text-primary'; ?>">Book Trip</a>
                     
                     <div class="relative group mx-2 h-full py-2">
                         <button class="px-5 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-primary/10 hover:text-primary flex items-center transition-all duration-300">
@@ -51,6 +52,7 @@
             <a href="index.php?p=about" class="block text-4xl font-black text-white hover:text-primary transition-colors">About</a>
             <a href="index.php?p=service" class="block text-4xl font-black text-white hover:text-primary transition-colors">Services</a>
             <a href="index.php?p=package" class="block text-4xl font-black text-white hover:text-primary transition-colors">Packages</a>
+            <a href="index.php?p=custom_trip" class="block text-4xl font-black text-white hover:text-primary transition-colors">Book Trip</a>
             <a href="index.php?p=contact" class="block text-4xl font-black text-white hover:text-primary transition-colors">Contact</a>
         </div>
     </div>

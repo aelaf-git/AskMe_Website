@@ -13,7 +13,8 @@
         'single' => 'Blog Detail',
         'events' => 'Upcoming Events',
         'event_detail' => 'Event Detail',
-        'testimonial' => 'Testimonials'
+        'testimonial' => 'Testimonials',
+        'custom_trip' => 'Book a Custom Trip'
     ];
 
     $pageTitle = isset($pageTitles[$page]) ? $pageTitles[$page] : 'Home';
@@ -47,6 +48,7 @@
                                 </p>
                                 <div class="flex flex-wrap gap-6 pt-4">
                                     <a href="index.php?p=package" class="px-10 py-5 bg-primary text-white font-black rounded-2xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 uppercase tracking-widest text-sm">Start Your Journey</a>
+                                    <a href="index.php?p=custom_trip" class="px-10 py-5 bg-white text-secondary font-black rounded-2xl border border-white/40 hover:bg-slate-100 transition-all duration-300 uppercase tracking-widest text-sm">Book Custom Trip</a>
                                     <a href="index.php?p=about" class="px-10 py-5 bg-secondary text-white font-black rounded-2xl shadow-lg hover:scale-105 transition-all duration-300 uppercase tracking-widest text-sm">Learn More</a>
                                 </div>
                             </div>

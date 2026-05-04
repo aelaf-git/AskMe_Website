@@ -23,6 +23,35 @@ CREATE TABLE IF NOT EXISTS registrations (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Table for Custom Trip Requests (Outside Events)
+CREATE TABLE IF NOT EXISTS custom_trip_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    nationality VARCHAR(100) NOT NULL,
+    residence_country VARCHAR(100) NOT NULL,
+    travelers_count INT NOT NULL DEFAULT 1,
+    destination_country VARCHAR(150) NOT NULL,
+    destination_cities VARCHAR(255) NOT NULL,
+    departure_date DATE NOT NULL,
+    return_date DATE NOT NULL,
+    date_flexibility VARCHAR(100) NOT NULL,
+    budget_range VARCHAR(100) NOT NULL,
+    trip_purpose VARCHAR(100) NOT NULL,
+    accommodation_preference VARCHAR(100) NOT NULL,
+    transport_preference VARCHAR(100) NOT NULL,
+    has_valid_passport TINYINT(1) DEFAULT 0,
+    needs_visa_assistance TINYINT(1) DEFAULT 0,
+    previous_international_travel TINYINT(1) DEFAULT 0,
+    previous_countries TEXT,
+    emergency_contact_name VARCHAR(255) NOT NULL,
+    emergency_contact_phone VARCHAR(50) NOT NULL,
+    special_requirements TEXT,
+    additional_notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Table for Contact Messages
 CREATE TABLE IF NOT EXISTS messages (
     id INT AUTO_INCREMENT PRIMARY KEY,
