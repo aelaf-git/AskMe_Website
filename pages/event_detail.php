@@ -85,19 +85,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
             $stmt = $pdo->prepare("INSERT INTO event_registrations (
                 event_id, full_name, gender, dob, nationality, passport_number, passport_expiry, phone, email, address,
                 occupation, company, industry, experience_years, purpose, areas_of_interest, has_passport, traveled_before,
-                requires_visa, needs_invitation, special_notes, passport_issue_date, passport_issue_place, passport_scan_path,
+                previous_international_destinations, has_trip_visa, requires_visa, needs_invitation, special_notes, passport_issue_date, passport_issue_place, passport_scan_path,
                 profile_photo_path, emergency_contact_name, emergency_contact_phone, emergency_contact_relationship, country_of_residence,
                 city_of_residence, accommodation_preference,
                 room_type_preference, dietary_requirements, medical_conditions, insurance_provider, insurance_policy_number,
                 insurance_doc_path
-            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             $stmt->execute([
                 $eid, $_POST['full_name'], $_POST['gender'], $_POST['dob'], $_POST['nationality'],
                 $_POST['passport_number'], $_POST['passport_expiry'], $_POST['phone'], $_POST['email'],
                 $_POST['address'], $_POST['occupation'], $_POST['company'] ?? '', $_POST['industry'] ?? '',
                 (int)($_POST['experience_years'] ?? 0), $_POST['purpose'], $areas,
-                1, 0,
-                0, isset($_POST['needs_invitation']) ? 1 : 0,
+                1, isset($_POST['traveled_before']) ? 1 : 0,
+                $_POST['previous_international_destinations'] ?? '', isset($_POST['has_trip_visa']) ? 1 : 0,
+                isset($_POST['requires_visa']) ? 1 : 0, isset($_POST['needs_invitation']) ? 1 : 0,
                 $_POST['special_notes'] ?? '',
                 $_POST['passport_issue_date'] ?? null, $_POST['passport_issue_place'] ?? '',
                 $passportUpload['path'], $photoUpload['path'],
@@ -139,8 +140,8 @@ try {
         <div class="absolute inset-0 bg-gradient-to-b from-dark via-transparent to-dark"></div>
     </div>
     <div class="max-w-7xl mx-auto px-4 relative z-10 text-center">
-        <div class="inline-block px-4 py-2 glass rounded-xl text-xs font-black uppercase tracking-[3px] text-primary mb-6 animate-fade-in">AskMe Experience</div>
-        <h1 class="text-5xl md:text-8xl font-black text-white tracking-tighter mb-8 animate-slide-up"><?php echo $event['title']; ?></h1>
+        <div class="inline-block px-4 py-2 glass rounded-xl text-xs font-black uppercase tracking-[3px] text-primary mb-6">AskMe Experience</div>
+        <h1 class="text-5xl md:text-8xl font-black text-white tracking-tighter mb-8"><?php echo $event['title']; ?></h1>
         <div class="flex items-center justify-center space-x-4">
             <a href="index.php" class="text-white/50 hover:text-primary font-bold transition-colors">Home</a>
             <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
@@ -295,11 +296,19 @@ try {
                 <input type="hidden" name="experience_years" value="0">
             </div>
 
-            <!-- Section 4: Travel -->
+            <!-- Section 4: International Travel & Visa History -->
             <div class="p-10 md:p-16 border-b border-gray-100">
-                <h3 class="text-2xl font-black text-secondary mb-2">4. Travel Information</h3>
-                <p class="text-gray-400 text-sm mb-8">Passport and visa details.</p>
-                <p class="text-gray-500 text-sm">Passport details above are sufficient for travel verification.</p>
+                <h3 class="text-2xl font-black text-secondary mb-2">4. International Travel & Visa History</h3>
+                <p class="text-gray-400 text-sm mb-8">Help us understand your travel background for smoother coordination.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <label class="flex items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-200 cursor-pointer"><span class="font-bold text-sm text-gray-600">Have you traveled internationally before?</span><input type="checkbox" name="traveled_before" value="1" class="w-5 h-5 accent-primary"></label>
+                    <label class="flex items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-200 cursor-pointer"><span class="font-bold text-sm text-gray-600">Do you already have a visa for this trip?</span><input type="checkbox" name="has_trip_visa" value="1" class="w-5 h-5 accent-primary"></label>
+                    <label class="flex items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-200 cursor-pointer md:col-span-2"><span class="font-bold text-sm text-gray-600">Do you need visa processing support for this event?</span><input type="checkbox" name="requires_visa" value="1" class="w-5 h-5 accent-primary"></label>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Countries You Have Previously Traveled To</label>
+                    <textarea name="previous_international_destinations" rows="3" placeholder="List country names separated by commas" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></textarea>
+                </div>
             </div>
 
             <!-- Section 5: Additional -->
@@ -335,7 +344,7 @@ try {
                     <input type="checkbox" required class="w-5 h-5 accent-primary mt-1">
                     <span class="text-gray-600 font-medium leading-relaxed">I confirm that all details and uploaded documents are accurate, valid, and ready for official travel/event processing.</span>
                 </label>
-                <button type="submit" class="w-full py-6 bg-secondary text-white font-black rounded-3xl shadow-xl shadow-secondary/20 hover:-translate-y-1 transition-all uppercase tracking-[4px] text-sm">
+                <button type="submit" class="w-full py-6 bg-secondary text-white font-black rounded-3xl transition-all uppercase tracking-[4px] text-sm">
                     <i class="fas fa-paper-plane mr-3"></i> Submit Application
                 </button>
             </div>

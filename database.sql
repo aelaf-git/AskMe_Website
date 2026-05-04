@@ -73,6 +73,8 @@ CREATE TABLE IF NOT EXISTS event_registrations (
     areas_of_interest TEXT,
     has_passport TINYINT(1) DEFAULT 1,
     traveled_before TINYINT(1) DEFAULT 0,
+    previous_international_destinations TEXT,
+    has_trip_visa TINYINT(1) DEFAULT 0,
     requires_visa TINYINT(1) DEFAULT 0,
     needs_invitation TINYINT(1) DEFAULT 0,
     special_notes TEXT,
@@ -160,5 +162,7 @@ CREATE TABLE IF NOT EXISTS services (
 --     DROP COLUMN visa_support_doc_path,
 --     DROP COLUMN vaccination_doc_path,
 --     DROP COLUMN additional_doc_path,
+--     ADD COLUMN previous_international_destinations TEXT NULL AFTER traveled_before,
+--     ADD COLUMN has_trip_visa TINYINT(1) DEFAULT 0 AFTER previous_international_destinations,
 --     MODIFY insurance_provider VARCHAR(255) NOT NULL,
 --     MODIFY insurance_policy_number VARCHAR(120) NOT NULL;

@@ -44,7 +44,6 @@
     <style>
         :root {
             --primary: #7AB730;
-            --primary-vibrant: #88e01b;
         }
         body { 
             font-family: 'Outfit', sans-serif; 
@@ -64,14 +63,7 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .btn-futuristic {
-            @apply relative overflow-hidden transition-all duration-300;
-        }
-        .btn-futuristic::after {
-            content: '';
-            @apply absolute inset-0 bg-white/20 translate-x-[-100%] transition-transform duration-500;
-        }
-        .btn-futuristic:hover::after {
-            @apply translate-x-[100%];
+            @apply transition-colors duration-200;
         }
         
         /* Custom scrollbar */
@@ -85,10 +77,10 @@
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
         .hover-lift {
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.2s ease;
         }
         .hover-lift:hover {
-            transform: translateY(-8px);
+            transform: translateY(-2px);
         }
         section {
             scroll-margin-top: 100px;
