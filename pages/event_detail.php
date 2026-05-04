@@ -222,9 +222,18 @@ try {
 <?php if ($is_open): ?>
 <div id="registration-form" class="py-24 bg-slate-50">
     <div class="max-w-5xl mx-auto px-4">
-        <?php if ($form_message): ?>
-        <div class="mb-10 p-6 rounded-2xl font-bold text-lg text-center <?php echo $form_success ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'; ?>">
-            <i class="fas <?php echo $form_success ? 'fa-check-circle' : 'fa-exclamation-circle'; ?> mr-2"></i> <?php echo $form_message; ?>
+        <?php if ($form_success): ?>
+        <div class="mb-10 p-10 bg-emerald-50 rounded-[40px] border border-emerald-200 text-center shadow-lg">
+            <div class="w-20 h-20 bg-emerald-500 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
+                <i class="fas fa-check"></i>
+            </div>
+            <h3 class="text-3xl font-black text-emerald-700 mb-4">Registration Successful!</h3>
+            <p class="text-emerald-600 font-medium mb-2"><?php echo $form_message; ?></p>
+            <p class="text-sm text-emerald-500">We've received your application and will contact you soon.</p>
+        </div>
+        <?php elseif ($form_message): ?>
+        <div class="mb-10 p-6 rounded-2xl font-bold text-lg text-center bg-rose-50 text-rose-700 border border-rose-200">
+            <i class="fas fa-exclamation-circle mr-2"></i> <?php echo $form_message; ?>
         </div>
         <?php endif; ?>
 
