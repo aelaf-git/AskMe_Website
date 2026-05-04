@@ -40,11 +40,6 @@ try {
     $form_message = 'Database setup issue detected. Please contact admin.';
 }
 
-if (isset($_GET['submitted']) && $_GET['submitted'] === '1') {
-    $form_success = true;
-    $form_message = 'Application submitted successfully.';
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['custom_trip_submit'])) {
     try {
         $stmt = $pdo->prepare("INSERT INTO custom_trip_requests (
@@ -80,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['custom_trip_submit'])
             trim($_POST['additional_notes'] ?? '')
         ]);
 
-        header('Location: index.php?p=custom_trip&submitted=1');
+        header('Location: index.php?p=custom_trip_success');
         exit();
     } catch (PDOException $e) {
         $form_message = 'Unable to submit your application right now. Please try again.';

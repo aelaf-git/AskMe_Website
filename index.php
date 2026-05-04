@@ -14,7 +14,8 @@
         'events' => 'Upcoming Events',
         'event_detail' => 'Event Detail',
         'testimonial' => 'Testimonials',
-        'custom_trip' => 'Book a Custom Trip'
+        'custom_trip' => 'Book a Custom Trip',
+        'custom_trip_success' => 'Application Submitted'
     ];
 
     $pageTitle = isset($pageTitles[$page]) ? $pageTitles[$page] : 'Home';
