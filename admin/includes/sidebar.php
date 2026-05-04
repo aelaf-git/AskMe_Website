@@ -61,6 +61,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </a>
 
             <div class="pt-8 pb-2 px-4 text-[10px] font-black uppercase tracking-[2px] text-slate-400">People</div>
+            <a href="change_password.php" class="sidebar-link <?php echo ($current_page == 'change_password.php') ? 'active' : ''; ?> flex items-center space-x-4 p-4 text-slate-400 hover:text-secondary hover:bg-slate-50 rounded-2xl transition-all duration-300">
+                <i class="fas fa-key w-5 text-lg"></i>
+                <span class="font-bold text-sm">Change Password</span>
+            </a>
             <a href="team.php" class="sidebar-link <?php echo ($current_page == 'team.php') ? 'active' : ''; ?> flex items-center space-x-4 p-4 text-slate-400 hover:text-secondary hover:bg-slate-50 rounded-2xl transition-all duration-300">
                 <i class="fas fa-users-gear w-5 text-lg"></i>
                 <span class="font-bold text-sm">Our Team</span>
