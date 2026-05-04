@@ -39,14 +39,14 @@
                                     <span class="text-xs font-black uppercase tracking-[3px] text-white">Discover Ethiopia</span>
                                 </div>
                                 <h1 class="text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter">
-                                    Let's Explore The <br> <span class="text-primary text-glow">Future</span> Together
+                                    Let's Explore The <br> <span class="text-primary ">Future</span> Together
                                 </h1>
                                 <p class="text-xl text-slate-300 font-medium max-w-xl leading-relaxed">
                                     Embark on a journey where tradition meets innovation. AskMe Tour & Travel brings you the most immersive experiences across the globe.
                                 </p>
                                 <div class="flex flex-wrap gap-6 pt-4">
-                                    <a href="index.php?p=package" class="px-10 py-5 bg-primary text-white font-black rounded-2xl shadow-glow hover:shadow-glow-heavy hover:scale-105 transition-all duration-300 uppercase tracking-widest text-sm">Start Your Journey</a>
-                                    <a href="index.php?p=about" class="px-10 py-5 bg-secondary text-white font-black rounded-2xl shadow-glow-blue hover:scale-105 transition-all duration-300 uppercase tracking-widest text-sm">Learn More</a>
+                                    <a href="index.php?p=package" class="px-10 py-5 bg-primary text-white font-black rounded-2xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 uppercase tracking-widest text-sm">Start Your Journey</a>
+                                    <a href="index.php?p=about" class="px-10 py-5 bg-secondary text-white font-black rounded-2xl shadow-lg hover:scale-105 transition-all duration-300 uppercase tracking-widest text-sm">Learn More</a>
                                 </div>
                             </div>
                         </div>
@@ -62,13 +62,13 @@
                                     <span class="text-xs font-black uppercase tracking-[3px] text-white">Global Adventures</span>
                                 </div>
                                 <h1 class="text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter">
-                                    Unforgettable <br> <span class="text-primary text-glow">Memories</span> Await
+                                    Unforgettable <br> <span class="text-primary ">Memories</span> Await
                                 </h1>
                                 <p class="text-xl text-slate-300 font-medium max-w-xl leading-relaxed">
                                     From the historic castles of Gondar to the modern skylines of the world, we craft the perfect itinerary for your soul.
                                 </p>
                                 <div class="flex flex-wrap gap-6 pt-4">
-                                    <a href="index.php?p=package" class="px-10 py-5 bg-primary text-white font-black rounded-2xl shadow-glow hover:shadow-glow-heavy hover:scale-105 transition-all duration-300 uppercase tracking-widest text-sm">Explore Packages</a>
+                                    <a href="index.php?p=package" class="px-10 py-5 bg-primary text-white font-black rounded-2xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 uppercase tracking-widest text-sm">Explore Packages</a>
                                 </div>
                             </div>
                         </div>
@@ -162,7 +162,7 @@
                             <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px]">Calendar</div>
                             <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter">Upcoming <span class="text-primary">Events</span></h1>
                         </div>
-                        <a href="index.php?p=blog" class="px-8 py-4 bg-secondary text-white font-bold rounded-2xl shadow-glow-blue hover:scale-105 transition-all duration-300">View All Events</a>
+                        <a href="index.php?p=blog" class="px-8 py-4 bg-secondary text-white font-bold rounded-2xl shadow-lg hover:scale-105 transition-all duration-300">View All Events</a>
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -207,21 +207,21 @@
                 <div class="max-w-7xl mx-auto px-4">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                         <div class="flex flex-col items-start p-10 rounded-[40px] bg-slate-50 border border-slate-100 group hover:border-primary/30 transition-all duration-500">
-                            <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-primary shadow-sm mb-8 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow transition-all duration-500">
+                            <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-primary shadow-sm mb-8 group-hover:bg-primary group-hover:text-white group-hover:shadow-md transition-all duration-500">
                                 <i class="fa fa-money-check-alt text-3xl"></i>
                             </div>
                             <h5 class="text-2xl font-black text-dark mb-4">Competitive Pricing</h5>
                             <p class="text-slate-500 leading-relaxed font-medium">Enjoy exceptional travel experiences at the best possible rates, giving you maximum value for every journey.</p>
                         </div>
                         <div class="flex flex-col items-start p-10 rounded-[40px] bg-slate-50 border border-slate-100 group hover:border-primary/30 transition-all duration-500">
-                            <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-primary shadow-sm mb-8 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow transition-all duration-500">
+                            <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-primary shadow-sm mb-8 group-hover:bg-primary group-hover:text-white group-hover:shadow-md transition-all duration-500">
                                 <i class="fa fa-award text-3xl"></i>
                             </div>
                             <h5 class="text-2xl font-black text-dark mb-4">Best Services</h5>
                             <p class="text-slate-500 leading-relaxed font-medium">We provide reliable, customer-focused services designed to make your travel smooth, comfortable, and worry-free.</p>
                         </div>
                         <div class="flex flex-col items-start p-10 rounded-[40px] bg-slate-50 border border-slate-100 group hover:border-primary/30 transition-all duration-500">
-                            <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-primary shadow-sm mb-8 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow transition-all duration-500">
+                            <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-primary shadow-sm mb-8 group-hover:bg-primary group-hover:text-white group-hover:shadow-md transition-all duration-500">
                                 <i class="fa fa-globe text-3xl"></i>
                             </div>
                             <h5 class="text-2xl font-black text-dark mb-4">Worldwide Coverage</h5>
@@ -274,21 +274,21 @@
                         <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter">Our Premium <span class="text-primary">Services</span></h1>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="glass p-12 rounded-[50px] text-center group hover:bg-primary transition-all duration-500 hover:shadow-glow-heavy hover:-translate-y-4">
+                        <div class="glass p-12 rounded-[50px] text-center group hover:bg-primary transition-all duration-500 hover:shadow-xl hover:-translate-y-4">
                             <div class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center text-primary mx-auto mb-8 group-hover:bg-white group-hover:text-primary transition-colors">
                                 <i class="fa fa-route text-3xl"></i>
                             </div>
                             <h5 class="text-2xl font-black mb-4 group-hover:text-white transition-colors">Travel Guide</h5>
                             <p class="text-slate-500 group-hover:text-white/80 transition-colors">Expert guides to lead your journey with deep local knowledge.</p>
                         </div>
-                        <div class="glass p-12 rounded-[50px] text-center group hover:bg-primary transition-all duration-500 hover:shadow-glow-heavy hover:-translate-y-4">
+                        <div class="glass p-12 rounded-[50px] text-center group hover:bg-primary transition-all duration-500 hover:shadow-xl hover:-translate-y-4">
                             <div class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center text-primary mx-auto mb-8 group-hover:bg-white group-hover:text-primary transition-colors">
                                 <i class="fa fa-ticket-alt text-3xl"></i>
                             </div>
                             <h5 class="text-2xl font-black mb-4 group-hover:text-white transition-colors">Ticket Booking</h5>
                             <p class="text-slate-500 group-hover:text-white/80 transition-colors">Seamless flight and transport arrangements at the best prices.</p>
                         </div>
-                        <div class="glass p-12 rounded-[50px] text-center group hover:bg-primary transition-all duration-500 hover:shadow-glow-heavy hover:-translate-y-4">
+                        <div class="glass p-12 rounded-[50px] text-center group hover:bg-primary transition-all duration-500 hover:shadow-xl hover:-translate-y-4">
                             <div class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center text-primary mx-auto mb-8 group-hover:bg-white group-hover:text-primary transition-colors">
                                 <i class="fa fa-hotel text-3xl"></i>
                             </div>
@@ -357,7 +357,7 @@
                 <div class="max-w-7xl mx-auto px-4">
                     <div class="text-center mb-20">
                         <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px] mb-6">Our Experts</div>
-                        <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter">Meet The <span class="text-primary text-glow">Visionaries</span></h1>
+                        <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter">Meet The <span class="text-primary ">Visionaries</span></h1>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         <?php
@@ -374,14 +374,14 @@
                         foreach ($team as $member):
                         ?>
                         <div class="group relative hover-lift">
-                            <div class="relative overflow-hidden aspect-[4/5] rounded-[40px] shadow-2xl">
-                                <img src="<?php echo $member[2]; ?>" alt="<?php echo $member[0]; ?>" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
-                                <div class="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/20 to-transparent flex flex-col justify-end p-8 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                            <div class="relative overflow-hidden aspect-[4/5] rounded-[40px] shadow-2xl bg-slate-100">
+                                <img src="<?php echo $member[2]; ?>" alt="<?php echo $member[0]; ?>" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/40 to-transparent flex flex-col justify-end p-8 translate-y-8 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
                                     <div class="flex flex-col space-y-1 mb-4">
                                         <h5 class="text-xl font-black text-white"><?php echo $member[0]; ?></h5>
                                         <p class="text-primary text-xs font-bold uppercase tracking-widest"><?php echo $member[1]; ?></p>
                                     </div>
-                                    <div class="flex space-x-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                                    <div class="flex space-x-3">
                                         <a href="#" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-facebook-f text-sm"></i></a>
                                         <a href="#" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-instagram text-sm"></i></a>
                                         <a href="#" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-linkedin-in text-sm"></i></a>
@@ -401,7 +401,7 @@
                 <div class="max-w-7xl mx-auto px-4">
                     <div class="text-center mb-20">
                         <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px] mb-6">Testimonials</div>
-                        <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter">What Our <span class="text-primary text-glow">Clients</span> Say</h1>
+                        <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter">What Our <span class="text-primary ">Clients</span> Say</h1>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <?php

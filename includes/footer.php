@@ -6,7 +6,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-16 mb-20">
                 <div class="lg:col-span-2 space-y-10">
                     <a href="index.php" class="flex items-center space-x-3 group">
-                        <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-glow group-hover:rotate-12 transition-transform duration-300">
+                        <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-md group-hover:rotate-12 transition-transform duration-300">
                             <i class="fas fa-paper-plane text-white text-xl"></i>
                         </div>
                         <span class="text-3xl font-black tracking-tighter text-white">
@@ -17,13 +17,13 @@
                         Redefining travel through innovation and authentic experiences. Discover the hidden gems of Ethiopia and the world with AskMe Tour and Travel.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="https://www.facebook.com/profile.php?id=61584212512348&mibextid=ZbWKwL" class="w-14 h-14 glass rounded-2xl flex items-center justify-center text-white hover:bg-primary hover:shadow-glow transition-all duration-300">
+                        <a href="https://www.facebook.com/profile.php?id=61584212512348&mibextid=ZbWKwL" class="w-14 h-14 glass rounded-2xl flex items-center justify-center text-white hover:bg-primary hover:shadow-md transition-all duration-300">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="#" class="w-14 h-14 glass rounded-2xl flex items-center justify-center text-white hover:bg-primary hover:shadow-glow transition-all duration-300">
+                        <a href="#" class="w-14 h-14 glass rounded-2xl flex items-center justify-center text-white hover:bg-primary hover:shadow-md transition-all duration-300">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="#" class="w-14 h-14 glass rounded-2xl flex items-center justify-center text-white hover:bg-primary hover:shadow-glow transition-all duration-300">
+                        <a href="#" class="w-14 h-14 glass rounded-2xl flex items-center justify-center text-white hover:bg-primary hover:shadow-md transition-all duration-300">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
                     </div>
@@ -56,7 +56,7 @@
                     <p class="text-slate-400 text-sm">Stay updated with our latest offers and travel tips.</p>
                     <form id="newsletterForm" class="relative group">
                         <input name="Email" type="email" placeholder="Your email address" class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-6 pr-14 text-white focus:outline-none focus:border-primary transition-all" required>
-                        <button type="submit" class="absolute right-2 top-2 bottom-2 w-10 bg-primary text-white rounded-xl hover:shadow-glow transition-all">
+                        <button type="submit" class="absolute right-2 top-2 bottom-2 w-10 bg-primary text-white rounded-xl hover:shadow-md transition-all">
                             <i class="fas fa-arrow-right"></i>
                         </button>
                     </form>
@@ -77,7 +77,7 @@
     <!-- Footer End -->
 
     <!-- Back to Top -->
-    <a href="#" id="back-to-top" class="fixed bottom-8 right-8 w-14 h-14 glass text-white flex items-center justify-center rounded-2xl shadow-2xl opacity-0 scale-75 transition-all duration-500 z-[1000] hover:bg-primary hover:shadow-glow">
+    <a href="#" id="back-to-top" class="fixed bottom-8 right-8 w-14 h-14 glass text-white flex items-center justify-center rounded-2xl shadow-2xl opacity-0 scale-75 transition-all duration-500 z-[1000] hover:bg-primary hover:shadow-md">
         <i class="fa fa-chevron-up"></i>
     </a>
 

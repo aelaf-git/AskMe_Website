@@ -12,7 +12,7 @@
                 <div class="space-y-8">
                     <div class="inline-block px-4 py-2 bg-primary/10 border border-primary/20 text-primary rounded-xl text-xs font-black uppercase tracking-[3px]">Reach Out</div>
                     <h1 class="text-5xl md:text-7xl font-black text-white leading-tight tracking-tighter">
-                        Let's Talk About Your <span class="text-primary text-glow">Next Adventure</span>
+                        Let's Talk About Your <span class="text-primary ">Next Adventure</span>
                     </h1>
                     <p class="text-xl text-slate-400 max-w-md font-medium leading-relaxed">
                         Ready to start your journey? Our team of experts is here to help you craft the perfect itinerary.
@@ -62,7 +62,7 @@
                             <label class="text-xs font-black uppercase tracking-widest text-primary/70 ml-1">Message</label>
                             <textarea name="message" rows="4" class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white focus:outline-none focus:border-primary transition-all placeholder:text-white/20" placeholder="Tell us about your plans..." required></textarea>
                         </div>
-                        <button type="submit" id="sendMessageButton" class="w-full py-5 bg-primary text-white font-black rounded-2xl shadow-glow hover:shadow-glow-heavy hover:scale-[1.02] active:scale-95 transition-all duration-300 uppercase tracking-[2px]">
+                        <button type="submit" id="sendMessageButton" class="w-full py-5 bg-primary text-white font-black rounded-2xl shadow-md hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 uppercase tracking-[2px]">
                             Dispatch Message
                         </button>
                     </form>

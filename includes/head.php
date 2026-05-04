@@ -34,9 +34,8 @@
                         sans: ['Outfit', 'sans-serif'],
                     },
                     boxShadow: {
-                        'glow': '0 0 20px rgba(137, 194, 61, 0.4)',
-                        'glow-heavy': '0 0 40px rgba(137, 194, 61, 0.6)',
-                        'glow-blue': '0 0 20px rgba(29, 96, 158, 0.4)',
+                        'subtle': '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+                        'premium': '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
                     }
                 }
             }
@@ -56,16 +55,13 @@
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
         .glass-dark {
             background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .text-glow {
-            text-shadow: 0 0 10px rgba(122, 183, 48, 0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .btn-futuristic {
             @apply relative overflow-hidden transition-all duration-300;

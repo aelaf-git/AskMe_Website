@@ -3,7 +3,7 @@
         <div class="max-w-7xl mx-auto pointer-events-auto">
             <nav class="glass px-4 md:px-8 py-3 md:py-4 rounded-[20px] md:rounded-3xl shadow-2xl flex items-center justify-between transition-all duration-500 hover:shadow-primary/20">
                 <a href="index.php" class="flex items-center space-x-3 group">
-                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1 shadow-glow group-hover:rotate-6 transition-transform duration-300">
+                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1 shadow-md group-hover:rotate-6 transition-transform duration-300">
                         <img src="assets/img/askme.png" alt="AskMe Logo" class="w-full h-full object-contain">
                     </div>
                     <span class="text-2xl font-black tracking-tighter text-dark">
@@ -13,10 +13,10 @@
 
                 <!-- Desktop Nav -->
                 <div id="nav-content" class="hidden lg:flex items-center space-x-1">
-                    <a href="index.php" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 <?php echo (!isset($_GET['p']) || $_GET['p'] == 'home') ? 'bg-primary text-white shadow-glow' : 'text-slate-600 hover:bg-primary/10 hover:text-primary'; ?>">Home</a>
-                    <a href="index.php?p=about" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 <?php echo (isset($_GET['p']) && $_GET['p'] == 'about') ? 'bg-primary text-white shadow-glow' : 'text-slate-600 hover:bg-primary/10 hover:text-primary'; ?>">About</a>
-                    <a href="index.php?p=service" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 <?php echo (isset($_GET['p']) && $_GET['p'] == 'service') ? 'bg-primary text-white shadow-glow' : 'text-slate-600 hover:bg-primary/10 hover:text-primary'; ?>">Services</a>
-                    <a href="index.php?p=package" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 <?php echo (isset($_GET['p']) && $_GET['p'] == 'package') ? 'bg-primary text-white shadow-glow' : 'text-slate-600 hover:bg-primary/10 hover:text-primary'; ?>">Packages</a>
+                    <a href="index.php" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 <?php echo (!isset($_GET['p']) || $_GET['p'] == 'home') ? 'bg-primary text-white shadow-md' : 'text-slate-600 hover:bg-primary/10 hover:text-primary'; ?>">Home</a>
+                    <a href="index.php?p=about" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 <?php echo (isset($_GET['p']) && $_GET['p'] == 'about') ? 'bg-primary text-white shadow-md' : 'text-slate-600 hover:bg-primary/10 hover:text-primary'; ?>">About</a>
+                    <a href="index.php?p=service" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 <?php echo (isset($_GET['p']) && $_GET['p'] == 'service') ? 'bg-primary text-white shadow-md' : 'text-slate-600 hover:bg-primary/10 hover:text-primary'; ?>">Services</a>
+                    <a href="index.php?p=package" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 <?php echo (isset($_GET['p']) && $_GET['p'] == 'package') ? 'bg-primary text-white shadow-md' : 'text-slate-600 hover:bg-primary/10 hover:text-primary'; ?>">Packages</a>
                     
                     <div class="relative group mx-2 h-full py-2">
                         <button class="px-5 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-primary/10 hover:text-primary flex items-center transition-all duration-300">
@@ -30,7 +30,7 @@
                         </div>
                     </div>
 
-                    <a href="index.php?p=contact" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 <?php echo (isset($_GET['p']) && $_GET['p'] == 'contact') ? 'bg-primary text-white shadow-glow' : 'text-slate-600 hover:bg-primary/10 hover:text-primary'; ?>">Contact</a>
+                    <a href="index.php?p=contact" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 <?php echo (isset($_GET['p']) && $_GET['p'] == 'contact') ? 'bg-primary text-white shadow-md' : 'text-slate-600 hover:bg-primary/10 hover:text-primary'; ?>">Contact</a>
                 </div>
 
                 <!-- Mobile Toggle -->
