@@ -35,12 +35,12 @@
                         <div class="prose prose-lg max-w-none text-gray-600 leading-relaxed space-y-6">
                             <p>AskMe Tour and Travel invites you to explore the breathtaking rock-hewn churches of Lalibela. This UNESCO World Heritage site is a testament to the rich history and spiritual heritage of Ethiopia.</p>
                             <p>Our guided tours provide deep insights into the architecture and legends of these monolithic structures, carved out of solid rock in the 12th century.</p>
-                            <h4 class="text-2xl font-bold text-dark mt-10 mb-4">A Spiritual Journey</h4>
+                            <h4 class="text-2xl font-bold text-secondary mt-10 mb-4">A Spiritual Journey</h4>
                             <div class="flex flex-wrap md:flex-nowrap gap-6 my-8">
                                 <img src="assets/img/blog-2.jpg" class="w-full md:w-1/2 object-cover rounded shadow-md">
                                 <p>Lalibela is not just a destination; it's a spiritual experience. Walk through the narrow passages and tunnels connecting the churches, and feel the ancient atmosphere that has drawn pilgrims for centuries.</p>
                             </div>
-                            <h4 class="text-2xl font-bold text-dark mt-10 mb-4">Unforgettable Memories</h4>
+                            <h4 class="text-2xl font-bold text-secondary mt-10 mb-4">Unforgettable Memories</h4>
                             <div class="flex flex-wrap md:flex-nowrap gap-6 my-8">
                                 <p>From the iconic St. George's Church (Bete Giyorgis) to the grand Bete Medhane Alem, every corner of Lalibela tells a story. Join us for a journey that will stay with you forever.</p>
                                 <img src="assets/img/blog-3.jpg" class="w-full md:w-1/2 object-cover rounded shadow-md order-first md:order-last">
@@ -93,10 +93,10 @@
                     <h3 class="text-2xl font-bold text-primary mb-4">AskMe Team</h3>
                     <p class="text-gray-600 mb-6 leading-relaxed">Our team is dedicated to providing you with the best travel insights and experiences in Ethiopia.</p>
                     <div class="flex justify-center space-x-3 text-primary">
-                        <a href="#" class="hover:text-dark transition-colors"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="hover:text-dark transition-colors"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="hover:text-dark transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="hover:text-dark transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="hover:text-secondary transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="hover:text-secondary transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="hover:text-secondary transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="hover:text-secondary transition-colors"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
 

@@ -21,7 +21,7 @@
     <div class="max-w-7xl mx-auto px-4">
         <div class="text-center mb-16">
             <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Testimonial</h6>
-            <h1 class="text-4xl md:text-5xl font-bold text-dark">What Our Clients Say</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-secondary">What Our Clients Say</h1>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <?php
@@ -39,7 +39,7 @@
                 <div class="flex items-center">
                     <img src="assets/img/nobody.jpg" class="w-16 h-16 rounded-full object-cover border-4 border-gray-50 mr-4">
                     <div>
-                        <h5 class="text-xl font-bold text-dark leading-tight"><?php echo $t[0]; ?></h5>
+                        <h5 class="text-xl font-bold text-secondary leading-tight"><?php echo $t[0]; ?></h5>
                         <small class="text-primary font-bold uppercase tracking-wider text-[10px]"><?php echo $t[1]; ?></small>
                     </div>
                 </div>

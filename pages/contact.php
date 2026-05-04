@@ -21,7 +21,7 @@
     <div class="max-w-7xl mx-auto px-4">
         <div class="text-center mb-16">
             <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Contact</h6>
-            <h1 class="text-4xl md:text-5xl font-bold text-dark">Contact For Any Query</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-secondary">Contact For Any Query</h1>
         </div>
         <div class="flex justify-center">
             <div class="w-full lg:w-8/12">

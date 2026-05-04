@@ -21,7 +21,7 @@
     <div class="max-w-7xl mx-auto px-4">
         <div class="text-center mb-16">
             <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Destinations</h6>
-            <h1 class="text-4xl md:text-5xl font-bold text-dark">Explore Top Destinations</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-secondary">Explore Top Destinations</h1>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <?php
@@ -62,7 +62,7 @@
     <div class="max-w-7xl mx-auto px-4">
         <div class="text-center mb-16">
             <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Featured</h6>
-            <h1 class="text-4xl md:text-5xl font-bold text-dark">Explore Ethiopia</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-secondary">Explore Ethiopia</h1>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <?php

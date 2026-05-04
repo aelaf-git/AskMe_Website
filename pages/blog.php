@@ -67,10 +67,10 @@
                     <h3 class="text-2xl font-bold text-primary mb-4">AskMe Team</h3>
                     <p class="text-gray-600 mb-6 leading-relaxed">Our team is dedicated to providing you with the best travel insights and experiences in Ethiopia.</p>
                     <div class="flex justify-center space-x-3 text-primary">
-                        <a href="#" class="hover:text-dark transition-colors"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="hover:text-dark transition-colors"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="hover:text-dark transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="hover:text-dark transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="hover:text-secondary transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="hover:text-secondary transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="hover:text-secondary transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="hover:text-secondary transition-colors"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
 

@@ -56,9 +56,9 @@ try {
                             <span class="text-gray-200">|</span>
                             <span><i class="far fa-clock mr-2"></i> Annual Festival</span>
                         </div>
-                        <h2 class="text-3xl md:text-5xl font-black text-dark mb-10 leading-tight"><?php echo $event['title']; ?></h2>
+                        <h2 class="text-3xl md:text-5xl font-black text-secondary mb-10 leading-tight"><?php echo $event['title']; ?></h2>
                         <div class="prose prose-xl max-w-none text-gray-600 leading-relaxed space-y-8">
-                            <p class="font-semibold text-xl text-dark leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 rounded-r-xl">
+                            <p class="font-semibold text-xl text-secondary leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 rounded-r-xl">
                                 <?php echo $event['short_description']; ?>
                             </p>
                             <div class="text-lg whitespace-pre-line">
@@ -69,11 +69,11 @@ try {
                         <!-- Share -->
                         <div class="mt-16 pt-10 border-t border-gray-100 flex items-center justify-between flex-wrap gap-6">
                             <div class="flex items-center space-x-4">
-                                <span class="font-bold text-dark uppercase tracking-widest text-xs">Share this event:</span>
+                                <span class="font-bold text-secondary uppercase tracking-widest text-xs">Share this event:</span>
                                 <div class="flex space-x-2">
-                                    <a href="#" class="w-10 h-10 bg-gray-100 text-dark flex items-center justify-center rounded-full hover:bg-primary hover:text-white transition-all"><i class="fab fa-facebook-f"></i></a>
-                                    <a href="#" class="w-10 h-10 bg-gray-100 text-dark flex items-center justify-center rounded-full hover:bg-primary hover:text-white transition-all"><i class="fab fa-twitter"></i></a>
-                                    <a href="#" class="w-10 h-10 bg-gray-100 text-dark flex items-center justify-center rounded-full hover:bg-primary hover:text-white transition-all"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="#" class="w-10 h-10 bg-gray-100 text-secondary flex items-center justify-center rounded-full hover:bg-primary hover:text-white transition-all"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#" class="w-10 h-10 bg-gray-100 text-secondary flex items-center justify-center rounded-full hover:bg-primary hover:text-white transition-all"><i class="fab fa-twitter"></i></a>
+                                    <a href="#" class="w-10 h-10 bg-gray-100 text-secondary flex items-center justify-center rounded-full hover:bg-primary hover:text-white transition-all"><i class="fab fa-linkedin-in"></i></a>
                                 </div>
                             </div>
                             <a href="index.php?p=contact" class="btn-primary">Inquire About This Event</a>

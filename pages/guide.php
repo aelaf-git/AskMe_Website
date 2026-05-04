@@ -21,7 +21,7 @@
     <div class="max-w-7xl mx-auto px-4">
         <div class="text-center mb-16">
             <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Team</h6>
-            <h1 class="text-4xl md:text-5xl font-bold text-dark">Our Team</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-secondary">Our Team</h1>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <?php

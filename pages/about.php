@@ -44,7 +44,7 @@
     <div class="max-w-7xl mx-auto px-4">
         <div class="text-center mb-20 relative">
             <h6 class="text-primary uppercase tracking-[5px] font-bold mb-3">Events</h6>
-            <h1 class="text-4xl md:text-6xl font-black text-dark leading-tight">Upcoming Events</h1>
+            <h1 class="text-4xl md:text-6xl font-black text-secondary leading-tight">Upcoming Events</h1>
             <div class="w-24 h-1.5 bg-primary mx-auto mt-6 rounded-full"></div>
             <div class="absolute -top-10 left-1/2 -translate-x-1/2 text-gray-200 text-8xl font-black -z-10 opacity-20 uppercase">Festivals</div>
         </div>
@@ -154,7 +154,7 @@
         <div class="flex flex-wrap items-center -mx-4">
             <div class="w-full lg:w-7/12 px-4 mb-12 lg:mb-0">
                 <h6 class="text-white uppercase tracking-[5px] font-bold mb-4">AskMe Tour and Travel</h6>
-                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6"><span class="text-dark">Register Now!</span> and Experience the World with Us.</h1>
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6"><span class="text-secondary">Register Now!</span> and Experience the World with Us.</h1>
             </div>
             <div class="w-full lg:w-5/12 px-4">
                 <div class="bg-white shadow-2xl overflow-hidden">
@@ -200,7 +200,7 @@
     <div class="max-w-7xl mx-auto px-4">
         <div class="text-center mb-16">
             <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Team</h6>
-            <h1 class="text-4xl md:text-5xl font-bold text-dark">Our Team</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-secondary">Our Team</h1>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <?php
@@ -241,7 +241,7 @@
     <div class="max-w-7xl mx-auto px-4">
         <div class="text-center mb-16">
             <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Testimonial</h6>
-            <h1 class="text-4xl md:text-5xl font-bold text-dark">What Our Clients Say</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-secondary">What Our Clients Say</h1>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <?php
@@ -259,7 +259,7 @@
                 <div class="flex items-center">
                     <img src="assets/img/nobody.jpg" class="w-16 h-16 rounded-full object-cover border-4 border-gray-50 mr-4">
                     <div>
-                        <h5 class="text-xl font-bold text-dark leading-tight"><?php echo $t[0]; ?></h5>
+                        <h5 class="text-xl font-bold text-secondary leading-tight"><?php echo $t[0]; ?></h5>
                         <small class="text-primary font-bold uppercase tracking-wider text-[10px]"><?php echo $t[1]; ?></small>
                     </div>
                 </div>

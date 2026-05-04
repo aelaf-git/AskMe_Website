@@ -109,7 +109,7 @@
                                 <div class="absolute -bottom-10 -right-10 w-64 h-64 glass p-4 rounded-[30px] shadow-2xl hidden md:block animate-bounce-slow">
                                     <div class="w-full h-full rounded-[20px] bg-primary/10 flex flex-col items-center justify-center text-center p-6">
                                         <span class="text-5xl font-black text-primary mb-2">15+</span>
-                                        <span class="text-sm font-bold text-dark uppercase tracking-widest">Years Experience</span>
+                                        <span class="text-sm font-bold text-secondary uppercase tracking-widest">Years Experience</span>
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +117,7 @@
                         <div class="w-full lg:w-1/2 px-4 lg:pl-20">
                             <div class="space-y-8">
                                 <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px]">Our Philosophy</div>
-                                <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter leading-none">
+                                <h1 class="text-4xl md:text-6xl font-black text-secondary tracking-tighter leading-none">
                                     Redefining the way you <span class="text-primary italic">Explore</span> the world.
                                 </h1>
                                 <p class="text-lg text-slate-500 leading-relaxed font-medium">
@@ -128,19 +128,19 @@
                                         <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-4 text-primary">
                                             <i class="fas fa-shield-alt text-xl"></i>
                                         </div>
-                                        <h4 class="font-bold text-dark mb-2">Safe Travels</h4>
+                                        <h4 class="font-bold text-secondary mb-2">Safe Travels</h4>
                                         <p class="text-sm text-slate-500">Your safety is our top priority at every destination.</p>
                                     </div>
                                     <div class="p-6 rounded-3xl bg-slate-50 border border-slate-100 hover:border-primary/30 transition-colors">
                                         <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-4 text-primary">
                                             <i class="fas fa-globe-africa text-xl"></i>
                                         </div>
-                                        <h4 class="font-bold text-dark mb-2">Global Network</h4>
+                                        <h4 class="font-bold text-secondary mb-2">Global Network</h4>
                                         <p class="text-sm text-slate-500">Access to exclusive locations and experiences.</p>
                                     </div>
                                 </div>
                                 <div class="pt-4">
-                                    <a href="index.php?p=about" class="inline-flex items-center space-x-3 text-dark font-black group">
+                                    <a href="index.php?p=about" class="inline-flex items-center space-x-3 text-secondary font-black group">
                                         <span class="text-lg font-bold">Read Our Story</span>
                                         <span class="w-12 h-12 rounded-full border-2 border-slate-100 flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-white transition-all duration-300">
                                             <i class="fas fa-arrow-right text-sm"></i>
@@ -160,7 +160,7 @@
                     <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 space-y-6 md:space-y-0">
                         <div class="space-y-4">
                             <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px]">Calendar</div>
-                            <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter">Upcoming <span class="text-primary">Events</span></h1>
+                            <h1 class="text-4xl md:text-6xl font-black text-secondary tracking-tighter">Upcoming <span class="text-primary">Events</span></h1>
                         </div>
                         <a href="index.php?p=blog" class="px-8 py-4 bg-secondary text-white font-bold rounded-2xl shadow-lg hover:scale-105 transition-all duration-300">View All Events</a>
                     </div>
@@ -185,7 +185,7 @@
                                     </div>
                                     <h3 class="text-3xl font-black text-white mb-4 leading-tight group-hover:text-primary transition-colors"><?php echo $event['title']; ?></h3>
                                     <p class="text-white/70 line-clamp-2 font-medium mb-8"><?php echo $event['short_description']; ?></p>
-                                    <a href="index.php?p=event_detail&id=<?php echo $event['id']; ?>" class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-dark hover:bg-primary hover:text-white transition-all duration-300">
+                                    <a href="index.php?p=event_detail&id=<?php echo $event['id']; ?>" class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-secondary hover:bg-primary hover:text-white transition-all duration-300">
                                         <i class="fas fa-arrow-right"></i>
                                     </a>
                                 </div>
@@ -210,21 +210,21 @@
                             <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-primary shadow-sm mb-8 group-hover:bg-primary group-hover:text-white group-hover:shadow-md transition-all duration-500">
                                 <i class="fa fa-money-check-alt text-3xl"></i>
                             </div>
-                            <h5 class="text-2xl font-black text-dark mb-4">Competitive Pricing</h5>
+                            <h5 class="text-2xl font-black text-secondary mb-4">Competitive Pricing</h5>
                             <p class="text-slate-500 leading-relaxed font-medium">Enjoy exceptional travel experiences at the best possible rates, giving you maximum value for every journey.</p>
                         </div>
                         <div class="flex flex-col items-start p-10 rounded-[40px] bg-slate-50 border border-slate-100 group hover:border-primary/30 transition-all duration-500">
                             <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-primary shadow-sm mb-8 group-hover:bg-primary group-hover:text-white group-hover:shadow-md transition-all duration-500">
                                 <i class="fa fa-award text-3xl"></i>
                             </div>
-                            <h5 class="text-2xl font-black text-dark mb-4">Best Services</h5>
+                            <h5 class="text-2xl font-black text-secondary mb-4">Best Services</h5>
                             <p class="text-slate-500 leading-relaxed font-medium">We provide reliable, customer-focused services designed to make your travel smooth, comfortable, and worry-free.</p>
                         </div>
                         <div class="flex flex-col items-start p-10 rounded-[40px] bg-slate-50 border border-slate-100 group hover:border-primary/30 transition-all duration-500">
                             <div class="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-primary shadow-sm mb-8 group-hover:bg-primary group-hover:text-white group-hover:shadow-md transition-all duration-500">
                                 <i class="fa fa-globe text-3xl"></i>
                             </div>
-                            <h5 class="text-2xl font-black text-dark mb-4">Worldwide Coverage</h5>
+                            <h5 class="text-2xl font-black text-secondary mb-4">Worldwide Coverage</h5>
                             <p class="text-slate-500 leading-relaxed font-medium">Explore destinations across the globe with our extensive network and expertly curated travel options.</p>
                         </div>
                     </div>
@@ -236,7 +236,7 @@
             <section id="destination" class="py-32 bg-white">
                 <div class="max-w-7xl mx-auto px-4 text-center">
                     <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px] mb-6">Explore</div>
-                    <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter mb-20">Top <span class="text-primary">Destinations</span></h1>
+                    <h1 class="text-4xl md:text-6xl font-black text-secondary tracking-tighter mb-20">Top <span class="text-primary">Destinations</span></h1>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         <?php
                         $destinations = [
@@ -271,7 +271,7 @@
                 <div class="max-w-7xl mx-auto px-4">
                     <div class="text-center mb-20">
                         <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px] mb-6">Expertise</div>
-                        <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter">Our Premium <span class="text-primary">Services</span></h1>
+                        <h1 class="text-4xl md:text-6xl font-black text-secondary tracking-tighter">Our Premium <span class="text-primary">Services</span></h1>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div class="glass p-12 rounded-[50px] text-center group hover:bg-primary transition-all duration-500 hover:shadow-xl hover:-translate-y-4">
@@ -310,7 +310,7 @@
                     <div class="flex flex-wrap items-center -mx-4">
                         <div class="w-full lg:w-7/12 px-4 mb-12 lg:mb-0">
                             <h6 class="text-white uppercase tracking-[5px] font-bold mb-4">AskMe Tour and Travel</h6>
-                            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6"><span class="text-dark">Register Now!</span> and Experience the World with Us.</h1>
+                            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6"><span class="text-secondary">Register Now!</span> and Experience the World with Us.</h1>
                         </div>
                         <div class="w-full lg:w-5/12 px-4">
                             <div class="bg-white shadow-2xl overflow-hidden">
@@ -357,7 +357,7 @@
                 <div class="max-w-7xl mx-auto px-4">
                     <div class="text-center mb-20">
                         <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px] mb-6">Our Experts</div>
-                        <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter">Meet The <span class="text-primary ">Visionaries</span></h1>
+                        <h1 class="text-4xl md:text-6xl font-black text-secondary tracking-tighter">Meet The <span class="text-primary ">Visionaries</span></h1>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         <?php
@@ -401,7 +401,7 @@
                 <div class="max-w-7xl mx-auto px-4">
                     <div class="text-center mb-20">
                         <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px] mb-6">Testimonials</div>
-                        <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter">What Our <span class="text-primary ">Clients</span> Say</h1>
+                        <h1 class="text-4xl md:text-6xl font-black text-secondary tracking-tighter">What Our <span class="text-primary ">Clients</span> Say</h1>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <?php
@@ -425,7 +425,7 @@
                                     <img src="assets/img/nobody.jpg" class="w-full h-full object-cover">
                                 </div>
                                 <div>
-                                    <h5 class="text-xl font-black text-dark leading-tight"><?php echo $t[0]; ?></h5>
+                                    <h5 class="text-xl font-black text-secondary leading-tight"><?php echo $t[0]; ?></h5>
                                     <small class="text-primary font-bold uppercase tracking-widest text-[10px]"><?php echo $t[1]; ?></small>
                                 </div>
                             </div>

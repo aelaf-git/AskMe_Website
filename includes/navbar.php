@@ -6,7 +6,7 @@
                     <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1 shadow-md group-hover:rotate-6 transition-transform duration-300">
                         <img src="assets/img/askme.png" alt="AskMe Logo" class="w-full h-full object-contain">
                     </div>
-                    <span class="text-2xl font-black tracking-tighter text-dark">
+                    <span class="text-2xl font-black tracking-tighter text-secondary">
                         <span class="text-primary">Ask</span>Me
                     </span>
                 </a>
