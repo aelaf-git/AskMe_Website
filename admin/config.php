@@ -1,9 +1,20 @@
 <?php
+// Load .env file
+$envFile = __DIR__ . '/../.env';
+if (file_exists($envFile)) {
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
+            putenv($line);
+        }
+    }
+}
+
 // Admin Configuration
-define('ADMIN_EMAIL', 'admin@askmetour.org');
+define('ADMIN_EMAIL', getenv('ADMIN_EMAIL') ?: 'admin@askmetour.org');
 // Hashed version of 'AskMe@2026!Admin'
-define('ADMIN_PASSWORD_HASH', '$2y$12$lSriFhiWZClfyOZh7BGOq.rtO1di9ZDGaYq/6Cc1tDEdOK1XcLoxe'); 
-define('JWT_SECRET', 'a8f9b0c1d2e3f4g5h6i7j8k9l0m1n2o3p4q5r6s7t8u9v0w1x2y3z4');
+define('ADMIN_PASSWORD_HASH', password_hash(getenv('ADMIN_PASS') ?: 'AskMe@2026!Admin', PASSWORD_DEFAULT));
+define('JWT_SECRET', getenv('JWT_SECRET') ?: '8f9b0c1d2e3f4g5h6i7j8k9l0m1n2o3p4q5r6s7t8u9v0w1x2y3z4a5b6c7d8e9f0');
 
 // Utility to verify JWT
 function is_admin_authenticated() {

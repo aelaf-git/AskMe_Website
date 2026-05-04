@@ -186,6 +186,22 @@ CREATE TABLE IF NOT EXISTS services (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Table for Site Traffic Tracking
+CREATE TABLE IF NOT EXISTS site_traffic (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ip_address VARCHAR(45) NOT NULL,
+    session_id VARCHAR(64) NOT NULL,
+    user_agent TEXT,
+    device_type VARCHAR(20) DEFAULT 'Desktop',
+    page_url VARCHAR(500) NOT NULL,
+    referrer VARCHAR(500),
+    country VARCHAR(100) DEFAULT 'Unknown',
+    city VARCHAR(100) DEFAULT 'Unknown',
+    viewed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_session (session_id),
+    INDEX idx_viewed (viewed_at)
+);
+
 -- Migration for existing databases (run manually once):
 -- ALTER TABLE event_registrations
 --     DROP COLUMN arrival_date,

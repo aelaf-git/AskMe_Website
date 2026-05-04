@@ -11,8 +11,8 @@ try {
     echo "<hr>";
     echo "<h3>Troubleshooting Steps:</h3>";
     echo "<ul>";
-    echo "<li>Ensure MySQL is running in your XAMPP/WAMP panel.</li>";
-    echo "<li>Check if you created the database named '<b>askme_tour</b>' in phpMyAdmin.</li>";
+    echo "<li>Ensure MySQL is running in your hosting control panel.</li>";
+    echo "<li>Check if you created the database named '<b>askmetgy_main</b>' in your hosting control panel.</li>";
     echo "<li>Verify that you imported '<b>database.sql</b>' into that database.</li>";
     echo "</ul>";
 }
