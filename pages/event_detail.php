@@ -109,49 +109,34 @@ function save_registration_upload($fileKey, $required = false) {
     if (!isset($_FILES[$fileKey]) || !is_array($_FILES[$fileKey])) {
         return ['ok' => !$required, 'path' => null, 'error' => $required ? 'Missing required upload.' : null];
     }
-
     $file = $_FILES[$fileKey];
     if ($file['error'] === UPLOAD_ERR_NO_FILE) {
         return ['ok' => !$required, 'path' => null, 'error' => $required ? 'Missing required upload.' : null];
     }
-
     if ($file['error'] !== UPLOAD_ERR_OK) {
         return ['ok' => false, 'path' => null, 'error' => 'Upload failed.'];
     }
-
     if ($file['size'] > 5 * 1024 * 1024) {
         return ['ok' => false, 'path' => null, 'error' => 'File is too large (max 5MB).'];
     }
-
     $allowed = ['pdf', 'jpg', 'jpeg', 'png'];
     $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     if (!in_array($ext, $allowed, true)) {
         return ['ok' => false, 'path' => null, 'error' => 'Invalid file type. Use PDF/JPG/JPEG/PNG.'];
     }
-
     $uploadDir = __DIR__ . '/../uploads/event_registrations/' . date('Y/m');
     if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true)) {
         return ['ok' => false, 'path' => null, 'error' => 'Could not prepare upload directory.'];
     }
-
     $targetName = date('YmdHis') . '_' . bin2hex(random_bytes(4)) . '_' . normalize_upload_name($file['name']);
     $targetPath = $uploadDir . '/' . $targetName;
-
     if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
         return ['ok' => false, 'path' => null, 'error' => 'Could not save uploaded file.'];
     }
-
-    $relativePath = 'uploads/event_registrations/' . date('Y/m') . '/' . $targetName;
-    return ['ok' => true, 'path' => $relativePath, 'error' => null];
+    return ['ok' => true, 'path' => 'uploads/event_registrations/' . date('Y/m') . '/' . $targetName, 'error' => null];
 }
 
 // Handle form submission
-try {
-    ensure_event_registrations_schema($pdo);
-} catch (PDOException $e) {
-    $form_message = 'Database schema issue detected for event registrations.';
-}
-
 if (isset($_GET['submitted']) && $_GET['submitted'] === '1') {
     $form_success = true;
     $form_message = 'Application submitted successfully.';
@@ -159,10 +144,10 @@ if (isset($_GET['submitted']) && $_GET['submitted'] === '1') {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
     $eid = (int)$_POST['event_id'];
-    // Check deadline
     $chk = $pdo->prepare("SELECT registration_deadline FROM events WHERE id = ?");
     $chk->execute([$eid]);
     $ev = $chk->fetch();
+    
     if ($ev && $ev['registration_deadline'] && date('Y-m-d') > $ev['registration_deadline']) {
         $form_message = 'Registration for this event has closed.';
     } else {
@@ -173,14 +158,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
 
         $passportUpload = save_registration_upload('passport_scan', true);
         $photoUpload = save_registration_upload('profile_photo', true);
-        $insuranceUpload = save_registration_upload('insurance_doc', false);
 
         $uploadErrors = [];
-        foreach ([$passportUpload, $photoUpload, $insuranceUpload] as $uploadResult) {
-            if (!$uploadResult['ok'] && $uploadResult['error']) {
-                $uploadErrors[] = $uploadResult['error'];
-            }
-        }
+        if (!$passportUpload['ok']) $uploadErrors[] = $passportUpload['error'];
+        if (!$photoUpload['ok']) $uploadErrors[] = $photoUpload['error'];
 
         if (!empty($uploadErrors)) {
             $form_message = implode(' ', array_unique($uploadErrors));
@@ -191,35 +172,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
         try {
             $insertValues = [
                 $eid, $_POST['full_name'], $_POST['gender'], $_POST['dob'], $_POST['nationality'],
-                $_POST['passport_number'], $_POST['passport_expiry'], $_POST['phone'], $_POST['email'],
-                $_POST['address'], $_POST['occupation'] ?? 'N/A', $_POST['company'] ?? '', $_POST['industry'] ?? '',
-                (int)($_POST['experience_years'] ?? 0), $_POST['purpose'], $areas,
-                1, isset($_POST['traveled_before']) ? 1 : 0,
-                $_POST['previous_international_destinations'] ?? '', isset($_POST['has_trip_visa']) ? 1 : 0,
-                isset($_POST['requires_visa']) ? 1 : 0, isset($_POST['needs_invitation']) ? 1 : 0,
-                $_POST['special_notes'] ?? '',
-                $_POST['passport_issue_date'] ?? null, $_POST['passport_issue_place'] ?? '',
+                $_POST['passport_number'], $_POST['passport_issue_date'], $_POST['passport_expiry'], $_POST['passport_issue_place'],
                 $passportUpload['path'], $photoUpload['path'],
-                $_POST['emergency_contact_name'] ?? '', $_POST['emergency_contact_phone'] ?? '',
-                $_POST['emergency_contact_relationship'] ?? '', $_POST['country_of_residence'] ?? '',
-                $_POST['city_of_residence'] ?? '', $_POST['accommodation_preference'] ?? '',
-                $_POST['room_type_preference'] ?? '', $_POST['dietary_requirements'] ?? '',
-                $_POST['medical_conditions'] ?? '', $_POST['insurance_provider'] ?? '',
-                $_POST['insurance_policy_number'] ?? '', $insuranceUpload['path']
+                $_POST['phone'], $_POST['email'], $_POST['address'], $_POST['country_of_residence'], $_POST['city_of_residence'],
+                $_POST['emergency_contact_name'], $_POST['emergency_contact_phone'], $_POST['emergency_contact_relationship'],
+                $_POST['occupation'], $_POST['company'] ?? '', $_POST['industry'] ?? '', (int)($_POST['experience_years'] ?? 0),
+                $_POST['purpose'], $areas,
+                isset($_POST['has_valid_passport']) ? 1 : 0, isset($_POST['traveled_before']) ? 1 : 0,
+                isset($_POST['has_trip_visa']) ? 1 : 0, isset($_POST['requires_visa']) ? 1 : 0, isset($_POST['needs_invitation']) ? 1 : 0,
+                $_POST['accommodation_preference'] ?? '', $_POST['dietary_requirements'] ?? '', $_POST['medical_conditions'] ?? '', $_POST['room_type_preference'] ?? '',
+                $_POST['special_notes'] ?? '',
+                $_POST['insurance_provider'], $_POST['insurance_policy_number']
             ];
             $placeholders = implode(',', array_fill(0, count($insertValues), '?'));
 
             $stmt = $pdo->prepare("INSERT INTO event_registrations (
-                event_id, full_name, gender, dob, nationality, passport_number, passport_expiry, phone, email, address,
-                occupation, company, industry, experience_years, purpose, areas_of_interest, has_passport, traveled_before,
-                previous_international_destinations, has_trip_visa, requires_visa, needs_invitation, special_notes, passport_issue_date, passport_issue_place, passport_scan_path,
-                profile_photo_path, emergency_contact_name, emergency_contact_phone, emergency_contact_relationship, country_of_residence,
-                city_of_residence, accommodation_preference,
-                room_type_preference, dietary_requirements, medical_conditions, insurance_provider, insurance_policy_number,
-                insurance_doc_path
+                event_id, full_name, gender, dob, nationality,
+                passport_number, passport_issue_date, passport_expiry, passport_issue_place,
+                passport_scan_path, profile_photo_path,
+                phone, email, address, country_of_residence, city_of_residence,
+                emergency_contact_name, emergency_contact_phone, emergency_contact_relationship,
+                occupation, company, industry, experience_years,
+                purpose, areas_of_interest,
+                has_passport, traveled_before, has_trip_visa, requires_visa, needs_invitation,
+                accommodation_preference, dietary_requirements, medical_conditions, room_type_preference, special_notes,
+                insurance_provider, insurance_policy_number
             ) VALUES ({$placeholders})");
             $stmt->execute($insertValues);
-            header('Location: index.php?p=event_detail&id=' . $eid . '&submitted=1');
+            
+            header('Location: index.php?p=event_detail&id=' . $eid . '&submitted=1#registration-form');
             exit();
         } catch (PDOException $e) {
             $form_message = 'Error submitting form: ' . $e->getMessage();
