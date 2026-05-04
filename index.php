@@ -36,7 +36,7 @@
                             <div class="max-w-[900px]">
                                 <h4 class="text-white uppercase tracking-[5px] mb-4">AskMe Tour & Travel</h4>
                                 <h1 class="text-4xl md:text-7xl font-bold text-white mb-8">Let's Discover The World Together</h1>
-                                <a href="#Registration" class="btn-primary">Book Now</a>
+
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                             <div class="max-w-[900px]">
                                 <h4 class="text-white uppercase tracking-[5px] mb-4">AskMe Tour & Travel</h4>
                                 <h1 class="text-4xl md:text-7xl font-bold text-white mb-8">Discover Amazing Places With Us</h1>
-                                <a href="#Registration" class="btn-primary">Book Now</a>
+
                             </div>
                         </div>
                     </div>
@@ -87,7 +87,7 @@
                                     <img class="w-full h-40 object-cover" src="assets/img/gorgora.jpg" alt="">
                                     <img class="w-full h-40 object-cover" src="assets/img/moscow.jpg" alt="">
                                 </div>
-                                <a href="#Registration" class="btn-primary">Book Now</a>
+
                             </div>
                         </div>
                     </div>
@@ -391,6 +391,7 @@
         }
     ?>
 
+    <?php include 'includes/contact_section.php'; ?>
     <?php include 'includes/footer.php'; ?>
 </body>
 </html>

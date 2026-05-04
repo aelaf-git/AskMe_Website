@@ -28,23 +28,23 @@
                     <form name="sentMessage" id="contactForm" novalidate="novalidate" class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="control-group">
-                                <input type="text" class="w-full p-4 bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-colors" id="name" placeholder="Your Name"
+                                <input type="text" name="name" class="w-full p-4 bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-colors" id="name" placeholder="Your Name"
                                     required="required" data-validation-required-message="Please enter your name" />
                                 <p class="help-block text-red-500 text-xs mt-1"></p>
                             </div>
                             <div class="control-group">
-                                <input type="email" class="w-full p-4 bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-colors" id="email" placeholder="Your Email"
+                                <input type="email" name="email" class="w-full p-4 bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-colors" id="email" placeholder="Your Email"
                                     required="required" data-validation-required-message="Please enter your email" />
                                 <p class="help-block text-red-500 text-xs mt-1"></p>
                             </div>
                         </div>
                         <div class="control-group">
-                            <input type="text" class="w-full p-4 bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-colors" id="subject" placeholder="Subject"
+                            <input type="text" name="subject" class="w-full p-4 bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-colors" id="subject" placeholder="Subject"
                                 required="required" data-validation-required-message="Please enter a subject" />
                             <p class="help-block text-red-500 text-xs mt-1"></p>
                         </div>
                         <div class="control-group">
-                            <textarea class="w-full p-4 bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-colors" rows="5" id="message" placeholder="Message"
+                            <textarea name="message" class="w-full p-4 bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-colors" rows="5" id="message" placeholder="Message"
                                 required="required"
                                 data-validation-required-message="Please enter your message"></textarea>
                             <p class="help-block text-red-500 text-xs mt-1"></p>

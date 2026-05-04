@@ -30,7 +30,6 @@
                         <img class="w-full h-40 object-cover" src="assets/img/gorgora.jpg" alt="">
                         <img class="w-full h-40 object-cover" src="assets/img/moscow.jpg" alt="">
                     </div>
-                    <a href="#Registration" class="btn-primary">Book Now</a>
                 </div>
             </div>
         </div>
@@ -62,15 +61,6 @@
                 <div class="p-10">
                     <h3 class="text-2xl font-bold mb-4 group-hover:text-primary transition-colors leading-tight">Ethiopian New Year (Enkutatash)</h3>
                     <p class="text-gray-500 mb-8 leading-relaxed">Join us in celebrating the vibrant Ethiopian New Year with traditional music, dancing, and the beautiful yellow Meskel daisies.</p>
-                    <a href="#Registration" class="group/btn inline-flex items-center gap-3 text-primary font-bold">
-                        <span class="relative">
-                            Book Your Spot
-                            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover/btn:w-full transition-all duration-300"></span>
-                        </span>
-                        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover/btn:bg-primary group-hover/btn:text-white transition-all">
-                            <i class="fa fa-arrow-right text-sm"></i>
-                        </div>
-                    </a>
                 </div>
             </div>
 
@@ -87,15 +77,6 @@
                 <div class="p-10">
                     <h3 class="text-2xl font-bold mb-4 group-hover:text-primary transition-colors leading-tight">Meskel Festival</h3>
                     <p class="text-gray-500 mb-8 leading-relaxed">Experience the magnificent bonfire lighting ceremony (Demera) in Meskel Square, a UNESCO inscribed cultural heritage.</p>
-                    <a href="#Registration" class="group/btn inline-flex items-center gap-3 text-primary font-bold">
-                        <span class="relative">
-                            Book Your Spot
-                            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover/btn:w-full transition-all duration-300"></span>
-                        </span>
-                        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover/btn:bg-primary group-hover/btn:text-white transition-all">
-                            <i class="fa fa-arrow-right text-sm"></i>
-                        </div>
-                    </a>
                 </div>
             </div>
 
@@ -112,15 +93,6 @@
                 <div class="p-10">
                     <h3 class="text-2xl font-bold mb-4 group-hover:text-primary transition-colors leading-tight">Great Ethiopian Run</h3>
                     <p class="text-gray-500 mb-8 leading-relaxed">Participate in Africa's biggest 10km road race through the heart of Addis Ababa with over 45,000 other runners.</p>
-                    <a href="#Registration" class="group/btn inline-flex items-center gap-3 text-primary font-bold">
-                        <span class="relative">
-                            Book Your Spot
-                            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover/btn:w-full transition-all duration-300"></span>
-                        </span>
-                        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover/btn:bg-primary group-hover/btn:text-white transition-all">
-                            <i class="fa fa-arrow-right text-sm"></i>
-                        </div>
-                    </a>
                 </div>
             </div>
         </div>
