@@ -85,20 +85,13 @@ CREATE TABLE IF NOT EXISTS event_registrations (
     emergency_contact_relationship VARCHAR(100) DEFAULT NULL,
     country_of_residence VARCHAR(100) DEFAULT NULL,
     city_of_residence VARCHAR(100) DEFAULT NULL,
-    arrival_date DATE DEFAULT NULL,
-    departure_date DATE DEFAULT NULL,
-    arrival_city VARCHAR(120) DEFAULT NULL,
-    arrival_flight VARCHAR(80) DEFAULT NULL,
     accommodation_preference VARCHAR(100) DEFAULT NULL,
     room_type_preference VARCHAR(100) DEFAULT NULL,
     dietary_requirements TEXT,
     medical_conditions TEXT,
-    insurance_provider VARCHAR(255) DEFAULT NULL,
-    insurance_policy_number VARCHAR(120) DEFAULT NULL,
-    visa_support_doc_path VARCHAR(255) DEFAULT NULL,
+    insurance_provider VARCHAR(255) NOT NULL,
+    insurance_policy_number VARCHAR(120) NOT NULL,
     insurance_doc_path VARCHAR(255) DEFAULT NULL,
-    vaccination_doc_path VARCHAR(255) DEFAULT NULL,
-    additional_doc_path VARCHAR(255) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
 );
@@ -157,3 +150,15 @@ CREATE TABLE IF NOT EXISTS services (
     description TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Migration for existing databases (run manually once):
+-- ALTER TABLE event_registrations
+--     DROP COLUMN arrival_date,
+--     DROP COLUMN departure_date,
+--     DROP COLUMN arrival_city,
+--     DROP COLUMN arrival_flight,
+--     DROP COLUMN visa_support_doc_path,
+--     DROP COLUMN vaccination_doc_path,
+--     DROP COLUMN additional_doc_path,
+--     MODIFY insurance_provider VARCHAR(255) NOT NULL,
+--     MODIFY insurance_policy_number VARCHAR(120) NOT NULL;
