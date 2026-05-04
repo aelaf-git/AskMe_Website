@@ -4,6 +4,51 @@ $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $form_message = '';
 $form_success = false;
 
+function normalize_upload_name($name) {
+    $safe = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($name));
+    return $safe ?: 'document';
+}
+
+function save_registration_upload($fileKey, $required = false) {
+    if (!isset($_FILES[$fileKey]) || !is_array($_FILES[$fileKey])) {
+        return ['ok' => !$required, 'path' => null, 'error' => $required ? 'Missing required upload.' : null];
+    }
+
+    $file = $_FILES[$fileKey];
+    if ($file['error'] === UPLOAD_ERR_NO_FILE) {
+        return ['ok' => !$required, 'path' => null, 'error' => $required ? 'Missing required upload.' : null];
+    }
+
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return ['ok' => false, 'path' => null, 'error' => 'Upload failed.'];
+    }
+
+    if ($file['size'] > 5 * 1024 * 1024) {
+        return ['ok' => false, 'path' => null, 'error' => 'File is too large (max 5MB).'];
+    }
+
+    $allowed = ['pdf', 'jpg', 'jpeg', 'png'];
+    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if (!in_array($ext, $allowed, true)) {
+        return ['ok' => false, 'path' => null, 'error' => 'Invalid file type. Use PDF/JPG/JPEG/PNG.'];
+    }
+
+    $uploadDir = __DIR__ . '/../uploads/event_registrations/' . date('Y/m');
+    if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true)) {
+        return ['ok' => false, 'path' => null, 'error' => 'Could not prepare upload directory.'];
+    }
+
+    $targetName = date('YmdHis') . '_' . bin2hex(random_bytes(4)) . '_' . normalize_upload_name($file['name']);
+    $targetPath = $uploadDir . '/' . $targetName;
+
+    if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
+        return ['ok' => false, 'path' => null, 'error' => 'Could not save uploaded file.'];
+    }
+
+    $relativePath = 'uploads/event_registrations/' . date('Y/m') . '/' . $targetName;
+    return ['ok' => true, 'path' => $relativePath, 'error' => null];
+}
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
     $eid = (int)$_POST['event_id'];
@@ -15,11 +60,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
         $form_message = 'Registration for this event has closed.';
     } else {
         $areas = isset($_POST['areas_of_interest']) ? implode(', ', $_POST['areas_of_interest']) : '';
-        if (isset($_POST['areas_other']) && !empty($_POST['areas_other'])) {
-            $areas .= ($areas ? ', ' : '') . $_POST['areas_other'];
+        if (!empty($_POST['areas_other'])) {
+            $areas .= ($areas ? ', ' : '') . trim($_POST['areas_other']);
         }
+
+        $passportUpload = save_registration_upload('passport_scan', true);
+        $photoUpload = save_registration_upload('profile_photo', true);
+        $visaUpload = save_registration_upload('visa_support_doc', false);
+        $insuranceUpload = save_registration_upload('insurance_doc', false);
+        $vaccinationUpload = save_registration_upload('vaccination_doc', false);
+        $otherUpload = save_registration_upload('additional_document', false);
+
+        $uploadErrors = [];
+        foreach ([$passportUpload, $photoUpload, $visaUpload, $insuranceUpload, $vaccinationUpload, $otherUpload] as $uploadResult) {
+            if (!$uploadResult['ok'] && $uploadResult['error']) {
+                $uploadErrors[] = $uploadResult['error'];
+            }
+        }
+
+        if (!empty($uploadErrors)) {
+            $form_message = implode(' ', array_unique($uploadErrors));
+            $id = $eid;
+            goto end_submission;
+        }
+
         try {
-            $stmt = $pdo->prepare("INSERT INTO event_registrations (event_id, full_name, gender, dob, nationality, passport_number, passport_expiry, phone, email, address, occupation, company, industry, experience_years, purpose, areas_of_interest, has_passport, traveled_before, requires_visa, needs_invitation, special_notes) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            $stmt = $pdo->prepare("INSERT INTO event_registrations (
+                event_id, full_name, gender, dob, nationality, passport_number, passport_expiry, phone, email, address,
+                occupation, company, industry, experience_years, purpose, areas_of_interest, has_passport, traveled_before,
+                requires_visa, needs_invitation, special_notes, passport_issue_date, passport_issue_place, passport_scan_path,
+                profile_photo_path, emergency_contact_name, emergency_contact_phone, emergency_contact_relationship, country_of_residence,
+                city_of_residence, arrival_date, departure_date, arrival_city, arrival_flight, accommodation_preference,
+                room_type_preference, dietary_requirements, medical_conditions, insurance_provider, insurance_policy_number,
+                visa_support_doc_path, insurance_doc_path, vaccination_doc_path, additional_doc_path
+            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             $stmt->execute([
                 $eid, $_POST['full_name'], $_POST['gender'], $_POST['dob'], $_POST['nationality'],
                 $_POST['passport_number'], $_POST['passport_expiry'], $_POST['phone'], $_POST['email'],
@@ -27,7 +101,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
                 (int)($_POST['experience_years'] ?? 0), $_POST['purpose'], $areas,
                 isset($_POST['has_passport']) ? 1 : 0, isset($_POST['traveled_before']) ? 1 : 0,
                 isset($_POST['requires_visa']) ? 1 : 0, isset($_POST['needs_invitation']) ? 1 : 0,
-                $_POST['special_notes'] ?? ''
+                $_POST['special_notes'] ?? '',
+                $_POST['passport_issue_date'] ?? null, $_POST['passport_issue_place'] ?? '',
+                $passportUpload['path'], $photoUpload['path'],
+                $_POST['emergency_contact_name'] ?? '', $_POST['emergency_contact_phone'] ?? '',
+                $_POST['emergency_contact_relationship'] ?? '', $_POST['country_of_residence'] ?? '',
+                $_POST['city_of_residence'] ?? '', $_POST['arrival_date'] ?? null, $_POST['departure_date'] ?? null,
+                $_POST['arrival_city'] ?? '', $_POST['arrival_flight'] ?? '', $_POST['accommodation_preference'] ?? '',
+                $_POST['room_type_preference'] ?? '', $_POST['dietary_requirements'] ?? '',
+                $_POST['medical_conditions'] ?? '', $_POST['insurance_provider'] ?? '',
+                $_POST['insurance_policy_number'] ?? '', $visaUpload['path'], $insuranceUpload['path'],
+                $vaccinationUpload['path'], $otherUpload['path']
             ]);
             $form_success = true;
             $form_message = 'Your application has been submitted successfully!';
@@ -37,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
     }
     $id = $eid;
 }
+end_submission:
 
 try {
     $stmt = $pdo->prepare("SELECT * FROM events WHERE id = ?");
@@ -168,7 +253,7 @@ try {
             <?php endif; ?>
         </div>
 
-        <form action="index.php?p=event_detail&id=<?php echo $id; ?>" method="POST" class="bg-white rounded-[40px] shadow-2xl border border-gray-100 overflow-hidden">
+        <form action="index.php?p=event_detail&id=<?php echo $id; ?>" method="POST" enctype="multipart/form-data" class="bg-white rounded-[40px] shadow-2xl border border-gray-100 overflow-hidden">
             <input type="hidden" name="event_id" value="<?php echo $id; ?>">
             <input type="hidden" name="event_register" value="1">
 
@@ -178,11 +263,15 @@ try {
                 <p class="text-gray-400 text-sm mb-8">Your basic identity details.</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Full Name *</label><input type="text" name="full_name" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
-                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Gender *</label><select name="gender" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"><option value="">Select</option><option>Male</option><option>Female</option></select></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Gender *</label><select name="gender" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div>
                     <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Date of Birth *</label><input type="date" name="dob" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
                     <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Nationality *</label><input type="text" name="nationality" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
                     <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Passport Number *</label><input type="text" name="passport_number" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
                     <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Passport Expiry Date *</label><input type="date" name="passport_expiry" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Passport Issue Date *</label><input type="date" name="passport_issue_date" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Passport Issue Place *</label><input type="text" name="passport_issue_place" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Country of Residence *</label><input type="text" name="country_of_residence" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">City of Residence *</label><input type="text" name="city_of_residence" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
                 </div>
             </div>
 
@@ -193,7 +282,10 @@ try {
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Phone Number *</label><input type="tel" name="phone" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
                     <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Email Address *</label><input type="email" name="email" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Emergency Contact Name *</label><input type="text" name="emergency_contact_name" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Emergency Contact Phone *</label><input type="tel" name="emergency_contact_phone" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
                 </div>
+                <div class="mt-6"><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Emergency Contact Relationship *</label><input type="text" name="emergency_contact_relationship" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
                 <div class="mt-6"><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Address *</label><textarea name="address" required rows="2" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></textarea></div>
             </div>
 
@@ -230,10 +322,16 @@ try {
             <div class="p-10 md:p-16 border-b border-gray-100">
                 <h3 class="text-2xl font-black text-secondary mb-2">5. Travel Information</h3>
                 <p class="text-gray-400 text-sm mb-8">Passport and visa details.</p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                     <label class="flex items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-200 cursor-pointer"><span class="font-bold text-sm text-gray-600">Valid passport?</span><input type="checkbox" name="has_passport" value="1" checked class="w-5 h-5 accent-primary"></label>
                     <label class="flex items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-200 cursor-pointer"><span class="font-bold text-sm text-gray-600">Traveled to China?</span><input type="checkbox" name="traveled_before" value="1" class="w-5 h-5 accent-primary"></label>
                     <label class="flex items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-200 cursor-pointer"><span class="font-bold text-sm text-gray-600">Need visa support?</span><input type="checkbox" name="requires_visa" value="1" class="w-5 h-5 accent-primary"></label>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Arrival Date *</label><input type="date" name="arrival_date" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Departure Date *</label><input type="date" name="departure_date" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Arrival City / Airport *</label><input type="text" name="arrival_city" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Flight Number (if available)</label><input type="text" name="arrival_flight" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
                 </div>
             </div>
 
@@ -242,14 +340,36 @@ try {
                 <h3 class="text-2xl font-black text-secondary mb-2">6. Additional Information</h3>
                 <p class="text-gray-400 text-sm mb-8">Any extra requirements.</p>
                 <label class="flex items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-200 cursor-pointer mb-6 max-w-md"><span class="font-bold text-sm text-gray-600">Need invitation letter?</span><input type="checkbox" name="needs_invitation" value="1" class="w-5 h-5 accent-primary"></label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Accommodation Preference *</label><select name="accommodation_preference" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"><option value="">Select</option><option>Hotel</option><option>Serviced Apartment</option><option>Guest House</option></select></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Room Type *</label><select name="room_type_preference" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"><option value="">Select</option><option>Single</option><option>Twin</option><option>Double</option></select></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Dietary Requirements</label><input type="text" name="dietary_requirements" placeholder="Vegetarian, halal, allergies..." class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Medical Conditions / Accessibility Needs</label><input type="text" name="medical_conditions" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Travel Insurance Provider *</label><input type="text" name="insurance_provider" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Insurance Policy Number *</label><input type="text" name="insurance_policy_number" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                </div>
                 <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Special Requests or Notes</label><textarea name="special_notes" rows="3" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></textarea></div>
             </div>
 
-            <!-- Section 7: Declaration & Submit -->
+            <!-- Section 7: Required Uploads -->
+            <div class="p-10 md:p-16 border-b border-gray-100">
+                <h3 class="text-2xl font-black text-secondary mb-2">7. Document Uploads</h3>
+                <p class="text-gray-400 text-sm mb-8">Upload clear files (PDF/JPG/PNG, max 5MB each).</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Passport Scan (Required) *</label><input type="file" name="passport_scan" accept=".pdf,.jpg,.jpeg,.png" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Recent Photo (Required) *</label><input type="file" name="profile_photo" accept=".jpg,.jpeg,.png,.pdf" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Visa Support Document</label><input type="file" name="visa_support_doc" accept=".pdf,.jpg,.jpeg,.png" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Travel Insurance Document</label><input type="file" name="insurance_doc" accept=".pdf,.jpg,.jpeg,.png" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Vaccination Certificate (if required)</label><input type="file" name="vaccination_doc" accept=".pdf,.jpg,.jpeg,.png" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Additional Supporting Document</label><input type="file" name="additional_document" accept=".pdf,.jpg,.jpeg,.png" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                </div>
+            </div>
+
+            <!-- Section 8: Declaration & Submit -->
             <div class="p-10 md:p-16">
                 <label class="flex items-start space-x-4 mb-10 cursor-pointer">
                     <input type="checkbox" required class="w-5 h-5 accent-primary mt-1">
-                    <span class="text-gray-600 font-medium leading-relaxed">I confirm that the information provided is accurate and I agree to comply with the program requirements.</span>
+                    <span class="text-gray-600 font-medium leading-relaxed">I confirm that all details and uploaded documents are accurate, valid, and ready for official travel/event processing.</span>
                 </label>
                 <button type="submit" class="w-full py-6 bg-secondary text-white font-black rounded-3xl shadow-xl shadow-secondary/20 hover:-translate-y-1 transition-all uppercase tracking-[4px] text-sm">
                     <i class="fas fa-paper-plane mr-3"></i> Submit Application
