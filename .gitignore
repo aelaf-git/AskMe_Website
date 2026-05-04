@@ -1,0 +1,30 @@
+# Environment & config
+.env
+*.env
+config/local.php
+
+# Uploaded content
+assets/img/uploads/
+uploads/
+
+# IDE & editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Composer (if used)
+vendor/
+
+# Database dumps (keep schema only)
+*.sql
+!database.sql

@@ -11,6 +11,7 @@
         'package' => 'Tour Packages',
         'service' => 'Our Services',
         'single' => 'Blog Detail',
+        'events' => 'Upcoming Events',
         'event_detail' => 'Event Detail',
         'testimonial' => 'Testimonials'
     ];
@@ -162,7 +163,7 @@
                             <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px]">Calendar</div>
                             <h1 class="text-4xl md:text-6xl font-black text-secondary tracking-tighter">Upcoming <span class="text-primary">Events</span></h1>
                         </div>
-                        <a href="index.php?p=blog" class="px-8 py-4 bg-secondary text-white font-bold rounded-2xl shadow-lg hover:scale-105 transition-all duration-300">View All Events</a>
+                        <a href="index.php?p=events" class="px-8 py-4 bg-secondary text-white font-bold rounded-2xl shadow-lg hover:scale-105 transition-all duration-300">View All Events</a>
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
