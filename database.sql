@@ -1,6 +1,5 @@
--- Create the database
-CREATE DATABASE IF NOT EXISTS askme_tour;
-USE askme_tour;
+-- Import this file into your existing database (askmetgy_main) via phpMyAdmin or hosting control panel
+-- Do NOT run the CREATE DATABASE or USE statements on shared hosting
 
 -- Table for Admin Users
 CREATE TABLE IF NOT EXISTS admins (
