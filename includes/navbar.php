@@ -2,11 +2,11 @@
     <div class="fixed top-0 left-0 right-0 z-[100] px-4 py-6 pointer-events-none">
         <div class="max-w-7xl mx-auto pointer-events-auto">
             <nav class="glass px-4 md:px-8 py-3 md:py-4 rounded-[20px] md:rounded-3xl shadow-2xl flex items-center justify-between transition-all duration-500 hover:shadow-primary/20">
-                <a href="index.php" class="flex items-center space-x-2 group">
-                    <div class="w-8 h-8 md:w-10 md:h-10 bg-primary rounded-lg md:rounded-xl flex items-center justify-center shadow-glow group-hover:rotate-12 transition-transform duration-300">
-                        <i class="fas fa-paper-plane text-white text-sm md:text-lg"></i>
+                <a href="index.php" class="flex items-center space-x-3 group">
+                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1 shadow-glow group-hover:rotate-6 transition-transform duration-300">
+                        <img src="assets/img/askme.png" alt="AskMe Logo" class="w-full h-full object-contain">
                     </div>
-                    <span class="text-xl md:text-2xl font-black tracking-tighter text-dark">
+                    <span class="text-2xl font-black tracking-tighter text-dark">
                         <span class="text-primary">Ask</span>Me
                     </span>
                 </a>

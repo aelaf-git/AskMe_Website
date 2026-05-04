@@ -24,23 +24,19 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: {
-                            DEFAULT: '#7AB730',
-                            vibrant: '#88e01b',
-                            dark: '#527a20',
-                        },
-                        dark: {
-                            DEFAULT: '#0f172a',
-                            lighter: '#1e293b',
-                        },
-                        accent: '#facc15',
+                        primary: '#89C23D',    /* Logo Green */
+                        secondary: '#1D609E',  /* Logo Blue */
+                        vibrant: '#46B89D',    /* Logo Teal */
+                        dark: '#0f172a',
+                        light: '#f8fafc'
                     },
                     fontFamily: {
                         sans: ['Outfit', 'sans-serif'],
                     },
                     boxShadow: {
-                        'glow': '0 0 20px rgba(122, 183, 48, 0.4)',
-                        'glow-heavy': '0 0 40px rgba(122, 183, 48, 0.6)',
+                        'glow': '0 0 20px rgba(137, 194, 61, 0.4)',
+                        'glow-heavy': '0 0 40px rgba(137, 194, 61, 0.6)',
+                        'glow-blue': '0 0 20px rgba(29, 96, 158, 0.4)',
                     }
                 }
             }

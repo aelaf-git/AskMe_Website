@@ -29,44 +29,46 @@
             <!-- Hero Start -->
             <div class="relative w-full h-screen overflow-hidden">
                 <div id="carousel-inner" class="flex transition-transform duration-1000 ease-[cubic-bezier(0.87,0,0.13,1)] h-full">
-                    <div class="min-w-full h-full relative">
-                        <img class="w-full h-full object-cover scale-110" src="assets/img/addisababa.jpg" alt="Image">
+                    <!-- Slide 1 -->
+                    <div class="min-w-full h-full relative overflow-hidden">
+                        <img class="w-full h-full object-cover transition-transform duration-[10s] ease-linear transform scale-110" src="assets/img/addisababa.jpg" alt="Image">
                         <div class="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/40 to-transparent flex items-center p-8 lg:p-24 pt-32 lg:pt-40">
                             <div class="max-w-[800px] space-y-8 animate-fade-in-left">
                                 <div class="inline-flex items-center space-x-3 px-4 py-2 glass rounded-full border-primary/30">
                                     <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                                    <span class="text-xs font-black uppercase tracking-[3px] text-primary">Discover Ethiopia</span>
+                                    <span class="text-xs font-black uppercase tracking-[3px] text-white">Discover Ethiopia</span>
                                 </div>
-                                <h1 class="text-5xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter">
-                                    Let's Explore The <span class="text-primary text-glow">Future</span> Together
+                                <h1 class="text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter">
+                                    Let's Explore The <br> <span class="text-primary text-glow">Future</span> Together
                                 </h1>
-                                <p class="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
+                                <p class="text-xl text-slate-300 font-medium max-w-xl leading-relaxed">
                                     Embark on a journey where tradition meets innovation. AskMe Tour & Travel brings you the most immersive experiences across the globe.
                                 </p>
-                                <div class="flex flex-wrap gap-4 pt-4">
-                                    <a href="index.php?p=package" class="px-8 py-4 bg-primary text-white font-bold rounded-2xl shadow-glow hover:shadow-glow-heavy hover:scale-105 transition-all duration-300">Start Your Journey</a>
-                                    <a href="#about" class="px-8 py-4 glass text-white font-bold rounded-2xl hover:bg-white/20 transition-all duration-300">Learn More</a>
+                                <div class="flex flex-wrap gap-6 pt-4">
+                                    <a href="index.php?p=package" class="px-10 py-5 bg-primary text-white font-black rounded-2xl shadow-glow hover:shadow-glow-heavy hover:scale-105 transition-all duration-300 uppercase tracking-widest text-sm">Start Your Journey</a>
+                                    <a href="index.php?p=about" class="px-10 py-5 bg-secondary text-white font-black rounded-2xl shadow-glow-blue hover:scale-105 transition-all duration-300 uppercase tracking-widest text-sm">Learn More</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="min-w-full h-full relative">
-                        <img class="w-full h-full object-cover scale-110" src="assets/img/fasiledes.jpg" alt="Image">
+
+                    <!-- Slide 2 -->
+                    <div class="min-w-full h-full relative overflow-hidden">
+                        <img class="w-full h-full object-cover transition-transform duration-[10s] ease-linear transform scale-110" src="assets/img/fasiledes.jpg" alt="Image">
                         <div class="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/40 to-transparent flex items-center p-8 lg:p-24 pt-32 lg:pt-40">
                             <div class="max-w-[800px] space-y-8">
                                 <div class="inline-flex items-center space-x-3 px-4 py-2 glass rounded-full border-primary/30">
                                     <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                                    <span class="text-xs font-black uppercase tracking-[3px] text-primary">Unique Adventures</span>
+                                    <span class="text-xs font-black uppercase tracking-[3px] text-white">Global Adventures</span>
                                 </div>
-                                <h1 class="text-5xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter">
-                                    Unforgettable <span class="text-primary text-glow">Memories</span> Await
+                                <h1 class="text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter">
+                                    Unforgettable <br> <span class="text-primary text-glow">Memories</span> Await
                                 </h1>
-                                <p class="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
-                                    From ancient wonders to modern marvels, we curate every step of your adventure to perfection.
+                                <p class="text-xl text-slate-300 font-medium max-w-xl leading-relaxed">
+                                    From the historic castles of Gondar to the modern skylines of the world, we craft the perfect itinerary for your soul.
                                 </p>
-                                <div class="flex flex-wrap gap-4 pt-4">
-                                    <a href="index.php?p=package" class="px-8 py-4 bg-primary text-white font-bold rounded-2xl shadow-glow hover:shadow-glow-heavy hover:scale-105 transition-all duration-300">View Packages</a>
-                                    <a href="#about" class="px-8 py-4 glass text-white font-bold rounded-2xl hover:bg-white/20 transition-all duration-300">Our Story</a>
+                                <div class="flex flex-wrap gap-6 pt-4">
+                                    <a href="index.php?p=package" class="px-10 py-5 bg-primary text-white font-black rounded-2xl shadow-glow hover:shadow-glow-heavy hover:scale-105 transition-all duration-300 uppercase tracking-widest text-sm">Explore Packages</a>
                                 </div>
                             </div>
                         </div>
@@ -160,7 +162,7 @@
                             <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px]">Calendar</div>
                             <h1 class="text-4xl md:text-6xl font-black text-dark tracking-tighter">Upcoming <span class="text-primary">Events</span></h1>
                         </div>
-                        <a href="index.php?p=blog" class="px-8 py-4 glass text-dark font-bold rounded-2xl hover:bg-primary hover:text-white transition-all duration-300 border border-slate-200">View All Events</a>
+                        <a href="index.php?p=blog" class="px-8 py-4 bg-secondary text-white font-bold rounded-2xl shadow-glow-blue hover:scale-105 transition-all duration-300">View All Events</a>
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
