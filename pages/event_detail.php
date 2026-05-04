@@ -4,6 +4,102 @@ $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $form_message = '';
 $form_success = false;
 
+function ensure_event_registrations_schema($pdo) {
+    $pdo->exec("CREATE TABLE IF NOT EXISTS event_registrations (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        event_id INT NOT NULL,
+        full_name VARCHAR(255) NOT NULL,
+        gender VARCHAR(20) NOT NULL,
+        dob DATE NOT NULL,
+        nationality VARCHAR(100) NOT NULL,
+        passport_number VARCHAR(50) NOT NULL,
+        passport_expiry DATE NOT NULL,
+        phone VARCHAR(50) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        address TEXT NOT NULL,
+        occupation VARCHAR(255) NOT NULL,
+        company VARCHAR(255),
+        industry VARCHAR(255),
+        experience_years INT DEFAULT 0,
+        purpose TEXT NOT NULL,
+        areas_of_interest TEXT,
+        has_passport TINYINT(1) DEFAULT 1,
+        traveled_before TINYINT(1) DEFAULT 0,
+        previous_international_destinations TEXT,
+        has_trip_visa TINYINT(1) DEFAULT 0,
+        requires_visa TINYINT(1) DEFAULT 0,
+        needs_invitation TINYINT(1) DEFAULT 0,
+        special_notes TEXT,
+        passport_issue_date DATE DEFAULT NULL,
+        passport_issue_place VARCHAR(255) DEFAULT NULL,
+        passport_scan_path VARCHAR(255) DEFAULT NULL,
+        profile_photo_path VARCHAR(255) DEFAULT NULL,
+        emergency_contact_name VARCHAR(255) DEFAULT NULL,
+        emergency_contact_phone VARCHAR(50) DEFAULT NULL,
+        emergency_contact_relationship VARCHAR(100) DEFAULT NULL,
+        country_of_residence VARCHAR(100) DEFAULT NULL,
+        city_of_residence VARCHAR(100) DEFAULT NULL,
+        accommodation_preference VARCHAR(100) DEFAULT NULL,
+        room_type_preference VARCHAR(100) DEFAULT NULL,
+        dietary_requirements TEXT,
+        medical_conditions TEXT,
+        insurance_provider VARCHAR(255) NOT NULL DEFAULT '',
+        insurance_policy_number VARCHAR(120) NOT NULL DEFAULT '',
+        insurance_doc_path VARCHAR(255) DEFAULT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )");
+
+    $requiredColumns = [
+        'event_id' => "INT NULL",
+        'full_name' => "VARCHAR(255) NOT NULL DEFAULT ''",
+        'gender' => "VARCHAR(20) NOT NULL DEFAULT ''",
+        'dob' => "DATE NULL",
+        'nationality' => "VARCHAR(100) NOT NULL DEFAULT ''",
+        'passport_number' => "VARCHAR(50) NOT NULL DEFAULT ''",
+        'passport_expiry' => "DATE NULL",
+        'phone' => "VARCHAR(50) NOT NULL DEFAULT ''",
+        'email' => "VARCHAR(255) NOT NULL DEFAULT ''",
+        'address' => "TEXT NULL",
+        'occupation' => "VARCHAR(255) NOT NULL DEFAULT ''",
+        'company' => "VARCHAR(255) NULL",
+        'industry' => "VARCHAR(255) NULL",
+        'experience_years' => "INT DEFAULT 0",
+        'purpose' => "TEXT NULL",
+        'areas_of_interest' => "TEXT NULL",
+        'has_passport' => "TINYINT(1) DEFAULT 1",
+        'traveled_before' => "TINYINT(1) DEFAULT 0",
+        'previous_international_destinations' => "TEXT NULL",
+        'has_trip_visa' => "TINYINT(1) DEFAULT 0",
+        'requires_visa' => "TINYINT(1) DEFAULT 0",
+        'needs_invitation' => "TINYINT(1) DEFAULT 0",
+        'special_notes' => "TEXT NULL",
+        'passport_issue_date' => "DATE DEFAULT NULL",
+        'passport_issue_place' => "VARCHAR(255) DEFAULT NULL",
+        'passport_scan_path' => "VARCHAR(255) DEFAULT NULL",
+        'profile_photo_path' => "VARCHAR(255) DEFAULT NULL",
+        'emergency_contact_name' => "VARCHAR(255) DEFAULT NULL",
+        'emergency_contact_phone' => "VARCHAR(50) DEFAULT NULL",
+        'emergency_contact_relationship' => "VARCHAR(100) DEFAULT NULL",
+        'country_of_residence' => "VARCHAR(100) DEFAULT NULL",
+        'city_of_residence' => "VARCHAR(100) DEFAULT NULL",
+        'accommodation_preference' => "VARCHAR(100) DEFAULT NULL",
+        'room_type_preference' => "VARCHAR(100) DEFAULT NULL",
+        'dietary_requirements' => "TEXT NULL",
+        'medical_conditions' => "TEXT NULL",
+        'insurance_provider' => "VARCHAR(255) NOT NULL DEFAULT ''",
+        'insurance_policy_number' => "VARCHAR(120) NOT NULL DEFAULT ''",
+        'insurance_doc_path' => "VARCHAR(255) DEFAULT NULL"
+    ];
+
+    foreach ($requiredColumns as $column => $definition) {
+        $check = $pdo->prepare("SHOW COLUMNS FROM event_registrations LIKE ?");
+        $check->execute([$column]);
+        if (!$check->fetch()) {
+            $pdo->exec("ALTER TABLE event_registrations ADD COLUMN {$column} {$definition}");
+        }
+    }
+}
+
 function normalize_upload_name($name) {
     $safe = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($name));
     return $safe ?: 'document';
@@ -50,6 +146,17 @@ function save_registration_upload($fileKey, $required = false) {
 }
 
 // Handle form submission
+try {
+    ensure_event_registrations_schema($pdo);
+} catch (PDOException $e) {
+    $form_message = 'Database schema issue detected for event registrations.';
+}
+
+if (isset($_GET['submitted']) && $_GET['submitted'] === '1') {
+    $form_success = true;
+    $form_message = 'Application submitted successfully.';
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
     $eid = (int)$_POST['event_id'];
     // Check deadline
@@ -82,19 +189,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
         }
 
         try {
-            $stmt = $pdo->prepare("INSERT INTO event_registrations (
-                event_id, full_name, gender, dob, nationality, passport_number, passport_expiry, phone, email, address,
-                occupation, company, industry, experience_years, purpose, areas_of_interest, has_passport, traveled_before,
-                previous_international_destinations, has_trip_visa, requires_visa, needs_invitation, special_notes, passport_issue_date, passport_issue_place, passport_scan_path,
-                profile_photo_path, emergency_contact_name, emergency_contact_phone, emergency_contact_relationship, country_of_residence,
-                city_of_residence, accommodation_preference,
-                room_type_preference, dietary_requirements, medical_conditions, insurance_provider, insurance_policy_number,
-                insurance_doc_path
-            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            $stmt->execute([
+            $insertValues = [
                 $eid, $_POST['full_name'], $_POST['gender'], $_POST['dob'], $_POST['nationality'],
                 $_POST['passport_number'], $_POST['passport_expiry'], $_POST['phone'], $_POST['email'],
-                $_POST['address'], $_POST['occupation'], $_POST['company'] ?? '', $_POST['industry'] ?? '',
+                $_POST['address'], $_POST['occupation'] ?? 'N/A', $_POST['company'] ?? '', $_POST['industry'] ?? '',
                 (int)($_POST['experience_years'] ?? 0), $_POST['purpose'], $areas,
                 1, isset($_POST['traveled_before']) ? 1 : 0,
                 $_POST['previous_international_destinations'] ?? '', isset($_POST['has_trip_visa']) ? 1 : 0,
@@ -108,11 +206,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
                 $_POST['room_type_preference'] ?? '', $_POST['dietary_requirements'] ?? '',
                 $_POST['medical_conditions'] ?? '', $_POST['insurance_provider'] ?? '',
                 $_POST['insurance_policy_number'] ?? '', $insuranceUpload['path']
-            ]);
-            $form_success = true;
-            $form_message = 'Your application has been submitted successfully!';
+            ];
+            $placeholders = implode(',', array_fill(0, count($insertValues), '?'));
+
+            $stmt = $pdo->prepare("INSERT INTO event_registrations (
+                event_id, full_name, gender, dob, nationality, passport_number, passport_expiry, phone, email, address,
+                occupation, company, industry, experience_years, purpose, areas_of_interest, has_passport, traveled_before,
+                previous_international_destinations, has_trip_visa, requires_visa, needs_invitation, special_notes, passport_issue_date, passport_issue_place, passport_scan_path,
+                profile_photo_path, emergency_contact_name, emergency_contact_phone, emergency_contact_relationship, country_of_residence,
+                city_of_residence, accommodation_preference,
+                room_type_preference, dietary_requirements, medical_conditions, insurance_provider, insurance_policy_number,
+                insurance_doc_path
+            ) VALUES ({$placeholders})");
+            $stmt->execute($insertValues);
+            header('Location: index.php?p=event_detail&id=' . $eid . '&submitted=1');
+            exit();
         } catch (PDOException $e) {
-            $form_message = 'Error submitting form. Please try again.';
+            $form_message = 'Error submitting form: ' . $e->getMessage();
         }
     }
     $id = $eid;

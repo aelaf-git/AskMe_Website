@@ -6,6 +6,59 @@ require_once 'config.php';
 if (!is_admin_authenticated()) { header('Location: login.php'); exit(); }
 
 $page_title = "Event Registrations";
+$load_error = '';
+
+function ensure_event_registrations_schema($pdo) {
+    $pdo->exec("CREATE TABLE IF NOT EXISTS event_registrations (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        event_id INT NOT NULL,
+        full_name VARCHAR(255) NOT NULL,
+        gender VARCHAR(20) NOT NULL,
+        dob DATE NOT NULL,
+        nationality VARCHAR(100) NOT NULL,
+        passport_number VARCHAR(50) NOT NULL,
+        passport_expiry DATE NOT NULL,
+        phone VARCHAR(50) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        address TEXT NOT NULL,
+        occupation VARCHAR(255) NOT NULL,
+        company VARCHAR(255),
+        industry VARCHAR(255),
+        experience_years INT DEFAULT 0,
+        purpose TEXT NOT NULL,
+        areas_of_interest TEXT,
+        has_passport TINYINT(1) DEFAULT 1,
+        traveled_before TINYINT(1) DEFAULT 0,
+        previous_international_destinations TEXT,
+        has_trip_visa TINYINT(1) DEFAULT 0,
+        requires_visa TINYINT(1) DEFAULT 0,
+        needs_invitation TINYINT(1) DEFAULT 0,
+        special_notes TEXT,
+        passport_issue_date DATE DEFAULT NULL,
+        passport_issue_place VARCHAR(255) DEFAULT NULL,
+        passport_scan_path VARCHAR(255) DEFAULT NULL,
+        profile_photo_path VARCHAR(255) DEFAULT NULL,
+        emergency_contact_name VARCHAR(255) DEFAULT NULL,
+        emergency_contact_phone VARCHAR(50) DEFAULT NULL,
+        emergency_contact_relationship VARCHAR(100) DEFAULT NULL,
+        country_of_residence VARCHAR(100) DEFAULT NULL,
+        city_of_residence VARCHAR(100) DEFAULT NULL,
+        accommodation_preference VARCHAR(100) DEFAULT NULL,
+        room_type_preference VARCHAR(100) DEFAULT NULL,
+        dietary_requirements TEXT,
+        medical_conditions TEXT,
+        insurance_provider VARCHAR(255) NOT NULL DEFAULT '',
+        insurance_policy_number VARCHAR(120) NOT NULL DEFAULT '',
+        insurance_doc_path VARCHAR(255) DEFAULT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )");
+}
+
+try {
+    ensure_event_registrations_schema($pdo);
+} catch (PDOException $e) {
+    $load_error = 'Could not prepare event registrations table.';
+}
 
 // Handle Delete
 if (isset($_GET['delete'])) {
@@ -77,6 +130,9 @@ $regs = $stmt->fetchAll();
         <main class="p-10">
             <?php if (isset($_GET['success'])): ?>
             <div class="mb-8 p-4 bg-emerald-50 text-emerald-600 rounded-2xl font-bold border border-emerald-100"><i class="fas fa-check-circle mr-2"></i> Registration deleted successfully.</div>
+            <?php endif; ?>
+            <?php if ($load_error): ?>
+            <div class="mb-8 p-4 bg-rose-50 text-rose-600 rounded-2xl font-bold border border-rose-100"><i class="fas fa-exclamation-circle mr-2"></i> <?php echo $load_error; ?></div>
             <?php endif; ?>
 
             <div class="bg-white rounded-[50px] shadow-sm border border-slate-100 overflow-hidden">
