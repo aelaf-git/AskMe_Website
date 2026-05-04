@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/../includes/db.php';
 
@@ -7,23 +8,44 @@ if (!is_admin_authenticated()) {
     exit;
 }
 
+$page_title = "Admin Dashboard";
+
 // Fetch stats
 $totalBookings = $pdo->query("SELECT COUNT(*) FROM registrations")->fetchColumn();
 $totalMessages = $pdo->query("SELECT COUNT(*) FROM messages")->fetchColumn();
 $totalNewsletter = $pdo->query("SELECT COUNT(*) FROM newsletter")->fetchColumn();
 $totalEvents = $pdo->query("SELECT COUNT(*) FROM events")->fetchColumn();
 $totalPackages = $pdo->query("SELECT COUNT(*) FROM packages")->fetchColumn();
+$totalTeam = $pdo->query("SELECT COUNT(*) FROM team")->fetchColumn();
+
+// Fetch Engagement Data for Graph (Last 7 Days)
+$graphData = [];
+for ($i = 6; $i >= 0; $i--) {
+    $date = date('Y-m-d', strtotime("-$i days"));
+    $msgCount = $pdo->query("SELECT COUNT(*) FROM messages WHERE DATE(created_at) = '$date'")->fetchColumn();
+    $regCount = $pdo->query("SELECT COUNT(*) FROM registrations WHERE DATE(created_at) = '$date'")->fetchColumn();
+    $subCount = $pdo->query("SELECT COUNT(*) FROM newsletter WHERE DATE(created_at) = '$date'")->fetchColumn();
+    
+    $graphData[] = [
+        'label' => date('M d', strtotime($date)),
+        'total' => $msgCount + $regCount + $subCount
+    ];
+}
+
+$labels = json_encode(array_column($graphData, 'label'));
+$data = json_encode(array_column($graphData, 'total'));
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - AskMe Tour and Travel</title>
+    <title>Admin Dashboard | AskMe Tour and Travel</title>
     <link href="../assets/img/askme.png" rel="icon">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -46,170 +68,249 @@ $totalPackages = $pdo->query("SELECT COUNT(*) FROM packages")->fetchColumn();
         .sidebar-link.active {
             background-color: #89C23D;
             color: white;
-            box-shadow: 0 4px 15px rgba(137, 194, 61, 0.3);
+            box-shadow: 0 10px 20px rgba(137, 194, 61, 0.2);
         }
-        ::-webkit-scrollbar { width: 8px; }
+        .stat-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .stat-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px -12px rgba(0,0,0,0.08); }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #89C23D; border-radius: 10px; }
     </style>
 </head>
-<body class="flex min-h-screen text-slate-600">
+<body class="flex min-h-screen text-slate-600 overflow-x-hidden">
     <?php include 'includes/sidebar.php'; ?>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col">
+    <div class="flex-1 flex flex-col min-w-0">
         <!-- Topbar -->
-        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 px-10 py-6 flex items-center justify-between sticky top-0 z-50">
+        <header class="bg-white border-b border-slate-100 px-10 py-8 flex items-center justify-between sticky top-0 z-50">
             <div>
-                <h2 class="text-2xl font-black text-secondary tracking-tighter">Dashboard Overview</h2>
-                <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Central Control Hub</p>
+                <h2 class="text-3xl font-black text-secondary tracking-tighter">System <span class="text-primary">Intelligence</span></h2>
+                <p class="text-slate-400 text-xs font-black uppercase tracking-[4px] mt-1">Real-time business analytics</p>
             </div>
             <div class="flex items-center space-x-8">
-                <div class="text-right hidden md:block">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">System Status</p>
-                    <span class="flex items-center text-primary text-xs font-black">
-                        <span class="w-2 h-2 bg-primary rounded-full animate-pulse mr-2"></span>
-                        ONLINE & SECURE
-                    </span>
+                <div class="hidden lg:flex flex-col items-end">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Last Update</p>
+                    <p class="text-xs font-bold text-secondary"><?php echo date('F d, H:i A'); ?></p>
                 </div>
-                <div class="flex items-center space-x-4 p-1.5 bg-slate-50 rounded-2xl border border-slate-100">
-                    <div class="h-10 w-10 rounded-xl bg-secondary text-white flex items-center justify-center font-black">A</div>
-                    <div class="pr-4">
-                        <p class="text-xs font-black text-secondary leading-none">Super Admin</p>
-                        <p class="text-[10px] text-slate-400 font-bold mt-1">admin@askme.com</p>
+                <div class="flex items-center space-x-4 p-2 bg-slate-50 rounded-[24px] border border-slate-100">
+                    <div class="h-12 w-12 rounded-[18px] bg-secondary text-white flex items-center justify-center font-black shadow-lg shadow-secondary/20 text-xl">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <div class="pr-6">
+                        <p class="text-sm font-black text-secondary leading-none">Super Admin</p>
+                        <p class="text-[10px] text-primary font-black uppercase tracking-widest mt-1.5">Authenticated</p>
                     </div>
                 </div>
             </div>
         </header>
 
         <!-- Content Area -->
-        <main class="p-10 flex-1 overflow-y-auto">
+        <main class="p-10 space-y-10">
             <!-- Stats Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                <div class="bg-white p-8 rounded-[32px] shadow-sm border border-slate-100 hover:border-primary/30 transition-all hover:shadow-xl group">
-                    <div class="w-14 h-14 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
-                        <i class="fas fa-calendar-check text-2xl"></i>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="stat-card bg-white p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-suitcase-rolling text-2xl"></i>
+                        </div>
+                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-[3px] mb-2">Total Packages</p>
+                        <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($totalPackages); ?></h3>
                     </div>
-                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-[2px] mb-2">Total Bookings</p>
-                    <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($totalBookings); ?></h3>
+                    <div class="absolute -right-6 -bottom-6 text-slate-50 text-8xl opacity-50 group-hover:text-primary/10 transition-colors">
+                        <i class="fas fa-globe"></i>
+                    </div>
                 </div>
 
-                <div class="bg-white p-8 rounded-[32px] shadow-sm border border-slate-100 hover:border-secondary/30 transition-all hover:shadow-xl group">
-                    <div class="w-14 h-14 bg-secondary/10 text-secondary rounded-2xl flex items-center justify-center mb-6 group-hover:bg-secondary group-hover:text-white transition-all shadow-sm">
-                        <i class="fas fa-inbox text-2xl"></i>
+                <div class="stat-card bg-white p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-secondary/10 text-secondary rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-ticket-alt text-2xl"></i>
+                        </div>
+                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-[3px] mb-2">Total Bookings</p>
+                        <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($totalBookings); ?></h3>
                     </div>
-                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-[2px] mb-2">New Inquiries</p>
-                    <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($totalMessages); ?></h3>
+                    <div class="absolute -right-6 -bottom-6 text-slate-50 text-8xl opacity-50 group-hover:text-secondary/10 transition-colors">
+                        <i class="fas fa-plane-departure"></i>
+                    </div>
                 </div>
 
-                <div class="bg-white p-8 rounded-[32px] shadow-sm border border-slate-100 hover:border-vibrant/30 transition-all hover:shadow-xl group">
-                    <div class="w-14 h-14 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-all shadow-sm">
-                        <i class="fas fa-users text-2xl"></i>
+                <div class="stat-card bg-white p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-amber-500/10 text-amber-500 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-comment-dots text-2xl"></i>
+                        </div>
+                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-[3px] mb-2">New Messages</p>
+                        <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($totalMessages); ?></h3>
                     </div>
-                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-[2px] mb-2">Subscribers</p>
-                    <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($totalNewsletter); ?></h3>
+                    <div class="absolute -right-6 -bottom-6 text-slate-50 text-8xl opacity-50 group-hover:text-amber-500/10 transition-colors">
+                        <i class="fas fa-envelope"></i>
+                    </div>
                 </div>
 
-                <div class="bg-white p-8 rounded-[32px] shadow-sm border border-slate-100 hover:border-primary/30 transition-all hover:shadow-xl group">
-                    <div class="w-14 h-14 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-500 group-hover:text-white transition-all shadow-sm">
-                        <i class="fas fa-sparkles text-2xl"></i>
+                <div class="stat-card bg-white p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-indigo-500/10 text-indigo-500 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-at text-2xl"></i>
+                        </div>
+                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-[3px] mb-2">Subscribers</p>
+                        <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($totalNewsletter); ?></h3>
                     </div>
-                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-[2px] mb-2">Active Content</p>
-                    <h3 class="text-4xl font-black text-secondary tracking-tighter"><?php echo number_format($totalEvents + $totalPackages); ?></h3>
+                    <div class="absolute -right-6 -bottom-6 text-slate-50 text-8xl opacity-50 group-hover:text-indigo-500/10 transition-colors">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
                 </div>
             </div>
 
+            <!-- Analytics and Charts -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                <!-- Recent Registrations -->
-                <div class="lg:col-span-2 bg-white rounded-[40px] shadow-sm border border-slate-100 p-10">
-                    <div class="flex items-center justify-between mb-10">
+                <!-- Main Engagement Chart -->
+                <div class="lg:col-span-2 bg-white p-12 rounded-[60px] shadow-sm border border-slate-100">
+                    <div class="flex items-center justify-between mb-12">
                         <div>
-                            <h4 class="text-xl font-black text-secondary tracking-tighter">Recent Registrations</h4>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Latest travel bookings</p>
+                            <h3 class="text-2xl font-black text-secondary">Engagement Analytics</h3>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Activity trends across all modules</p>
                         </div>
-                        <a href="#" class="text-xs font-black text-primary hover:underline">View All Bookings</a>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left">
-                            <thead>
-                                <tr class="text-slate-400 text-[10px] uppercase tracking-[3px] border-b border-slate-50">
-                                    <th class="pb-6 font-black">Client</th>
-                                    <th class="pb-6 font-black">Destination</th>
-                                    <th class="pb-6 font-black">Date</th>
-                                    <th class="pb-6 font-black text-right">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-50">
-                                <?php
-                                $stmt = $pdo->query("SELECT * FROM registrations ORDER BY created_at DESC LIMIT 5");
-                                while ($row = $stmt->fetch()):
-                                    $initials = strtoupper(substr($row['name'], 0, 1));
-                                ?>
-                                <tr class="group hover:bg-slate-50/50 transition-colors">
-                                    <td class="py-6">
-                                        <div class="flex items-center space-x-4">
-                                            <div class="w-10 h-10 bg-secondary/10 text-secondary rounded-xl flex items-center justify-center font-black"><?php echo $initials; ?></div>
-                                            <div>
-                                                <p class="font-black text-secondary text-sm"><?php echo $row['name']; ?></p>
-                                                <p class="text-[10px] text-slate-400 font-bold"><?php echo $row['email']; ?></p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="py-6">
-                                        <p class="font-bold text-secondary text-sm"><?php echo $row['destination']; ?></p>
-                                        <p class="text-[10px] text-slate-400 font-bold uppercase"><?php echo $row['purpose']; ?></p>
-                                    </td>
-                                    <td class="py-6">
-                                        <p class="text-xs font-bold text-secondary"><?php echo date('M d, Y', strtotime($row['departure_date'])); ?></p>
-                                    </td>
-                                    <td class="py-6 text-right">
-                                        <span class="bg-emerald-50 text-emerald-500 text-[9px] font-black uppercase px-3 py-1.5 rounded-lg border border-emerald-100 tracking-wider">Confirmed</span>
-                                    </td>
-                                </tr>
-                                <?php endwhile; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Recent Messages Sidebar -->
-                <div class="space-y-10">
-                    <div id="messages" class="bg-white rounded-[40px] shadow-sm border border-slate-100 p-10">
-                        <h4 class="text-xl font-black text-secondary tracking-tighter mb-8">Quick Inquiries</h4>
-                        <div class="space-y-6">
-                            <?php
-                            $stmt = $pdo->query("SELECT * FROM messages ORDER BY created_at DESC LIMIT 4");
-                            while ($row = $stmt->fetch()):
-                                $initials = strtoupper(substr($row['name'], 0, 1));
-                            ?>
-                            <div class="flex items-start space-x-4 p-4 rounded-3xl bg-slate-50/50 border border-slate-100 hover:bg-white hover:shadow-lg transition-all duration-300">
-                                <div class="w-10 h-10 bg-white shadow-sm rounded-xl flex items-center justify-center text-secondary font-black flex-shrink-0"><?php echo $initials; ?></div>
-                                <div class="overflow-hidden">
-                                    <p class="text-sm font-black text-secondary truncate"><?php echo $row['subject']; ?></p>
-                                    <p class="text-[10px] text-slate-400 font-bold mt-0.5"><?php echo $row['name']; ?></p>
-                                    <p class="text-[11px] text-slate-500 mt-2 line-clamp-2 leading-relaxed"><?php echo $row['message']; ?></p>
-                                </div>
+                        <div class="flex space-x-4">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 bg-primary rounded-full"></span>
+                                <span class="text-[10px] font-black uppercase tracking-widest">Growth Rate</span>
                             </div>
-                            <?php endwhile; ?>
                         </div>
-                        <a href="#" class="block text-center py-4 bg-secondary text-white font-black rounded-2xl mt-8 hover:scale-105 transition-all text-xs uppercase tracking-widest">Open Inbox</a>
                     </div>
-
-                    <div id="newsletter" class="bg-secondary rounded-[40px] shadow-xl p-10 text-white relative overflow-hidden">
-                        <div class="absolute -right-10 -bottom-10 opacity-10 rotate-12">
-                            <i class="fas fa-paper-plane text-[150px]"></i>
-                        </div>
-                        <h4 class="text-xl font-black tracking-tighter mb-4 relative z-10">Newsletter Reach</h4>
-                        <p class="text-white/60 text-xs font-bold uppercase tracking-widest mb-6 relative z-10">Subscribers Growth</p>
-                        <div class="flex items-baseline space-x-2 relative z-10">
-                            <h3 class="text-5xl font-black"><?php echo number_format($totalNewsletter); ?></h3>
-                            <span class="text-primary font-bold text-sm">+<?php echo rand(2, 8); ?>% this week</span>
-                        </div>
+                    <div class="h-96">
+                        <canvas id="engagementChart"></canvas>
                     </div>
                 </div>
+
+                <!-- Recent Activity Feed -->
+                <div class="bg-dark rounded-[60px] p-12 text-white shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl"></div>
+                    <h3 class="text-2xl font-black mb-10 tracking-tight flex items-center">
+                        <span class="w-10 h-1.5 bg-primary mr-4 rounded-full"></span>
+                        Recent Activity
+                    </h3>
+                    <div class="space-y-8 max-h-[450px] overflow-y-auto custom-scrollbar pr-4">
+                        <?php
+                        $stmt = $pdo->query("SELECT name, 'Registration' as type, created_at FROM registrations UNION SELECT name, 'Message' as type, created_at FROM messages ORDER BY created_at DESC LIMIT 6");
+                        while ($row = $stmt->fetch()):
+                            $isReg = $row['type'] == 'Registration';
+                        ?>
+                        <div class="flex items-start space-x-5 group cursor-pointer">
+                            <div class="w-12 h-12 <?php echo $isReg ? 'bg-primary' : 'bg-secondary'; ?> rounded-2xl flex items-center justify-center text-xl shadow-lg transition-transform group-hover:scale-110">
+                                <i class="fas <?php echo $isReg ? 'fa-id-card' : 'fa-envelope'; ?>"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-black group-hover:text-primary transition-colors"><?php echo $row['name']; ?></p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1"><?php echo $row['type']; ?></p>
+                                <p class="text-[10px] text-slate-500 font-bold mt-2 italic"><?php echo date('M d, H:i A', strtotime($row['created_at'])); ?></p>
+                            </div>
+                        </div>
+                        <?php endwhile; ?>
+                    </div>
+                    <div class="mt-12 pt-8 border-t border-white/10">
+                        <a href="messages.php" class="block text-center py-5 bg-white/5 rounded-[24px] border border-white/10 font-black text-xs uppercase tracking-[3px] hover:bg-primary transition-all duration-500">
+                            View All History
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Management Tools Quick Access -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <a href="packages.php" class="p-8 bg-white rounded-[40px] border border-slate-100 shadow-sm flex items-center justify-between group hover:border-primary transition-all">
+                    <div class="flex items-center space-x-6">
+                        <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-primary/10 group-hover:text-primary transition-all">
+                            <i class="fas fa-plus-circle text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-black text-secondary">Manage Tours</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1"><?php echo $totalPackages; ?> Active</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-slate-200 group-hover:text-primary group-hover:translate-x-2 transition-all"></i>
+                </a>
+                <a href="team.php" class="p-8 bg-white rounded-[40px] border border-slate-100 shadow-sm flex items-center justify-between group hover:border-primary transition-all">
+                    <div class="flex items-center space-x-6">
+                        <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-primary/10 group-hover:text-primary transition-all">
+                            <i class="fas fa-user-friends text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-black text-secondary">Team Directory</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1"><?php echo $totalTeam; ?> Visionaries</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-slate-200 group-hover:text-primary group-hover:translate-x-2 transition-all"></i>
+                </a>
+                <a href="registrations.php" class="p-8 bg-white rounded-[40px] border border-slate-100 shadow-sm flex items-center justify-between group hover:border-primary transition-all">
+                    <div class="flex items-center space-x-6">
+                        <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-primary/10 group-hover:text-primary transition-all">
+                            <i class="fas fa-clock-rotate-left text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-black text-secondary">Booking Center</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1"><?php echo $totalBookings; ?> Total</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-slate-200 group-hover:text-primary group-hover:translate-x-2 transition-all"></i>
+                </a>
             </div>
         </main>
     </div>
+
+    <script>
+        const ctx = document.getElementById('engagementChart').getContext('2d');
+        const engagementChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: <?php echo $labels; ?>,
+                datasets: [{
+                    label: 'Total Activity',
+                    data: <?php echo $data; ?>,
+                    borderColor: '#89C23D',
+                    backgroundColor: 'rgba(137, 194, 61, 0.05)',
+                    borderWidth: 6,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#89C23D',
+                    pointBorderWidth: 3,
+                    pointRadius: 8,
+                    pointHoverRadius: 12,
+                    pointHoverBackgroundColor: '#89C23D',
+                    pointHoverBorderColor: '#fff',
+                    pointHoverBorderWidth: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#0f172a',
+                        titleFont: { family: 'Outfit', size: 14, weight: 'bold' },
+                        bodyFont: { family: 'Outfit', size: 12 },
+                        padding: 16,
+                        displayColors: false,
+                        callbacks: {
+                            label: (context) => ` Total Activity: ${context.raw}`
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0,0,0,0.03)', drawBorder: false },
+                        ticks: { font: { family: 'Outfit', weight: 'bold', size: 12 }, padding: 10 }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { family: 'Outfit', weight: 'bold', size: 12 }, padding: 10 }
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
-

@@ -80,22 +80,29 @@ if ($action == 'edit' && isset($_GET['id'])) {
     </script>
     <style>
         body { font-family: 'Outfit', sans-serif; background-color: #f8fafc; }
-        .sidebar-link.active { background-color: #89C23D; color: white; shadow: 0 4px 15px rgba(137, 194, 61, 0.3); }
+        .sidebar-link.active {
+            background-color: #89C23D;
+            color: white;
+            box-shadow: 0 10px 20px rgba(137, 194, 61, 0.2);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
     </style>
 </head>
 <body class="flex min-h-screen text-slate-600">
     <?php include 'includes/sidebar.php'; ?>
 
     <div class="flex-1 flex flex-col">
-        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 px-10 py-6 flex items-center justify-between sticky top-0 z-50">
+        <header class="bg-white border-b border-slate-100 px-10 py-8 flex items-center justify-between sticky top-0 z-50">
             <div>
-                <h2 class="text-2xl font-black text-secondary tracking-tighter">Travel Destinations</h2>
-                <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Location Management</p>
+                <h2 class="text-3xl font-black text-secondary tracking-tighter">Travel <span class="text-primary">Destinations</span></h2>
+                <p class="text-slate-400 text-xs font-black uppercase tracking-[4px] mt-1">Location Management</p>
             </div>
             <?php if ($action == 'list'): ?>
-                <a href="destinations.php?action=add" class="bg-primary text-white px-8 py-3 rounded-2xl font-black shadow-lg shadow-primary/20 hover:-translate-y-1 transition-all text-sm uppercase tracking-widest">Add Destination</a>
+                <a href="destinations.php?action=add" class="bg-primary text-white px-8 py-3 rounded-[20px] font-black shadow-lg shadow-primary/20 hover:-translate-y-1 transition-all text-xs uppercase tracking-widest">Add Destination</a>
             <?php else: ?>
-                <a href="destinations.php" class="text-slate-400 font-black hover:text-secondary transition-colors text-sm uppercase tracking-widest"><i class="fas fa-arrow-left mr-2"></i> Back to List</a>
+                <a href="destinations.php" class="text-slate-400 font-black hover:text-secondary transition-colors text-xs uppercase tracking-widest"><i class="fas fa-arrow-left mr-2"></i> Back to List</a>
             <?php endif; ?>
         </header>
 
