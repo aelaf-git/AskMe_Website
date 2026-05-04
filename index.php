@@ -239,27 +239,27 @@
                     <h1 class="text-4xl md:text-6xl font-black text-secondary tracking-tighter mb-20">Top <span class="text-primary">Destinations</span></h1>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         <?php
-                        $destinations = [
-                            ['South Korea', '3 Cities', 'assets/img/southkorea.jpg'],
-                            ['United Arab Emirates', '3 Cities', 'assets/img/uae.jpeg'],
-                            ['Europe', '12 Cities', 'assets/img/europe.jpg'],
-                            ['India', '5 Cities', 'assets/img/india.jpeg'],
-                            ['South Africa', '4 Cities', 'assets/img/southafrica.jpg'],
-                            ['Indonesia', '2 Cities', 'assets/img/Indonesia.jpg'],
-                            ['Ethiopia', '11 Cities', 'assets/img/ethiopia.jpg'],
-                            ['Tanzania', '3 Cities', 'assets/img/tanzania.jpg'],
-                        ];
-                        foreach ($destinations as $dest):
+                        try {
+                            $stmt = $pdo->query("SELECT * FROM destinations ORDER BY id ASC");
+                            while ($dest = $stmt->fetch()):
                         ?>
                         <div class="relative group overflow-hidden h-[400px] rounded-[40px] shadow-xl hover-lift">
-                            <img src="<?php echo $dest[2]; ?>" alt="<?php echo $dest[0]; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                            <img src="<?php echo $dest['image_path']; ?>" alt="<?php echo $dest['name']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
                             <div class="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent flex flex-col items-center justify-end p-8">
-                                <h5 class="text-white text-2xl font-black mb-1"><?php echo $dest[0]; ?></h5>
-                                <span class="text-primary font-bold text-sm tracking-widest uppercase"><?php echo $dest[1]; ?></span>
+                                <h5 class="text-white text-2xl font-black mb-1"><?php echo $dest['name']; ?></h5>
+                                <span class="text-primary font-bold text-sm tracking-widest uppercase"><?php echo $dest['category']; ?></span>
+                                <?php if ($dest['discount_tag']): ?>
+                                    <div class="mt-2 px-3 py-1 bg-rose-500 text-white text-[10px] font-black rounded-lg"><?php echo $dest['discount_tag']; ?></div>
+                                <?php endif; ?>
                                 <div class="h-0.5 w-0 bg-primary mt-4 group-hover:w-full transition-all duration-500 rounded-full"></div>
                             </div>
                         </div>
-                        <?php endforeach; ?>
+                        <?php 
+                            endwhile;
+                        } catch (PDOException $e) {
+                            echo '<p>Error loading destinations.</p>';
+                        }
+                        ?>
                     </div>
                 </div>
             </section>
@@ -274,27 +274,24 @@
                         <h1 class="text-4xl md:text-6xl font-black text-secondary tracking-tighter">Our Premium <span class="text-primary">Services</span></h1>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <?php
+                        try {
+                            $stmt = $pdo->query("SELECT * FROM services ORDER BY id ASC");
+                            while ($service = $stmt->fetch()):
+                        ?>
                         <div class="glass p-12 rounded-[50px] text-center group hover:bg-primary transition-all duration-500 hover:shadow-xl hover:-translate-y-4">
                             <div class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center text-primary mx-auto mb-8 group-hover:bg-white group-hover:text-primary transition-colors">
-                                <i class="fa fa-route text-3xl"></i>
+                                <i class="<?php echo $service['icon_class']; ?> text-3xl"></i>
                             </div>
-                            <h5 class="text-2xl font-black mb-4 group-hover:text-white transition-colors">Travel Guide</h5>
-                            <p class="text-slate-500 group-hover:text-white/80 transition-colors">Expert guides to lead your journey with deep local knowledge.</p>
+                            <h5 class="text-2xl font-black mb-4 group-hover:text-white transition-colors"><?php echo $service['title']; ?></h5>
+                            <p class="text-slate-500 group-hover:text-white/80 transition-colors"><?php echo $service['description']; ?></p>
                         </div>
-                        <div class="glass p-12 rounded-[50px] text-center group hover:bg-primary transition-all duration-500 hover:shadow-xl hover:-translate-y-4">
-                            <div class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center text-primary mx-auto mb-8 group-hover:bg-white group-hover:text-primary transition-colors">
-                                <i class="fa fa-ticket-alt text-3xl"></i>
-                            </div>
-                            <h5 class="text-2xl font-black mb-4 group-hover:text-white transition-colors">Ticket Booking</h5>
-                            <p class="text-slate-500 group-hover:text-white/80 transition-colors">Seamless flight and transport arrangements at the best prices.</p>
-                        </div>
-                        <div class="glass p-12 rounded-[50px] text-center group hover:bg-primary transition-all duration-500 hover:shadow-xl hover:-translate-y-4">
-                            <div class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center text-primary mx-auto mb-8 group-hover:bg-white group-hover:text-primary transition-colors">
-                                <i class="fa fa-hotel text-3xl"></i>
-                            </div>
-                            <h5 class="text-2xl font-black mb-4 group-hover:text-white transition-colors">Hotel Booking</h5>
-                            <p class="text-slate-500 group-hover:text-white/80 transition-colors">Hand-picked luxury stays tailored to your specific comfort.</p>
-                        </div>
+                        <?php 
+                            endwhile;
+                        } catch (PDOException $e) {
+                            echo '<p>Error loading services.</p>';
+                        }
+                        ?>
                     </div>
                 </div>
             </section>
@@ -361,35 +358,38 @@
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         <?php
-                        $team = [
-                            ['Ketema Bahiru', 'Founder and Director', 'assets/img/ketema.jpg'],
-                            ['Dereje Shiferaw', 'Board Chairman', 'assets/img/dereje.jpg'],
-                            ['Dawit Zegeye', 'Board Vise Chairman', 'assets/img/dawit.jpg'],
-                            ['Aelaf Eskindir', 'ICT Officer', 'assets/img/aelaf.jpg'],
-                            ['Hareg Belachew', 'Marketing', 'assets/img/hareg.jpg'],
-                            ['Yihunegn Mohammed', 'Advisor', 'assets/img/yihunegn.jpg'],
-                            ['Redwan Tesfaye', 'Tour Coordinator', 'assets/img/redwan.jpg'],
-                            ['Fetelewirk Mitiku', 'Marketing Officer', 'assets/img/Fetelewirk.jpg'],
-                        ];
-                        foreach ($team as $member):
+                        try {
+                            $stmt = $pdo->query("SELECT * FROM team ORDER BY id ASC");
+                            while ($member = $stmt->fetch()):
                         ?>
                         <div class="group relative hover-lift">
                             <div class="relative overflow-hidden aspect-[4/5] rounded-[40px] shadow-2xl bg-slate-100">
-                                <img src="<?php echo $member[2]; ?>" alt="<?php echo $member[0]; ?>" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+                                <img src="<?php echo $member['image_path']; ?>" alt="<?php echo $member['name']; ?>" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
                                 <div class="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/40 to-transparent flex flex-col justify-end p-8 translate-y-8 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
                                     <div class="flex flex-col space-y-1 mb-4">
-                                        <h5 class="text-xl font-black text-white"><?php echo $member[0]; ?></h5>
-                                        <p class="text-primary text-xs font-bold uppercase tracking-widest"><?php echo $member[1]; ?></p>
+                                        <h5 class="text-xl font-black text-white"><?php echo $member['name']; ?></h5>
+                                        <p class="text-primary text-xs font-bold uppercase tracking-widest"><?php echo $member['designation']; ?></p>
                                     </div>
                                     <div class="flex space-x-3">
-                                        <a href="#" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-facebook-f text-sm"></i></a>
-                                        <a href="#" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-instagram text-sm"></i></a>
-                                        <a href="#" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-linkedin-in text-sm"></i></a>
+                                        <?php if ($member['facebook_url']): ?>
+                                            <a href="<?php echo $member['facebook_url']; ?>" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-facebook-f text-sm"></i></a>
+                                        <?php endif; ?>
+                                        <?php if ($member['instagram_url']): ?>
+                                            <a href="<?php echo $member['instagram_url']; ?>" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-instagram text-sm"></i></a>
+                                        <?php endif; ?>
+                                        <?php if ($member['linkedin_url']): ?>
+                                            <a href="<?php echo $member['linkedin_url']; ?>" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-linkedin-in text-sm"></i></a>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <?php endforeach; ?>
+                        <?php 
+                            endwhile;
+                        } catch (PDOException $e) {
+                            echo '<p>Error loading team.</p>';
+                        }
+                        ?>
                     </div>
                 </div>
             </section>
@@ -405,32 +405,33 @@
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <?php
-                        $testimonials = [
-                            ['Melaku Debru', 'Corporate Event Planner', '“AskMe Tour and Travel handled every detail flawlessly, turning a complex business trip into an enjoyable experience.”'],
-                            ['Sara Tesfaye', 'High School Teacher', '“Their customized itinerary made my educational tour both stress free and incredibly enriching for my students.”'],
-                            ['Shemsedin Ahmed', 'Software Engineer', '“AskMe Tour and Travel turned my dream vacation into reality with exceptional planning and friendly service.”'],
-                            ['Rakeb Teklu', 'Photographer', '“Thanks to their expertise, I captured stunning locations I never would have found on my own.”'],
-                        ];
-                        foreach ($testimonials as $t):
+                        try {
+                            $stmt = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC LIMIT 4");
+                            while ($t = $stmt->fetch()):
                         ?>
                         <div class="glass p-10 md:p-14 rounded-[50px] relative group hover:-translate-y-2 transition-all duration-500">
                             <div class="absolute top-10 right-10 text-primary/10 group-hover:text-primary/20 transition-colors">
                                 <i class="fa fa-quote-right text-6xl"></i>
                             </div>
                             <p class="text-xl text-slate-600 italic mb-10 leading-relaxed font-medium relative z-10">
-                                <?php echo $t[2]; ?>
+                                <?php echo $t['feedback']; ?>
                             </p>
                             <div class="flex items-center space-x-5">
-                                <div class="w-16 h-16 rounded-2xl overflow-hidden shadow-lg">
-                                    <img src="assets/img/nobody.jpg" class="w-full h-full object-cover">
+                                <div class="w-16 h-16 rounded-2xl overflow-hidden shadow-lg border-2 border-white">
+                                    <img src="<?php echo $t['client_image']; ?>" class="w-full h-full object-cover">
                                 </div>
                                 <div>
-                                    <h5 class="text-xl font-black text-secondary leading-tight"><?php echo $t[0]; ?></h5>
-                                    <small class="text-primary font-bold uppercase tracking-widest text-[10px]"><?php echo $t[1]; ?></small>
+                                    <h5 class="text-xl font-black text-secondary leading-tight"><?php echo $t['client_name']; ?></h5>
+                                    <small class="text-primary font-bold uppercase tracking-widest text-[10px]"><?php echo $t['profession']; ?></small>
                                 </div>
                             </div>
                         </div>
-                        <?php endforeach; ?>
+                        <?php 
+                            endwhile;
+                        } catch (PDOException $e) {
+                            echo '<p>Error loading testimonials.</p>';
+                        }
+                        ?>
                     </div>
                 </div>
             </section>

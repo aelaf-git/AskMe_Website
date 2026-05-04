@@ -17,77 +17,90 @@
 <!-- Header End -->
 
 <!-- Packages Start -->
-<div class="py-20 bg-gray-50">
+<div class="py-32 bg-slate-50 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-[120px] -mr-20 -mt-20"></div>
     <div class="max-w-7xl mx-auto px-4">
-        <div class="text-center mb-16">
-            <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Packages</h6>
-            <h1 class="text-4xl md:text-5xl font-bold text-secondary">Perfect Tour Packages</h1>
+        <div class="text-center mb-20">
+            <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px] mb-6">Packages</div>
+            <h1 class="text-4xl md:text-6xl font-black text-secondary tracking-tighter">Perfect Tour <span class="text-primary">Packages</span></h1>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             <?php
-            $packages = [
-                ['Lalibela', '3 days', '2 Person', 'Explore the ancient rock-hewn churches of Lalibela.', '4.5', '250', '$350', 'assets/img/package-1.jpg'],
-                ['Semien Mountains', '5 days', '2 Person', 'Experience the stunning wildlife and scenery of the Semien Mountains.', '4.8', '320', '$500', 'assets/img/package-2.jpg'],
-                ['Axum', '4 days', '2 Person', 'Discover the rich history and ancient stelae of Axum.', '4.6', '180', '$400', 'assets/img/package-3.jpg'],
-                ['Danakil', '4 days', '2 Person', 'Embark on a unique adventure to the surreal landscapes of Danakil.', '4.9', '150', '$650', 'assets/img/package-4.jpg'],
-                ['Gondar', '3 days', '2 Person', 'Explore the majestic castles and history of Gondar.', '4.7', '220', '$380', 'assets/img/package-5.jpg'],
-                ['Omo Valley', '6 days', '2 Person', 'A cultural immersion into the diverse tribes of the Omo Valley.', '4.8', '190', '$750', 'assets/img/package-6.jpg'],
-            ];
-            foreach ($packages as $pkg):
+            require_once 'includes/db.php';
+            try {
+                $stmt = $pdo->query("SELECT * FROM packages ORDER BY created_at DESC");
+                while ($pkg = $stmt->fetch()):
             ?>
-            <div class="bg-white shadow-lg group overflow-hidden">
-                <div class="relative overflow-hidden h-64">
-                    <img src="<?php echo $pkg[7]; ?>" alt="" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                </div>
-                <div class="p-8">
-                    <div class="flex justify-between items-center text-xs text-primary font-bold uppercase mb-4">
-                        <span><i class="fa fa-map-marker-alt mr-1"></i> <?php echo $pkg[0]; ?></span>
-                        <span><i class="fa fa-calendar-alt mr-1"></i> <?php echo $pkg[1]; ?></span>
-                        <span><i class="fa fa-user mr-1"></i> <?php echo $pkg[2]; ?></span>
+            <div class="bg-white rounded-[50px] shadow-sm border border-slate-100 group overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-4">
+                <div class="relative overflow-hidden h-72">
+                    <img src="<?php echo $pkg['image_path']; ?>" alt="<?php echo $pkg['title']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                    <div class="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-6 py-2 rounded-2xl shadow-lg">
+                        <span class="text-secondary font-black text-lg">$<?php echo number_format($pkg['price'], 2); ?></span>
                     </div>
-                    <a href="" class="text-xl font-bold hover:text-primary transition-colors leading-tight block mb-6"><?php echo $pkg[3]; ?></a>
-                    <div class="pt-6 border-t border-gray-100 flex justify-between items-center">
-                        <div class="flex items-center text-sm font-bold">
-                            <i class="fa fa-star text-primary mr-1"></i>
-                            <span><?php echo $pkg[4]; ?> <span class="text-gray-400 font-normal">(<?php echo $pkg[5]; ?>)</span></span>
+                </div>
+                <div class="p-10">
+                    <div class="flex items-center space-x-4 text-[10px] text-primary font-black uppercase tracking-[2px] mb-6">
+                        <span class="flex items-center"><i class="fa fa-map-marker-alt mr-2"></i> <?php echo $pkg['location']; ?></span>
+                        <span class="w-1 h-1 rounded-full bg-slate-200"></span>
+                        <span class="flex items-center"><i class="fa fa-calendar-alt mr-2"></i> <?php echo $pkg['duration']; ?></span>
+                    </div>
+                    <h4 class="text-2xl font-black text-secondary group-hover:text-primary transition-colors leading-tight mb-6"><?php echo $pkg['title']; ?></h4>
+                    <p class="text-slate-500 text-sm leading-relaxed line-clamp-3 mb-8 font-medium"><?php echo $pkg['description']; ?></p>
+                    <div class="pt-8 border-t border-slate-50 flex justify-between items-center">
+                        <a href="#" class="text-secondary font-black text-xs uppercase tracking-widest group-hover:translate-x-2 transition-transform inline-flex items-center">
+                            Book Now <i class="fas fa-arrow-right ml-3 text-[10px]"></i>
+                        </a>
+                        <div class="flex text-amber-400 text-[10px]">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
                         </div>
-                        <h5 class="text-2xl font-bold text-primary"><?php echo $pkg[6]; ?></h5>
                     </div>
                 </div>
             </div>
-            <?php endforeach; ?>
+            <?php 
+                endwhile;
+            } catch (PDOException $e) {
+                echo '<p>Error loading packages.</p>';
+            }
+            ?>
         </div>
     </div>
 </div>
 <!-- Packages End -->
 
 <!-- Featured Ethiopian Destinations -->
-<div class="py-20 bg-gray-50">
+<div class="py-32 bg-white">
     <div class="max-w-7xl mx-auto px-4">
-        <div class="text-center mb-16">
-            <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Featured</h6>
-            <h1 class="text-4xl md:text-5xl font-bold text-secondary">Explore Ethiopia</h1>
+        <div class="text-center mb-20">
+            <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px] mb-6">Discovery</div>
+            <h1 class="text-4xl md:text-6xl font-black text-secondary tracking-tighter">Explore <span class="text-primary">Ethiopia</span></h1>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <?php
-            $ethiopia = [
-                ['Lalibela', 'Historic rock-hewn churches', 'assets/img/destination-1.jpg'],
-                ['Semien Mountains', 'Breathtaking landscapes and wildlife', 'assets/img/destination-2.jpg'],
-                ['Axum', 'Ancient obelisks and heritage', 'assets/img/destination-3.jpg'],
-                ['Danakil Depression', 'One of the hottest and lowest places on Earth', 'assets/img/destination-4.jpg'],
-                ['Gondar', 'The "Camelot of Africa" with its historic castles', 'assets/img/destination-5.jpg'],
-                ['Omo Valley', 'Diverse cultures and ancient traditions', 'assets/img/destination-6.jpg'],
-            ];
-            foreach ($ethiopia as $dest):
+            try {
+                $stmt = $pdo->query("SELECT * FROM destinations WHERE category = 'Ethiopia' ORDER BY id ASC");
+                while ($dest = $stmt->fetch()):
             ?>
-            <div class="relative group overflow-hidden h-80 shadow-lg">
-                <img src="<?php echo $dest[2]; ?>" alt="<?php echo $dest[0]; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                <div class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 px-6 text-center">
-                    <h5 class="text-white text-2xl font-bold mb-2"><?php echo $dest[0]; ?></h5>
-                    <p class="text-white/90 text-sm"><?php echo $dest[1]; ?></p>
+            <div class="relative group overflow-hidden h-[450px] rounded-[50px] shadow-xl hover-lift">
+                <img src="<?php echo $dest['image_path']; ?>" alt="<?php echo $dest['name']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/20 to-transparent flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 px-10 text-center">
+                    <h5 class="text-white text-3xl font-black mb-4 tracking-tighter"><?php echo $dest['name']; ?></h5>
+                    <div class="w-12 h-1 bg-primary rounded-full mb-6"></div>
+                    <p class="text-white/80 text-sm font-medium leading-relaxed">Experience the breathtaking beauty and rich heritage of <?php echo $dest['name']; ?>.</p>
+                </div>
+                <div class="absolute bottom-10 left-10 opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+                    <h5 class="text-white text-2xl font-black tracking-tight"><?php echo $dest['name']; ?></h5>
                 </div>
             </div>
-            <?php endforeach; ?>
+            <?php 
+                endwhile;
+            } catch (PDOException $e) {
+                echo '<p>Error loading destinations.</p>';
+            }
+            ?>
         </div>
     </div>
 </div>

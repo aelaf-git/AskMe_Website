@@ -50,3 +50,58 @@ CREATE TABLE IF NOT EXISTS events (
     image_path VARCHAR(255) DEFAULT 'assets/img/carousel-1.jpg',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Table for Tour Packages
+CREATE TABLE IF NOT EXISTS packages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    duration VARCHAR(50) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    image_path VARCHAR(255) DEFAULT 'assets/img/package-1.jpg',
+    description TEXT,
+    is_featured BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table for Destinations
+CREATE TABLE IF NOT EXISTS destinations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    category VARCHAR(100) NOT NULL, -- e.g., 'Ethiopia', 'Global'
+    image_path VARCHAR(255) DEFAULT 'assets/img/ethiopia.jpg',
+    discount_tag VARCHAR(50), -- e.g., '20% OFF'
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table for Team Members (Visionaries)
+CREATE TABLE IF NOT EXISTS team (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    designation VARCHAR(255) NOT NULL,
+    image_path VARCHAR(255) NOT NULL,
+    facebook_url VARCHAR(255),
+    instagram_url VARCHAR(255),
+    linkedin_url VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table for Testimonials
+CREATE TABLE IF NOT EXISTS testimonials (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    client_name VARCHAR(255) NOT NULL,
+    profession VARCHAR(255),
+    client_image VARCHAR(255) DEFAULT 'assets/img/user.jpg',
+    feedback TEXT NOT NULL,
+    rating INT DEFAULT 5,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table for Services
+CREATE TABLE IF NOT EXISTS services (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    icon_class VARCHAR(100) NOT NULL, -- FontAwesome class
+    description TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

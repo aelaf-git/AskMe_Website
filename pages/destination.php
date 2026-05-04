@@ -17,73 +17,69 @@
 <!-- Header End -->
 
 <!-- Destination Start -->
-<section id="destination" class="py-20 bg-gray-50">
+<section id="destination" class="py-32 bg-slate-50 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/5 rounded-full blur-[120px] -mr-20 -mt-20"></div>
     <div class="max-w-7xl mx-auto px-4">
-        <div class="text-center mb-16">
-            <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Destinations</h6>
-            <h1 class="text-4xl md:text-5xl font-bold text-secondary">Explore Top Destinations</h1>
+        <div class="text-center mb-20">
+            <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px] mb-6">World Explorer</div>
+            <h1 class="text-4xl md:text-6xl font-black text-secondary tracking-tighter">Top Global <span class="text-primary">Destinations</span></h1>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <?php
-            $destinations = [
-                ['South Korea', '3 Cities', 'assets/img/southkorea.jpg'],
-                ['United Arab Emirates', '3 Cities', 'assets/img/uae.jpeg'],
-                ['Europe', '12 Cities', 'assets/img/europe.jpg'],
-                ['India', '5 Cities', 'assets/img/india.jpeg'],
-                ['South Africa', '4 Cities', 'assets/img/southafrica.jpg'],
-                ['Indonesia', '2 Cities', 'assets/img/Indonesia.jpg'],
-                ['Ethiopia', '11 Cities', 'assets/img/ethiopia.jpg'],
-                ['Tanzania', '3 Cities', 'assets/img/tanzania.jpg'],
-                ['Brazil', '6 Cities', 'assets/img/brazil.jpg'],
-                ['Kenya', '3 Cities', 'assets/img/kenya.jpg'],
-                ['Singapore', '1 City', 'assets/img/singapore.jpg'],
-                ['Japan', '4 Cities', 'assets/img/japan.jpg'],
-                ['United States', '11 Cities', 'assets/img/usa.jpg'],
-                ['China', '7 Cities', 'assets/img/china.jpg'],
-                ['Botswana', '3 Cities', 'assets/img/botswana.jpg'],
-            ];
-            foreach ($destinations as $dest):
+            require_once 'includes/db.php';
+            try {
+                $stmt = $pdo->query("SELECT * FROM destinations ORDER BY name ASC");
+                while ($dest = $stmt->fetch()):
             ?>
-            <div class="relative group overflow-hidden h-64 shadow-lg">
-                <img src="<?php echo $dest[2]; ?>" alt="<?php echo $dest[0]; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                <a href="" class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 no-underline text-center px-4">
-                    <h5 class="text-white text-xl font-bold mb-1 leading-tight"><?php echo $dest[0]; ?></h5>
-                    <span class="text-white/80"><?php echo $dest[1]; ?></span>
-                </a>
+            <div class="relative group overflow-hidden h-[400px] rounded-[50px] shadow-xl hover-lift">
+                <img src="<?php echo $dest['image_path']; ?>" alt="<?php echo $dest['name']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                <div class="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent flex flex-col items-center justify-end p-10">
+                    <h5 class="text-white text-2xl font-black mb-1"><?php echo $dest['name']; ?></h5>
+                    <span class="text-primary font-black text-xs tracking-widest uppercase"><?php echo $dest['category']; ?></span>
+                    <?php if ($dest['discount_tag']): ?>
+                        <div class="mt-4 px-4 py-2 bg-rose-500 text-white text-[10px] font-black rounded-xl shadow-lg"><?php echo $dest['discount_tag']; ?></div>
+                    <?php endif; ?>
+                    <div class="h-1 w-0 bg-primary mt-6 group-hover:w-full transition-all duration-500 rounded-full"></div>
+                </div>
             </div>
-            <?php endforeach; ?>
+            <?php 
+                endwhile;
+            } catch (PDOException $e) {
+                echo '<p>Error loading destinations.</p>';
+            }
+            ?>
         </div>
     </div>
 </section>
 <!-- Destination End -->
 
 <!-- Featured Ethiopian Destinations -->
-<div class="py-20 bg-gray-50">
+<div class="py-32 bg-white">
     <div class="max-w-7xl mx-auto px-4">
-        <div class="text-center mb-16">
-            <h6 class="text-primary uppercase tracking-[5px] font-bold mb-2">Featured</h6>
-            <h1 class="text-4xl md:text-5xl font-bold text-secondary">Explore Ethiopia</h1>
+        <div class="text-center mb-20">
+            <div class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-black uppercase tracking-[3px] mb-6">National Pride</div>
+            <h1 class="text-4xl md:text-6xl font-black text-secondary tracking-tighter">Discover <span class="text-primary">Ethiopia</span></h1>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             <?php
-            $ethiopia = [
-                ['Lalibela', 'Historic rock-hewn churches', 'assets/img/destination-1.jpg'],
-                ['Semien Mountains', 'Breathtaking landscapes and wildlife', 'assets/img/destination-2.jpg'],
-                ['Axum', 'Ancient obelisks and heritage', 'assets/img/destination-3.jpg'],
-                ['Danakil Depression', 'One of the hottest and lowest places on Earth', 'assets/img/destination-4.jpg'],
-                ['Gondar', 'The "Camelot of Africa" with its historic castles', 'assets/img/destination-5.jpg'],
-                ['Omo Valley', 'Diverse cultures and ancient traditions', 'assets/img/destination-6.jpg'],
-            ];
-            foreach ($ethiopia as $dest):
+            try {
+                $stmt = $pdo->query("SELECT * FROM destinations WHERE category = 'Ethiopia' ORDER BY name ASC");
+                while ($dest = $stmt->fetch()):
             ?>
-            <div class="relative group overflow-hidden h-80 shadow-lg">
-                <img src="<?php echo $dest[2]; ?>" alt="<?php echo $dest[0]; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                <div class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 px-6 text-center">
-                    <h5 class="text-white text-2xl font-bold mb-2"><?php echo $dest[0]; ?></h5>
-                    <p class="text-white/90 text-sm"><?php echo $dest[1]; ?></p>
+            <div class="relative group overflow-hidden h-[500px] rounded-[60px] shadow-2xl hover-lift">
+                <img src="<?php echo $dest['image_path']; ?>" alt="<?php echo $dest['name']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                <div class="absolute inset-0 bg-dark/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 px-10 text-center backdrop-blur-sm">
+                    <h5 class="text-white text-4xl font-black mb-4 tracking-tighter"><?php echo $dest['name']; ?></h5>
+                    <div class="w-16 h-1 bg-primary rounded-full mb-6"></div>
+                    <p class="text-white/90 text-sm font-medium leading-relaxed">Uncover the hidden gems and ancient secrets of <?php echo $dest['name']; ?> with AskMe.</p>
                 </div>
             </div>
-            <?php endforeach; ?>
+            <?php 
+                endwhile;
+            } catch (PDOException $e) {
+                echo '<p>Error loading destinations.</p>';
+            }
+            ?>
         </div>
     </div>
 </div>

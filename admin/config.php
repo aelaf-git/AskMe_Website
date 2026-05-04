@@ -12,4 +12,37 @@ function is_admin_authenticated() {
     $payload = JWT::decode($_COOKIE['admin_token']);
     return ($payload && isset($payload['email']) && $payload['email'] === ADMIN_EMAIL);
 }
+
+/**
+ * Handle Image Upload
+ * @param array $file The $_FILES['input_name'] array
+ * @param string $currentPath The current image path in DB (for updates)
+ * @return string The new image path or current path on failure/no file
+ */
+function handle_image_upload($file, $currentPath = '') {
+    if (!isset($file) || $file['error'] !== UPLOAD_ERR_OK) {
+        return $currentPath;
+    }
+
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!in_array($file['type'], $allowedTypes)) {
+        return $currentPath;
+    }
+
+    $uploadDir = __DIR__ . '/../assets/img/uploads/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $fileName = uniqid('img_', true) . '.' . $extension;
+    $targetPath = $uploadDir . $fileName;
+
+    if (move_uploaded_file($file['tmp_name'], $targetPath)) {
+        // Return relative path for DB
+        return 'assets/img/uploads/' . $fileName;
+    }
+
+    return $currentPath;
+}
 ?>

@@ -1,0 +1,191 @@
+<?php
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../includes/db.php';
+
+if (!is_admin_authenticated()) {
+    header('Location: login.php');
+    exit;
+}
+
+$message = '';
+$action = isset($_GET['action']) ? $_GET['action'] : 'list';
+
+// Handle Delete
+if ($action == 'delete' && isset($_GET['id'])) {
+    try {
+        $stmt = $pdo->prepare("DELETE FROM team WHERE id = ?");
+        $stmt->execute([$_GET['id']]);
+        header('Location: team.php?msg=Member Deleted');
+        exit;
+    } catch (PDOException $e) {
+        $message = "Error: " . $e->getMessage();
+    }
+}
+
+// Handle Add/Edit
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
+    $name = $_POST['name'];
+    $designation = $_POST['designation'];
+    $facebook = $_POST['facebook_url'];
+    $instagram = $_POST['instagram_url'];
+    $linkedin = $_POST['linkedin_url'];
+    
+    $image_path = handle_image_upload($_FILES['image'], $_POST['current_image'] ?: 'assets/img/user.jpg');
+
+    try {
+        if ($id > 0) {
+            $stmt = $pdo->prepare("UPDATE team SET name=?, designation=?, image_path=?, facebook_url=?, instagram_url=?, linkedin_url=? WHERE id=?");
+            $stmt->execute([$name, $designation, $image_path, $facebook, $instagram, $linkedin, $id]);
+            $message = "Member updated successfully!";
+        } else {
+            $stmt = $pdo->prepare("INSERT INTO team (name, designation, image_path, facebook_url, instagram_url, linkedin_url) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$name, $designation, $image_path, $facebook, $instagram, $linkedin]);
+            $message = "Member added successfully!";
+        }
+        $action = 'list';
+    } catch (PDOException $e) {
+        $message = "Error: " . $e->getMessage();
+    }
+}
+
+$editItem = null;
+if ($action == 'edit' && isset($_GET['id'])) {
+    $stmt = $pdo->prepare("SELECT * FROM team WHERE id = ?");
+    $stmt->execute([$_GET['id']]);
+    $editItem = $stmt->fetch();
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Team - AskMe Admin</title>
+    <link href="../assets/img/askme.png" rel="icon">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#89C23D',
+                        secondary: '#1D609E',
+                        dark: '#0f172a',
+                    },
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Outfit', sans-serif; background-color: #f8fafc; }
+        .sidebar-link.active { background-color: #89C23D; color: white; shadow: 0 4px 15px rgba(137, 194, 61, 0.3); }
+    </style>
+</head>
+<body class="flex min-h-screen text-slate-600">
+    <?php include 'includes/sidebar.php'; ?>
+
+    <div class="flex-1 flex flex-col">
+        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 px-10 py-6 flex items-center justify-between sticky top-0 z-50">
+            <div>
+                <h2 class="text-2xl font-black text-secondary tracking-tighter">Team Management</h2>
+                <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">People & Visionaries</p>
+            </div>
+            <?php if ($action == 'list'): ?>
+                <a href="team.php?action=add" class="bg-primary text-white px-8 py-3 rounded-2xl font-black shadow-lg shadow-primary/20 hover:-translate-y-1 transition-all text-sm uppercase tracking-widest">Add Member</a>
+            <?php else: ?>
+                <a href="team.php" class="text-slate-400 font-black hover:text-secondary transition-colors text-sm uppercase tracking-widest"><i class="fas fa-arrow-left mr-2"></i> Back to List</a>
+            <?php endif; ?>
+        </header>
+
+        <main class="p-10 flex-1 overflow-y-auto">
+            <?php if (isset($_GET['msg'])): ?>
+                <div class="bg-emerald-50 text-emerald-600 p-4 rounded-2xl mb-8 font-black border border-emerald-100 flex items-center">
+                    <i class="fas fa-check-circle mr-3"></i> <?php echo $_GET['msg']; ?>
+                </div>
+            <?php endif; ?>
+            <?php if ($message): ?>
+                <div class="bg-blue-50 text-blue-600 p-4 rounded-2xl mb-8 font-black border border-blue-100 flex items-center">
+                    <i class="fas fa-info-circle mr-3"></i> <?php echo $message; ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($action == 'list'): ?>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <?php
+                    $stmt = $pdo->query("SELECT * FROM team ORDER BY id ASC");
+                    while ($row = $stmt->fetch()):
+                    ?>
+                    <div class="bg-white rounded-[40px] shadow-sm border border-slate-100 p-8 text-center group hover:shadow-xl transition-all duration-500">
+                        <div class="w-24 h-24 mx-auto mb-6 relative">
+                            <div class="absolute inset-0 bg-primary/20 rounded-full blur-xl group-hover:blur-2xl transition-all opacity-0 group-hover:opacity-100"></div>
+                            <img src="../<?php echo $row['image_path']; ?>" class="w-full h-full object-cover rounded-full border-4 border-white shadow-md relative z-10">
+                        </div>
+                        <h5 class="text-lg font-black text-secondary tracking-tight"><?php echo $row['name']; ?></h5>
+                        <p class="text-[10px] text-primary font-black uppercase tracking-widest mt-1"><?php echo $row['designation']; ?></p>
+                        
+                        <div class="flex justify-center space-x-3 mt-6">
+                            <a href="team.php?action=edit&id=<?php echo $row['id']; ?>" class="w-10 h-10 bg-slate-50 text-secondary rounded-xl flex items-center justify-center hover:bg-primary hover:text-white transition-all"><i class="fas fa-edit text-xs"></i></a>
+                            <a href="team.php?action=delete&id=<?php echo $row['id']; ?>" onclick="return confirm('Remove this team member?')" class="w-10 h-10 bg-slate-50 text-rose-400 rounded-xl flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all"><i class="fas fa-trash-alt text-xs"></i></a>
+                        </div>
+                    </div>
+                    <?php endwhile; ?>
+                </div>
+
+            <?php else: ?>
+                <div class="max-w-4xl mx-auto">
+                    <div class="bg-white p-12 rounded-[40px] shadow-xl border border-slate-100">
+                        <form action="team.php" method="POST" enctype="multipart/form-data" class="space-y-10">
+                            <input type="hidden" name="id" value="<?php echo $editItem['id'] ?? ''; ?>">
+                            <input type="hidden" name="current_image" value="<?php echo $editItem['image_path'] ?? ''; ?>">
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                <div class="space-y-3">
+                                    <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">Full Name</label>
+                                    <input type="text" name="name" required value="<?php echo $editItem['name'] ?? ''; ?>" placeholder="e.g. Aelaf Eskindir" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl focus:border-primary focus:bg-white focus:outline-none transition-all font-bold">
+                                </div>
+                                <div class="space-y-3">
+                                    <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">Designation / Role</label>
+                                    <input type="text" name="designation" required value="<?php echo $editItem['designation'] ?? ''; ?>" placeholder="e.g. ICT Officer" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl focus:border-primary focus:bg-white focus:outline-none transition-all font-bold">
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">Profile Image</label>
+                                <div class="flex items-center space-x-8 p-6 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
+                                    <?php if (isset($editItem['image_path'])): ?>
+                                        <img src="../<?php echo $editItem['image_path']; ?>" class="w-20 h-20 rounded-full object-cover shadow-md">
+                                    <?php endif; ?>
+                                    <input type="file" name="image" class="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-primary file:text-white hover:file:bg-primary/80 transition-all">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="space-y-3">
+                                    <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">Facebook URL</label>
+                                    <input type="url" name="facebook_url" value="<?php echo $editItem['facebook_url'] ?? ''; ?>" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl focus:border-primary focus:outline-none text-sm">
+                                </div>
+                                <div class="space-y-3">
+                                    <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">Instagram URL</label>
+                                    <input type="url" name="instagram_url" value="<?php echo $editItem['instagram_url'] ?? ''; ?>" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl focus:border-primary focus:outline-none text-sm">
+                                </div>
+                                <div class="space-y-3">
+                                    <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">LinkedIn URL</label>
+                                    <input type="url" name="linkedin_url" value="<?php echo $editItem['linkedin_url'] ?? ''; ?>" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl focus:border-primary focus:outline-none text-sm">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full py-6 bg-secondary text-white font-black rounded-3xl shadow-xl shadow-secondary/20 hover:-translate-y-1 transition-all uppercase tracking-[4px] text-sm">
+                                <?php echo ($action == 'edit') ? 'Update Member' : 'Add Team Member'; ?>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </main>
+    </div>
+</body>
+</html>
