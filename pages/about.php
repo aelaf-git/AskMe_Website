@@ -50,53 +50,44 @@
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            <!-- Event 1 -->
+            <?php
+            require_once 'includes/db.php';
+            try {
+                $stmt = $pdo->query("SELECT * FROM events ORDER BY event_date ASC LIMIT 3");
+                $events = $stmt->fetchAll();
+                if (count($events) > 0) {
+                    foreach ($events as $event) {
+                        $date = new DateTime($event['event_date']);
+            ?>
             <div class="bg-white rounded-2xl shadow-2xl overflow-hidden group hover:-translate-y-4 transition-all duration-500 border border-gray-100">
                 <div class="relative h-72 overflow-hidden">
-                    <img src="assets/img/dallol.jpg" alt="Enkutatash" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <img src="<?php echo $event['image_path']; ?>" alt="<?php echo $event['title']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
-                    <div class="absolute top-6 left-6 backdrop-blur-md bg-primary/90 text-white px-5 py-2 rounded-lg font-bold shadow-2xl border border-white/20">
-                        <span class="block text-2xl leading-none">11</span>
-                        <span class="text-xs uppercase tracking-widest">Sep</span>
+                    <div class="absolute top-6 left-6 backdrop-blur-md bg-primary/90 text-white px-5 py-2 rounded-lg font-bold shadow-2xl border border-white/20 text-center">
+                        <span class="block text-2xl leading-none"><?php echo $date->format('d'); ?></span>
+                        <span class="text-xs uppercase tracking-widest"><?php echo $date->format('M'); ?></span>
                     </div>
                 </div>
                 <div class="p-10">
-                    <h3 class="text-2xl font-bold mb-4 group-hover:text-primary transition-colors leading-tight">Ethiopian New Year (Enkutatash)</h3>
-                    <p class="text-gray-500 mb-8 leading-relaxed">Join us in celebrating the vibrant Ethiopian New Year with traditional music, dancing, and the beautiful yellow Meskel daisies.</p>
+                    <h3 class="text-2xl font-bold mb-4 group-hover:text-primary transition-colors leading-tight"><?php echo $event['title']; ?></h3>
+                    <p class="text-gray-500 mb-8 leading-relaxed line-clamp-3"><?php echo $event['short_description']; ?></p>
                 </div>
             </div>
-
-            <!-- Event 2 -->
-            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden group hover:-translate-y-4 transition-all duration-500 border border-gray-100">
-                <div class="relative h-72 overflow-hidden">
-                    <img src="assets/img/ertale.jpg" alt="Meskel" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
-                    <div class="absolute top-6 left-6 backdrop-blur-md bg-primary/90 text-white px-5 py-2 rounded-lg font-bold shadow-2xl border border-white/20">
-                        <span class="block text-2xl leading-none">27</span>
-                        <span class="text-xs uppercase tracking-widest">Sep</span>
-                    </div>
+            <?php
+                    }
+                } else {
+            ?>
+                <div class="lg:col-span-3 text-center py-20 glass rounded-3xl border border-slate-100 w-full">
+                    <i class="fas fa-calendar-star text-5xl text-primary/20 mb-6"></i>
+                    <h3 class="text-2xl font-black text-secondary tracking-tight">Cultural Festivals Coming Soon</h3>
+                    <p class="text-slate-400 font-medium">We're updating our event calendar with the latest festivals and tours.</p>
                 </div>
-                <div class="p-10">
-                    <h3 class="text-2xl font-bold mb-4 group-hover:text-primary transition-colors leading-tight">Meskel Festival</h3>
-                    <p class="text-gray-500 mb-8 leading-relaxed">Experience the magnificent bonfire lighting ceremony (Demera) in Meskel Square, a UNESCO inscribed cultural heritage.</p>
-                </div>
-            </div>
-
-            <!-- Event 3 -->
-            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden group hover:-translate-y-4 transition-all duration-500 border border-gray-100">
-                <div class="relative h-72 overflow-hidden">
-                    <img src="assets/img/addisababa.jpg" alt="Great Run" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
-                    <div class="absolute top-6 left-6 backdrop-blur-md bg-primary/90 text-white px-5 py-2 rounded-lg font-bold shadow-2xl border border-white/20">
-                        <span class="block text-2xl leading-none">17</span>
-                        <span class="text-xs uppercase tracking-widest">Nov</span>
-                    </div>
-                </div>
-                <div class="p-10">
-                    <h3 class="text-2xl font-bold mb-4 group-hover:text-primary transition-colors leading-tight">Great Ethiopian Run</h3>
-                    <p class="text-gray-500 mb-8 leading-relaxed">Participate in Africa's biggest 10km road race through the heart of Addis Ababa with over 45,000 other runners.</p>
-                </div>
-            </div>
+            <?php
+                }
+            } catch (PDOException $e) {
+                echo '<p>Error loading events.</p>';
+            }
+            ?>
         </div>
     </div>
 </div>
@@ -204,33 +195,47 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <?php
-            $team = [
-                ['Ketema Bahiru', 'Founder and Director', 'assets/img/ketema.jpg'],
-                ['Dereje Shiferaw', 'Board Chairman', 'assets/img/dereje.jpg'],
-                ['Dawit Zegeye', 'Board Vise Chairman', 'assets/img/dawit.jpg'],
-                ['Aelaf Eskindir', 'ICT Officer', 'assets/img/aelaf.jpg'],
-                ['Hareg Belachew', 'Marketing', 'assets/img/hareg.jpg'],
-                ['Yihunegn Mohammed', 'Advisor', 'assets/img/yihunegn.jpg'],
-                ['Redwan Tesfaye', 'Tour Coordinator', 'assets/img/redwan.jpg'],
-                ['Fetelewirk Mitiku', 'Marketing Officer', 'assets/img/Fetelewirk.jpg'],
-            ];
-            foreach ($team as $member):
+            try {
+                $stmt = $pdo->query("SELECT * FROM team ORDER BY id ASC");
+                $team = $stmt->fetchAll();
+                if (count($team) > 0) {
+                    foreach ($team as $member):
             ?>
-            <div class="bg-white shadow-lg overflow-hidden group">
+            <div class="bg-white shadow-lg overflow-hidden group rounded-2xl border border-gray-100">
                 <div class="relative overflow-hidden aspect-square">
-                    <img src="<?php echo $member[2]; ?>" alt="<?php echo $member[0]; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <img src="<?php echo $member['image_path']; ?>" alt="<?php echo $member['name']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     <div class="absolute inset-0 bg-black/40 flex items-center justify-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <a href="#" class="w-10 h-10 bg-white/20 hover:bg-primary text-white flex items-center justify-center transition-colors border border-white/30"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="w-10 h-10 bg-white/20 hover:bg-primary text-white flex items-center justify-center transition-colors border border-white/30"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="w-10 h-10 bg-white/20 hover:bg-primary text-white flex items-center justify-center transition-colors border border-white/30"><i class="fab fa-linkedin-in"></i></a>
+                        <?php if($member['facebook_url']): ?>
+                            <a href="<?php echo $member['facebook_url']; ?>" class="w-10 h-10 bg-white/20 hover:bg-primary text-white flex items-center justify-center transition-colors border border-white/30"><i class="fab fa-facebook-f"></i></a>
+                        <?php endif; ?>
+                        <?php if($member['instagram_url']): ?>
+                            <a href="<?php echo $member['instagram_url']; ?>" class="w-10 h-10 bg-white/20 hover:bg-primary text-white flex items-center justify-center transition-colors border border-white/30"><i class="fab fa-instagram"></i></a>
+                        <?php endif; ?>
+                        <?php if($member['linkedin_url']): ?>
+                            <a href="<?php echo $member['linkedin_url']; ?>" class="w-10 h-10 bg-white/20 hover:bg-primary text-white flex items-center justify-center transition-colors border border-white/30"><i class="fab fa-linkedin-in"></i></a>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="text-center p-6">
-                    <h5 class="text-xl font-bold mb-1 text-truncate px-2"><?php echo $member[0]; ?></h5>
-                    <p class="text-gray-500 m-0"><?php echo $member[1]; ?></p>
+                    <h5 class="text-xl font-bold mb-1 px-2"><?php echo $member['name']; ?></h5>
+                    <p class="text-gray-500 m-0 text-sm"><?php echo $member['designation']; ?></p>
                 </div>
             </div>
-            <?php endforeach; ?>
+            <?php 
+                    endforeach;
+                } else {
+            ?>
+                <div class="lg:col-span-4 text-center py-16 glass rounded-3xl border border-slate-100 w-full">
+                    <i class="fas fa-user-friends text-5xl text-primary/20 mb-6"></i>
+                    <h3 class="text-2xl font-black text-secondary tracking-tight">Our Team is Growing</h3>
+                    <p class="text-slate-400 font-medium">We'll introduce our expert guides and leadership very soon.</p>
+                </div>
+            <?php
+                }
+            } catch (PDOException $e) {
+                echo '<p>Error loading team.</p>';
+            }
+            ?>
         </div>
     </div>
 </section>
@@ -245,26 +250,38 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <?php
-            $testimonials = [
-                ['Melaku Debru', 'Corporate Event Planner', '“AskMe Tour and Travel handled every detail flawlessly, turning a complex business trip into an enjoyable experience.”'],
-                ['Sara Tesfaye', 'High School Teacher', '“Their customized itinerary made my educational tour both stress free and incredibly enriching for my students.”'],
-                ['Shemsedin Ahmed', 'Software Engineer', '“AskMe Tour and Travel turned my dream vacation into reality with exceptional planning and friendly service.”'],
-                ['Rakeb Teklu', 'Photographer', '“Thanks to their expertise, I captured stunning locations I never would have found on my own.”'],
-            ];
-            foreach ($testimonials as $t):
+            try {
+                $stmt = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC LIMIT 4");
+                $testimonials = $stmt->fetchAll();
+                if (count($testimonials) > 0) {
+                    foreach ($testimonials as $t):
             ?>
-            <div class="bg-white p-8 md:p-12 shadow-xl relative group">
+            <div class="bg-white p-8 md:p-12 shadow-xl relative group rounded-3xl border border-gray-100">
                 <i class="fa fa-quote-right absolute top-8 right-8 text-primary/10 text-6xl group-hover:text-primary/20 transition-colors"></i>
-                <p class="text-gray-600 italic mb-8 leading-relaxed text-lg relative z-10"><?php echo $t[2]; ?></p>
+                <p class="text-gray-600 italic mb-8 leading-relaxed text-lg relative z-10">"<?php echo $t['feedback']; ?>"</p>
                 <div class="flex items-center">
-                    <img src="assets/img/nobody.jpg" class="w-16 h-16 rounded-full object-cover border-4 border-gray-50 mr-4">
+                    <img src="<?php echo $t['client_image']; ?>" class="w-16 h-16 rounded-full object-cover border-4 border-gray-50 mr-4">
                     <div>
-                        <h5 class="text-xl font-bold text-secondary leading-tight"><?php echo $t[0]; ?></h5>
-                        <small class="text-primary font-bold uppercase tracking-wider text-[10px]"><?php echo $t[1]; ?></small>
+                        <h5 class="text-xl font-bold text-secondary leading-tight"><?php echo $t['client_name']; ?></h5>
+                        <small class="text-primary font-bold uppercase tracking-wider text-[10px]"><?php echo $t['profession']; ?></small>
                     </div>
                 </div>
             </div>
-            <?php endforeach; ?>
+            <?php 
+                    endforeach;
+                } else {
+            ?>
+                <div class="lg:col-span-2 text-center py-16 glass rounded-3xl border border-slate-100 w-full">
+                    <i class="fas fa-quote-left text-5xl text-primary/20 mb-6"></i>
+                    <h3 class="text-2xl font-black text-secondary tracking-tight">Hear from our Travelers Soon</h3>
+                    <p class="text-slate-400 font-medium">Real stories from real adventurers are being curated for you.</p>
+                </div>
+            <?php
+                }
+            } catch (PDOException $e) {
+                echo '<p>Error loading testimonials.</p>';
+            }
+            ?>
         </div>
     </div>
 </section>

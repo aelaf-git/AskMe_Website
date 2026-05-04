@@ -29,7 +29,9 @@
             require_once 'includes/db.php';
             try {
                 $stmt = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC");
-                while ($t = $stmt->fetch()):
+                $testimonials = $stmt->fetchAll();
+                if (count($testimonials) > 0) {
+                    foreach ($testimonials as $t):
             ?>
             <div class="glass p-12 rounded-[50px] relative group hover:-translate-y-2 transition-all duration-500 border border-slate-100">
                 <i class="fa fa-quote-right absolute top-12 right-12 text-primary/5 text-7xl group-hover:text-primary/10 transition-colors"></i>
@@ -45,7 +47,16 @@
                 </div>
             </div>
             <?php 
-                endwhile;
+                    endforeach;
+                } else {
+            ?>
+                <div class="lg:col-span-2 text-center py-20 glass rounded-[50px] border border-slate-100 w-full">
+                    <i class="fas fa-comments text-5xl text-primary/20 mb-6"></i>
+                    <h3 class="text-2xl font-black text-secondary tracking-tight">Our Travelers' Stories are Coming</h3>
+                    <p class="text-slate-400 font-medium">We're collecting incredible experiences from our clients. Stay tuned!</p>
+                </div>
+            <?php
+                }
             } catch (PDOException $e) {
                 echo '<p>Error loading testimonials.</p>';
             }

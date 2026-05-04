@@ -29,7 +29,9 @@
             require_once 'includes/db.php';
             try {
                 $stmt = $pdo->query("SELECT * FROM team ORDER BY id ASC");
-                while ($member = $stmt->fetch()):
+                $team = $stmt->fetchAll();
+                if (count($team) > 0) {
+                    foreach ($team as $member):
             ?>
             <div class="group relative hover-lift">
                 <div class="relative overflow-hidden aspect-[4/5] rounded-[50px] shadow-2xl bg-slate-50 border-4 border-white">
@@ -58,7 +60,16 @@
                 </div>
             </div>
             <?php 
-                endwhile;
+                    endforeach;
+                } else {
+            ?>
+                <div class="lg:col-span-4 text-center py-20 glass rounded-[50px] border border-slate-100 w-full">
+                    <i class="fas fa-user-astronaut text-5xl text-primary/20 mb-6"></i>
+                    <h3 class="text-2xl font-black text-secondary tracking-tight">Our Experts are Getting Ready</h3>
+                    <p class="text-slate-400 font-medium">The team is currently on a mission. Check back soon to meet them!</p>
+                </div>
+            <?php
+                }
             } catch (PDOException $e) {
                 echo '<p>Error loading team members.</p>';
             }

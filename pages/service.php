@@ -29,7 +29,9 @@
             require_once 'includes/db.php';
             try {
                 $stmt = $pdo->query("SELECT * FROM services ORDER BY id ASC");
-                while ($service = $stmt->fetch()):
+                $services = $stmt->fetchAll();
+                if (count($services) > 0) {
+                    foreach ($services as $service):
             ?>
             <div class="glass p-12 rounded-[60px] text-center group hover:bg-secondary transition-all duration-500 hover:shadow-2xl hover:-translate-y-4">
                 <div class="w-24 h-24 bg-primary/10 text-primary rounded-[30px] flex items-center justify-center mx-auto mb-10 group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-sm">
@@ -39,7 +41,16 @@
                 <p class="text-slate-500 group-hover:text-white/70 transition-colors text-base leading-relaxed font-medium"><?php echo $service['description']; ?></p>
             </div>
             <?php 
-                endwhile;
+                    endforeach;
+                } else {
+            ?>
+                <div class="lg:col-span-3 text-center py-20 glass rounded-[60px] border border-slate-100 w-full">
+                    <i class="fas fa-tools text-5xl text-primary/20 mb-6"></i>
+                    <h3 class="text-2xl font-black text-secondary tracking-tight">New Services Coming Soon</h3>
+                    <p class="text-slate-400 font-medium">We're tailoring premium services to make your travels extraordinary.</p>
+                </div>
+            <?php
+                }
             } catch (PDOException $e) {
                 echo '<p>Error loading services.</p>';
             }
@@ -61,7 +72,9 @@
             <?php
             try {
                 $stmt = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC");
-                while ($t = $stmt->fetch()):
+                $testimonials = $stmt->fetchAll();
+                if (count($testimonials) > 0) {
+                    foreach ($testimonials as $t):
             ?>
             <div class="glass p-12 rounded-[50px] relative group hover:-translate-y-2 transition-all duration-500 border border-slate-100">
                 <i class="fa fa-quote-right absolute top-12 right-12 text-primary/5 text-7xl group-hover:text-primary/10 transition-colors"></i>
@@ -77,7 +90,16 @@
                 </div>
             </div>
             <?php 
-                endwhile;
+                    endforeach;
+                } else {
+            ?>
+                <div class="lg:col-span-2 text-center py-20 glass rounded-[50px] border border-slate-100 w-full">
+                    <i class="fas fa-comment-dots text-5xl text-primary/20 mb-6"></i>
+                    <h3 class="text-2xl font-black text-secondary tracking-tight">Voices of Adventure Coming Soon</h3>
+                    <p class="text-slate-400 font-medium">Wait until you hear what our first travelers have to say!</p>
+                </div>
+            <?php
+                }
             } catch (PDOException $e) {
                 echo '<p>Error loading testimonials.</p>';
             }

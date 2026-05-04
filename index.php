@@ -170,8 +170,10 @@
                         require_once 'includes/db.php';
                         try {
                             $stmt = $pdo->query("SELECT * FROM events ORDER BY event_date ASC LIMIT 3");
-                            while ($event = $stmt->fetch()) {
-                                $date = new DateTime($event['event_date']);
+                            $events = $stmt->fetchAll();
+                            if (count($events) > 0) {
+                                foreach ($events as $event) {
+                                    $date = new DateTime($event['event_date']);
                         ?>
                         <div class="group relative hover-lift">
                             <div class="relative h-[500px] overflow-hidden rounded-[40px] shadow-2xl">
@@ -191,6 +193,15 @@
                                 </div>
                             </div>
                         </div>
+                        <?php
+                                }
+                            } else {
+                        ?>
+                            <div class="lg:col-span-3 text-center py-20 glass rounded-[40px]">
+                                <i class="fas fa-calendar-alt text-5xl text-primary/20 mb-6"></i>
+                                <h3 class="text-2xl font-black text-secondary tracking-tight">Exciting Events Coming Soon</h3>
+                                <p class="text-slate-400 font-medium">We're curating unforgettable experiences for you. Stay tuned!</p>
+                            </div>
                         <?php
                             }
                         } catch (PDOException $e) {
@@ -241,7 +252,9 @@
                         <?php
                         try {
                             $stmt = $pdo->query("SELECT * FROM destinations ORDER BY id ASC");
-                            while ($dest = $stmt->fetch()):
+                            $destinations = $stmt->fetchAll();
+                            if (count($destinations) > 0) {
+                                foreach ($destinations as $dest):
                         ?>
                         <div class="relative group overflow-hidden h-[400px] rounded-[40px] shadow-xl hover-lift">
                             <img src="<?php echo $dest['image_path']; ?>" alt="<?php echo $dest['name']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
@@ -255,7 +268,16 @@
                             </div>
                         </div>
                         <?php 
-                            endwhile;
+                                endforeach;
+                            } else {
+                        ?>
+                            <div class="lg:col-span-4 text-center py-20 glass rounded-[40px]">
+                                <i class="fas fa-map-marked-alt text-5xl text-primary/20 mb-6"></i>
+                                <h3 class="text-2xl font-black text-secondary tracking-tight">New Destinations Loading</h3>
+                                <p class="text-slate-400 font-medium">The world is vast, and we're mapping out the best spots for you.</p>
+                            </div>
+                        <?php
+                            }
                         } catch (PDOException $e) {
                             echo '<p>Error loading destinations.</p>';
                         }
@@ -277,7 +299,9 @@
                         <?php
                         try {
                             $stmt = $pdo->query("SELECT * FROM services ORDER BY id ASC");
-                            while ($service = $stmt->fetch()):
+                            $services = $stmt->fetchAll();
+                            if (count($services) > 0) {
+                                foreach ($services as $service):
                         ?>
                         <div class="glass p-12 rounded-[50px] text-center group hover:bg-primary transition-all duration-500 hover:shadow-xl hover:-translate-y-4">
                             <div class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center text-primary mx-auto mb-8 group-hover:bg-white group-hover:text-primary transition-colors">
@@ -287,7 +311,16 @@
                             <p class="text-slate-500 group-hover:text-white/80 transition-colors"><?php echo $service['description']; ?></p>
                         </div>
                         <?php 
-                            endwhile;
+                                endforeach;
+                            } else {
+                        ?>
+                            <div class="lg:col-span-3 text-center py-20 glass rounded-[50px] border border-slate-100 w-full">
+                                <i class="fas fa-concierge-bell text-5xl text-primary/20 mb-6"></i>
+                                <h3 class="text-2xl font-black text-secondary tracking-tight">Our Services are Launching</h3>
+                                <p class="text-slate-400 font-medium">We're finalizing our premium travel offerings. Check back soon!</p>
+                            </div>
+                        <?php
+                            }
                         } catch (PDOException $e) {
                             echo '<p>Error loading services.</p>';
                         }
@@ -360,7 +393,9 @@
                         <?php
                         try {
                             $stmt = $pdo->query("SELECT * FROM team ORDER BY id ASC");
-                            while ($member = $stmt->fetch()):
+                            $team = $stmt->fetchAll();
+                            if (count($team) > 0) {
+                                foreach ($team as $member):
                         ?>
                         <div class="group relative hover-lift">
                             <div class="relative overflow-hidden aspect-[4/5] rounded-[40px] shadow-2xl bg-slate-100">
@@ -385,7 +420,16 @@
                             </div>
                         </div>
                         <?php 
-                            endwhile;
+                                endforeach;
+                            } else {
+                        ?>
+                            <div class="lg:col-span-4 text-center py-20 glass rounded-[40px] w-full">
+                                <i class="fas fa-users text-5xl text-primary/20 mb-6"></i>
+                                <h3 class="text-2xl font-black text-secondary tracking-tight">Meet the Team Soon</h3>
+                                <p class="text-slate-400 font-medium">Our experts are preparing to guide you on your next journey.</p>
+                            </div>
+                        <?php
+                            }
                         } catch (PDOException $e) {
                             echo '<p>Error loading team.</p>';
                         }
@@ -407,7 +451,9 @@
                         <?php
                         try {
                             $stmt = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC LIMIT 4");
-                            while ($t = $stmt->fetch()):
+                            $testimonials = $stmt->fetchAll();
+                            if (count($testimonials) > 0) {
+                                foreach ($testimonials as $t):
                         ?>
                         <div class="glass p-10 md:p-14 rounded-[50px] relative group hover:-translate-y-2 transition-all duration-500">
                             <div class="absolute top-10 right-10 text-primary/10 group-hover:text-primary/20 transition-colors">
@@ -427,7 +473,16 @@
                             </div>
                         </div>
                         <?php 
-                            endwhile;
+                                endforeach;
+                            } else {
+                        ?>
+                            <div class="lg:col-span-2 text-center py-20 glass rounded-[50px] w-full">
+                                <i class="fas fa-comment-dots text-5xl text-primary/20 mb-6"></i>
+                                <h3 class="text-2xl font-black text-secondary tracking-tight">Customer Stories Coming Soon</h3>
+                                <p class="text-slate-400 font-medium">We're collecting feedback from our happy travelers.</p>
+                            </div>
+                        <?php
+                            }
                         } catch (PDOException $e) {
                             echo '<p>Error loading testimonials.</p>';
                         }

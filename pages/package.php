@@ -29,7 +29,9 @@
             require_once 'includes/db.php';
             try {
                 $stmt = $pdo->query("SELECT * FROM packages ORDER BY created_at DESC");
-                while ($pkg = $stmt->fetch()):
+                $packages = $stmt->fetchAll();
+                if (count($packages) > 0) {
+                    foreach ($packages as $pkg):
             ?>
             <div class="bg-white rounded-[50px] shadow-sm border border-slate-100 group overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-4">
                 <div class="relative overflow-hidden h-72">
@@ -61,7 +63,18 @@
                 </div>
             </div>
             <?php 
-                endwhile;
+                    endforeach;
+                } else {
+            ?>
+                <div class="lg:col-span-3 text-center py-24 glass rounded-[60px] border border-slate-100 w-full">
+                    <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
+                        <i class="fas fa-suitcase-rolling text-4xl text-primary/40"></i>
+                    </div>
+                    <h3 class="text-3xl font-black text-secondary tracking-tight">Luxury Packages Coming Soon</h3>
+                    <p class="text-slate-400 font-medium max-w-md mx-auto">We are currently curating exclusive travel packages for your next big adventure.</p>
+                </div>
+            <?php
+                }
             } catch (PDOException $e) {
                 echo '<p>Error loading packages.</p>';
             }
@@ -82,7 +95,9 @@
             <?php
             try {
                 $stmt = $pdo->query("SELECT * FROM destinations WHERE category = 'Ethiopia' ORDER BY id ASC");
-                while ($dest = $stmt->fetch()):
+                $ethiopia = $stmt->fetchAll();
+                if (count($ethiopia) > 0) {
+                    foreach ($ethiopia as $dest):
             ?>
             <div class="relative group overflow-hidden h-[450px] rounded-[50px] shadow-xl hover-lift">
                 <img src="<?php echo $dest['image_path']; ?>" alt="<?php echo $dest['name']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
@@ -96,7 +111,16 @@
                 </div>
             </div>
             <?php 
-                endwhile;
+                    endforeach;
+                } else {
+            ?>
+                <div class="lg:col-span-3 text-center py-20 glass rounded-[50px] w-full">
+                    <i class="fas fa-mountain text-5xl text-primary/20 mb-6"></i>
+                    <h3 class="text-2xl font-black text-secondary tracking-tight">Discover Ethiopia Soon</h3>
+                    <p class="text-slate-400 font-medium">We're adding breathtaking Ethiopian destinations to our catalog.</p>
+                </div>
+            <?php
+                }
             } catch (PDOException $e) {
                 echo '<p>Error loading destinations.</p>';
             }
