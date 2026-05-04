@@ -35,7 +35,7 @@ try {
             'expires' => time() + (60 * 60 * 24),
             'path' => '/',
             'domain' => '',
-            'secure' => false, // Set to true if using HTTPS
+            'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
             'httponly' => true,
             'samesite' => 'Strict'
         ]);
@@ -47,6 +47,7 @@ try {
     }
 } catch (PDOException $e) {
     http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+    error_log("Login error: " . $e->getMessage());
+    echo json_encode(['success' => false, 'message' => 'An error occurred. Please try again later.']);
 }
 ?>

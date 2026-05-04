@@ -25,7 +25,9 @@ $trafficLabels = [];
 $trafficValues = [];
 for ($i = 6; $i >= 0; $i--) {
     $date = date('Y-m-d', strtotime("-$i days"));
-    $count = $pdo->query("SELECT COUNT(DISTINCT session_id) FROM site_traffic WHERE DATE(viewed_at) = '$date'")->fetchColumn();
+    $stmt = $pdo->prepare("SELECT COUNT(DISTINCT session_id) FROM site_traffic WHERE DATE(viewed_at) = ?");
+    $stmt->execute([$date]);
+    $count = $stmt->fetchColumn();
     $trafficLabels[] = date('M d', strtotime($date));
     $trafficValues[] = $count;
 }

@@ -42,7 +42,7 @@ function handle_image_upload($file, $currentPath = '') {
 
     $uploadDir = __DIR__ . '/../assets/img/uploads/';
     if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0777, true);
+        mkdir($uploadDir, 0755, true);
     }
 
     $extension = pathinfo($file['name'], PATHINFO_EXTENSION);

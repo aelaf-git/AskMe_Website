@@ -114,7 +114,7 @@ if ($action == 'edit' && isset($_GET['id'])) {
         <main class="p-10 flex-1 overflow-y-auto">
             <?php if (isset($_GET['msg'])): ?>
                 <div class="bg-emerald-50 text-emerald-600 p-4 rounded-2xl mb-8 font-black border border-emerald-100 flex items-center">
-                    <i class="fas fa-check-circle mr-3"></i> <?php echo $_GET['msg']; ?>
+                    <i class="fas fa-check-circle mr-3"></i> <?php echo isset($_GET['msg']) ? htmlspecialchars($_GET['msg'], ENT_QUOTES, 'UTF-8') : ''; ?>
                 </div>
             <?php endif; ?>
             <?php if ($message): ?>
