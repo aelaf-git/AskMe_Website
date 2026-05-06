@@ -1,5 +1,6 @@
 <?php
 require_once 'includes/db.php';
+require_once 'includes/mailer.php';
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $form_message = '';
 $form_success = false;
@@ -97,9 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
             ) VALUES ({$placeholders})");
             $stmt->execute($insertValues);
 
-            // Send confirmation email
-            require_once 'includes/mailer.php';
-            send_registration_confirmation($_POST['email'], $_POST['full_name'], $event['title']);
+            // Send confirmation email (suppress errors and don't let it block the redirect)
+            @send_registration_confirmation($_POST['email'], $_POST['full_name'], $event['title']);
             
             header('Location: index.php?p=event_detail&id=' . $eid . '&submitted=1#registration-form');
             exit();
@@ -250,7 +250,7 @@ try {
             <?php endif; ?>
         </div>
 
-        <form action="index.php?p=event_detail&id=<?php echo $id; ?>" method="POST" enctype="multipart/form-data" class="bg-white rounded-[40px] shadow-2xl border border-gray-100 overflow-hidden">
+        <form action="index.php?p=event_detail&id=<?php echo $id; ?>" method="POST" enctype="multipart/form-data" id="registrationform_main" class="bg-white rounded-[40px] shadow-2xl border border-gray-100 overflow-hidden">
             <input type="hidden" name="event_id" value="<?php echo $id; ?>">
             <input type="hidden" name="event_register" value="1">
             <input type="hidden" name="passport_scan_path" id="passport_scan_path">
@@ -364,8 +364,17 @@ try {
                     <input type="checkbox" required class="w-5 h-5 accent-primary mt-1">
                     <span class="text-gray-600 font-medium leading-relaxed">I confirm that all details and uploaded documents are accurate, valid, and ready for official travel/event processing.</span>
                 </label>
-                <button type="submit" class="w-full py-6 bg-secondary text-white font-black rounded-3xl transition-all uppercase tracking-[4px] text-sm">
-                    <i class="fas fa-paper-plane mr-3"></i> Submit Application
+                <button type="submit" name="event_register" value="1" id="finalSubmitBtn" class="w-full py-6 bg-secondary text-white font-black rounded-3xl transition-all uppercase tracking-[4px] text-sm hover:shadow-2xl hover:shadow-secondary/30 active:scale-[0.98] flex items-center justify-center">
+                    <span id="btnText" class="flex items-center">
+                        <i class="fas fa-paper-plane mr-3"></i> Submit Application
+                    </span>
+                    <span id="btnLoader" class="hidden items-center">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Processing Application...
+                    </span>
                 </button>
 
                 <!-- Status Messages after Submit Button -->
@@ -482,5 +491,21 @@ document.addEventListener('DOMContentLoaded', function() {
             xhr.send(formData);
         });
     });
+
+    // Handle final form submission loading state
+    const registrationForm = document.getElementById('registrationform_main');
+    const finalSubmitBtn = document.getElementById('finalSubmitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnLoader = document.getElementById('btnLoader');
+
+    if (registrationForm && finalSubmitBtn) {
+        registrationForm.addEventListener('submit', function() {
+            finalSubmitBtn.disabled = true;
+            finalSubmitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+            btnText.classList.add('hidden');
+            btnLoader.classList.remove('hidden');
+            btnLoader.classList.add('flex');
+        });
+    }
 });
 </script>

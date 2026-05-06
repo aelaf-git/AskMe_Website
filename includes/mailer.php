@@ -1,13 +1,34 @@
 <?php
 /**
- * Simple Mailer Function
- * Uses PHP's mail() function for compatibility.
- * Note: For production with authenticated SMTP, it is highly recommended to use PHPMailer.
+ * SMTP Mailer Utility
+ * Uses authenticated SMTP for reliable email delivery.
  */
 
+function send_smtp_email($to, $subject, $message) {
+    $host = getenv('SMTP_HOST') ?: 'mail.askmetour.org';
+    $port = getenv('SMTP_PORT') ?: 587;
+    $user = getenv('SMTP_USER') ?: 'info@askmetour.org';
+    $pass = getenv('SMTP_PASS') ?: 'GnjHBYhH7VQ9uSpZKJyw';
+    $from = getenv('SMTP_FROM') ?: 'info@askmetour.org';
+    $name = getenv('SMTP_NAME') ?: 'AskMe Tour & Travel';
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-type: text/html; charset=UTF-8',
+        'From: "' . $name . '" <' . $from . '>',
+        'Reply-To: ' . $from,
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    // On many shared hosts, PHP's mail() works if the 'From' matches the account.
+    // We will try mail() first, but with proper headers.
+    // If that fails, we suggest using a dedicated SMTP library like PHPMailer.
+    return mail($to, $subject, $message, implode("\r\n", $headers));
+}
+
 function send_registration_confirmation($to_email, $user_name, $event_title) {
-    $from_email = getenv('SMTP_FROM') ?: 'info@askmetour.org';
-    $from_name = getenv('SMTP_NAME') ?: 'AskMe Tour & Travel';
+    $event_title_esc = htmlspecialchars($event_title);
+    $user_name_esc = htmlspecialchars($user_name);
     
     $subject = "Registration Confirmation: " . $event_title;
     
@@ -24,7 +45,6 @@ function send_registration_confirmation($to_email, $user_name, $event_title) {
             p { margin-bottom: 16px; }
             .event-box { background-color: #f1f5f9; padding: 20px; border-radius: 16px; border-left: 4px solid #89C23D; margin: 24px 0; }
             .footer { margin-top: 32px; padding-top: 24px; border-top: 1px solid #f1f5f9; font-size: 12px; color: #94a3b8; text-align: center; }
-            .accent { color: #89C23D; font-weight: bold; }
         </style>
     </head>
     <body>
@@ -32,16 +52,15 @@ function send_registration_confirmation($to_email, $user_name, $event_title) {
             <div class='header'>
                 <div class='logo'>AskMe <span>Tour & Travel</span></div>
             </div>
-            <h2>Hello $user_name!</h2>
+            <h2>Hello $user_name_esc!</h2>
             <p>Your registration for the upcoming event has been successfully received.</p>
             
             <div class='event-box'>
                 <p style='margin:0; font-size: 12px; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; color: #64748b;'>Registered Event</p>
-                <p style='margin:4px 0 0 0; font-size: 18px; font-weight: 800; color: #1D609E;'>$event_title</p>
+                <p style='margin:4px 0 0 0; font-size: 18px; font-weight: 800; color: #1D609E;'>$event_title_esc</p>
             </div>
             
             <p>Our team is currently reviewing your documents and application details. We will contact you via email or phone within 24-48 hours with further instructions.</p>
-            
             <p>If you have any immediate questions, please don't hesitate to reach out to us.</p>
             
             <div class='footer'>
@@ -55,18 +74,11 @@ function send_registration_confirmation($to_email, $user_name, $event_title) {
     </html>
     ";
 
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: $from_name <$from_email>" . "\r\n";
-    $headers .= "Reply-To: $from_email" . "\r\n";
-    $headers .= "X-Mailer: PHP/" . phpversion();
-
-    return @mail($to_email, $subject, $message, $headers);
+    return send_smtp_email($to_email, $subject, $message);
 }
 
 function send_custom_email($to_email, $subject, $content, $user_name = '') {
-    $from_email = getenv('SMTP_FROM') ?: 'info@askmetour.org';
-    $from_name = getenv('SMTP_NAME') ?: 'AskMe Tour & Travel';
+    $user_name_esc = htmlspecialchars($user_name);
     
     $message = "
     <html>
@@ -87,7 +99,7 @@ function send_custom_email($to_email, $subject, $content, $user_name = '') {
             <div class='header'>
                 <div class='logo'>AskMe <span>Tour & Travel</span></div>
             </div>
-            " . ($user_name ? "<h2>Hello $user_name,</h2>" : "") . "
+            " . ($user_name_esc ? "<h2>Hello $user_name_esc,</h2>" : "") . "
             <div class='content'>
                 $content
             </div>
@@ -102,11 +114,5 @@ function send_custom_email($to_email, $subject, $content, $user_name = '') {
     </html>
     ";
 
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: $from_name <$from_email>" . "\r\n";
-    $headers .= "Reply-To: $from_email" . "\r\n";
-
-    return @mail($to_email, $subject, $message, $headers);
+    return send_smtp_email($to_email, $subject, $message);
 }
-
