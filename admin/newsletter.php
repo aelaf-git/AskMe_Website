@@ -19,6 +19,26 @@ if (isset($_GET['delete'])) {
     exit();
 }
 
+// Handle Send Newsletter
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['broadcast_newsletter'])) {
+    require_once '../includes/mailer.php';
+    $subject = $_POST['subject'];
+    $content = $_POST['content'];
+    
+    $stmt = $pdo->query("SELECT email FROM newsletter");
+    $subscribers = $stmt->fetchAll();
+    
+    $success_count = 0;
+    foreach ($subscribers as $sub) {
+        if (send_custom_email($sub['email'], $subject, $content)) {
+            $success_count++;
+        }
+    }
+    
+    header('Location: newsletter.php?success=sent&count=' . $success_count);
+    exit();
+}
+
 // Fetch Subscribers
 $stmt = $pdo->query("SELECT * FROM newsletter ORDER BY created_at DESC");
 $subscribers = $stmt->fetchAll();
@@ -59,6 +79,9 @@ $subscribers = $stmt->fetchAll();
             </div>
             </div>
             <div class="flex items-center space-x-6">
+                <button onclick="openNewsletterModal()" class="px-6 py-2.5 bg-secondary text-white text-xs font-black rounded-xl uppercase tracking-widest shadow-lg shadow-secondary/20 hover:scale-105 transition-all">
+                    Send Newsletter
+                </button>
                 <a href="#" onclick="alert('Export functionality coming soon!')" class="px-6 py-2.5 bg-primary text-white text-xs font-black rounded-xl uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-all">
                     Export List
                 </a>
@@ -68,7 +91,10 @@ $subscribers = $stmt->fetchAll();
         <main class="p-8">
             <?php if (isset($_GET['success'])): ?>
                 <div class="mb-6 p-4 bg-emerald-500 text-white rounded-2xl font-bold animate-bounce">
-                    Subscriber removed successfully!
+                    <?php 
+                        if($_GET['success'] == 'deleted') echo "Subscriber removed successfully!";
+                        if($_GET['success'] == 'sent') echo "Newsletter sent to " . ($_GET['count'] ?? 'all') . " subscribers!";
+                    ?>
                 </div>
             <?php endif; ?>
 
@@ -123,5 +149,59 @@ $subscribers = $stmt->fetchAll();
             </div>
         </main>
     </div>
+
+    <!-- Newsletter Modal -->
+    <div id="newsletterModal" class="fixed inset-0 bg-slate-900/50 z-[100] hidden items-center justify-center p-6">
+        <div class="bg-white rounded-[40px] w-full max-w-4xl overflow-hidden shadow-2xl border border-slate-100 scale-95 opacity-0 transition-all duration-300 transform" id="modalContent">
+            <div class="p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+                <h3 class="text-xl font-black text-secondary uppercase tracking-tighter italic">Broadcast <span class="text-primary">Newsletter</span></h3>
+                <button onclick="closeNewsletterModal()" class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-slate-400 hover:text-rose-500 shadow-sm transition-all"><i class="fas fa-times"></i></button>
+            </div>
+            <form action="newsletter.php" method="POST" class="p-8 space-y-8">
+                <input type="hidden" name="broadcast_newsletter" value="1">
+                
+                <div class="space-y-3">
+                    <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">Campaign Subject</label>
+                    <input type="text" name="subject" required placeholder="e.g., Exciting Summer Tours 2026!" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl focus:border-primary focus:bg-white focus:outline-none transition-all font-bold">
+                </div>
+
+                <div class="space-y-3">
+                    <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">Newsletter Content</label>
+                    <textarea name="content" id="newsletter_content" rows="12" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-3xl focus:border-primary focus:bg-white focus:outline-none transition-all font-medium"></textarea>
+                </div>
+                
+                <div class="flex items-center justify-between pt-4">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Targeting: <span class="text-primary"><?php echo count($subscribers); ?> subscribers</span></p>
+                    <button type="submit" class="px-10 py-5 bg-secondary text-white font-black rounded-3xl shadow-xl shadow-secondary/20 hover:-translate-y-1 transition-all uppercase tracking-[4px] text-xs">
+                        <i class="fas fa-paper-plane mr-2"></i> Launch Campaign
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    function openNewsletterModal() {
+        const modal = document.getElementById('newsletterModal');
+        const content = document.getElementById('modalContent');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => {
+            content.classList.remove('scale-95', 'opacity-0');
+            content.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+
+    function closeNewsletterModal() {
+        const modal = document.getElementById('newsletterModal');
+        const content = document.getElementById('modalContent');
+        content.classList.remove('scale-100', 'opacity-100');
+        content.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }, 300);
+    }
+    </script>
 </body>
 </html>

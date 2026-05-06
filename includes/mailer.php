@@ -63,3 +63,50 @@ function send_registration_confirmation($to_email, $user_name, $event_title) {
 
     return @mail($to_email, $subject, $message, $headers);
 }
+
+function send_custom_email($to_email, $subject, $content, $user_name = '') {
+    $from_email = getenv('SMTP_FROM') ?: 'info@askmetour.org';
+    $from_name = getenv('SMTP_NAME') ?: 'AskMe Tour & Travel';
+    
+    $message = "
+    <html>
+    <head>
+        <style>
+            body { font-family: 'Outfit', 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.6; color: #1e293b; background-color: #f8fafc; padding: 40px 0; }
+            .container { max-width: 600px; margin: 0 auto; background: #ffffff; padding: 40px; border-radius: 24px; border: 1px solid #f1f5f9; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+            .header { text-align: center; margin-bottom: 32px; }
+            .logo { font-size: 24px; font-weight: 900; color: #1D609E; text-transform: uppercase; letter-spacing: -1px; }
+            .logo span { color: #89C23D; }
+            h2 { color: #1D609E; font-weight: 800; font-size: 24px; margin-bottom: 16px; }
+            .content { font-size: 16px; color: #334155; }
+            .footer { margin-top: 32px; padding-top: 24px; border-top: 1px solid #f1f5f9; font-size: 12px; color: #94a3b8; text-align: center; }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='header'>
+                <div class='logo'>AskMe <span>Tour & Travel</span></div>
+            </div>
+            " . ($user_name ? "<h2>Hello $user_name,</h2>" : "") . "
+            <div class='content'>
+                $content
+            </div>
+            <div class='footer'>
+                <p>Sent by <strong>AskMe Tour & Travel</strong><br>
+                Bole, Addis Ababa, Ethiopia<br>
+                <a href='mailto:info@askmetour.org' style='color: #89C23D; text-decoration: none;'>info@askmetour.org</a> | <a href='https://askmetour.org' style='color: #89C23D; text-decoration: none;'>www.askmetour.org</a></p>
+                <p>&copy; " . date('Y') . " AskMe Tour & Travel. All rights reserved.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    ";
+
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= "From: $from_name <$from_email>" . "\r\n";
+    $headers .= "Reply-To: $from_email" . "\r\n";
+
+    return @mail($to_email, $subject, $message, $headers);
+}
+

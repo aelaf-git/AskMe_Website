@@ -89,6 +89,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <!-- Mobile Overlay -->
 <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/50 z-40 hidden lg:hidden opacity-0 transition-opacity duration-300"></div>
 
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
 function toggleSidebar() {
     const sidebar = document.getElementById('adminSidebar');
@@ -105,4 +106,24 @@ function toggleSidebar() {
         setTimeout(() => overlay.classList.add('hidden'), 300);
     }
 }
+
+// Initialize TinyMCE for all textareas except those marked with 'no-editor'
+document.addEventListener('DOMContentLoaded', function() {
+    tinymce.init({
+        selector: 'textarea:not(.no-editor)',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        height: 400,
+        border_radius: '24px',
+        skin: 'oxide',
+        content_css: 'default',
+        branding: false,
+        promotion: false,
+        setup: function (editor) {
+            editor.on('change', function () {
+                editor.save(); // Sync with textarea
+            });
+        }
+    });
+});
 </script>
