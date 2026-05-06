@@ -96,6 +96,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
                 dietary_requirements, medical_conditions, room_preference, special_notes
             ) VALUES ({$placeholders})");
             $stmt->execute($insertValues);
+
+            // Send confirmation email
+            require_once 'includes/mailer.php';
+            send_registration_confirmation($_POST['email'], $_POST['full_name'], $event['title']);
             
             header('Location: index.php?p=event_detail&id=' . $eid . '&submitted=1#registration-form');
             exit();
