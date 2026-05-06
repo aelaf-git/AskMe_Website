@@ -83,10 +83,15 @@ $data = json_encode($trafficValues);
     <!-- Main Content -->
     <div class="flex-1 flex flex-col min-w-0">
         <!-- Topbar -->
-        <header class="bg-white border-b border-slate-100 px-10 py-8 flex items-center justify-between sticky top-0 z-50">
-            <div>
-                <h2 class="text-3xl font-black text-secondary tracking-tighter">Intelligence <span class="text-primary">Command</span></h2>
+        <header class="bg-white border-b border-slate-100 px-6 py-6 lg:px-10 lg:py-8 flex flex-wrap items-center justify-between sticky top-0 z-40 gap-4">
+            <div class="flex items-center gap-4 w-full lg:w-auto">
+                <button onclick="toggleSidebar()" type="button" class="lg:hidden w-10 h-10 bg-slate-50 text-slate-400 rounded-xl border border-slate-100 flex items-center justify-center hover:text-secondary focus:outline-none shrink-0">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div>
+                    <h2 class="text-3xl font-black text-secondary tracking-tighter">Intelligence <span class="text-primary">Command</span></h2>
                 <p class="text-slate-400 text-xs font-black uppercase tracking-[4px] mt-1">Real-time visitor analytics</p>
+            </div>
             </div>
             <div class="flex items-center space-x-8">
                 <div class="hidden lg:flex flex-col items-end">
@@ -106,10 +111,10 @@ $data = json_encode($trafficValues);
         </header>
 
         <!-- Content Area -->
-        <main class="p-10 space-y-10">
+        <main class="p-6 lg:p-10 space-y-10">
             <!-- Stats Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="stat-card bg-white p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
+                <div class="stat-card bg-white p-6 lg:p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
                     <div class="relative z-10">
                         <div class="w-14 h-14 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
                             <i class="fas fa-users text-2xl"></i>
@@ -122,7 +127,7 @@ $data = json_encode($trafficValues);
                     </div>
                 </div>
 
-                <div class="stat-card bg-white p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
+                <div class="stat-card bg-white p-6 lg:p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
                     <div class="relative z-10">
                         <div class="w-14 h-14 bg-secondary/10 text-secondary rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
                             <i class="fas fa-eye text-2xl"></i>
@@ -135,7 +140,7 @@ $data = json_encode($trafficValues);
                     </div>
                 </div>
 
-                <div class="stat-card bg-white p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
+                <div class="stat-card bg-white p-6 lg:p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
                     <div class="relative z-10">
                         <div class="w-14 h-14 bg-amber-500/10 text-amber-500 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
                             <i class="fas fa-ticket-alt text-2xl"></i>
@@ -148,7 +153,7 @@ $data = json_encode($trafficValues);
                     </div>
                 </div>
 
-                <div class="stat-card bg-white p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
+                <div class="stat-card bg-white p-6 lg:p-10 rounded-[50px] shadow-sm border border-slate-100 relative overflow-hidden group">
                     <div class="relative z-10">
                         <div class="w-14 h-14 bg-indigo-500/10 text-indigo-500 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
                             <i class="fas fa-comment-dots text-2xl"></i>
@@ -165,7 +170,7 @@ $data = json_encode($trafficValues);
             <!-- Analytics and Charts -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
                 <!-- Main Traffic Chart -->
-                <div class="lg:col-span-2 bg-white p-12 rounded-[60px] shadow-sm border border-slate-100">
+                <div class="lg:col-span-2 bg-white p-6 lg:p-12 rounded-[40px] lg:rounded-[60px] shadow-sm border border-slate-100">
                     <div class="flex items-center justify-between mb-12">
                         <div>
                             <h3 class="text-2xl font-black text-secondary">Traffic Analytics</h3>
@@ -178,7 +183,7 @@ $data = json_encode($trafficValues);
                 </div>
 
                 <!-- Device Distribution -->
-                <div class="bg-dark rounded-[60px] p-12 text-white shadow-2xl relative overflow-hidden">
+                <div class="bg-dark rounded-[40px] lg:rounded-[60px] p-6 lg:p-12 text-white shadow-2xl relative overflow-hidden">
                     <h3 class="text-2xl font-black mb-10 tracking-tight flex items-center">
                         <span class="w-10 h-1.5 bg-primary mr-4 rounded-full"></span>
                         Live Traffic

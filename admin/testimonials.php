@@ -95,10 +95,15 @@ if ($action == 'edit' && isset($_GET['id'])) {
     <?php include 'includes/sidebar.php'; ?>
 
     <div class="flex-1 flex flex-col">
-        <header class="bg-white border-b border-slate-100 px-10 py-8 flex items-center justify-between sticky top-0 z-50">
-            <div>
-                <h2 class="text-3xl font-black text-secondary tracking-tighter">Client <span class="text-primary">Reviews</span></h2>
+        <header class="bg-white border-b border-slate-100 px-6 py-6 lg:px-10 lg:py-8 flex flex-wrap items-center justify-between sticky top-0 z-40 gap-4">
+            <div class="flex items-center gap-4 w-full lg:w-auto">
+                <button onclick="toggleSidebar()" type="button" class="lg:hidden w-10 h-10 bg-slate-50 text-slate-400 rounded-xl border border-slate-100 flex items-center justify-center hover:text-secondary focus:outline-none shrink-0">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div>
+                    <h2 class="text-3xl font-black text-secondary tracking-tighter">Client <span class="text-primary">Reviews</span></h2>
                 <p class="text-slate-400 text-xs font-black uppercase tracking-[4px] mt-1">Feedback Management</p>
+            </div>
             </div>
             <?php if ($action == 'list'): ?>
                 <a href="testimonials.php?action=add" class="bg-primary text-white px-8 py-3 rounded-[20px] font-black shadow-lg shadow-primary/20 hover:-translate-y-1 transition-all text-xs uppercase tracking-widest">Add Review</a>
@@ -107,7 +112,7 @@ if ($action == 'edit' && isset($_GET['id'])) {
             <?php endif; ?>
         </header>
 
-        <main class="p-10 flex-1 overflow-y-auto">
+        <main class="p-6 lg:p-10 flex-1 overflow-y-auto">
             <?php if (isset($_GET['msg'])): ?>
                 <div class="bg-emerald-50 text-emerald-600 p-4 rounded-2xl mb-8 font-black border border-emerald-100 flex items-center">
                     <i class="fas fa-check-circle mr-3"></i> <?php echo isset($_GET['msg']) ? htmlspecialchars($_GET['msg'], ENT_QUOTES, 'UTF-8') : ''; ?>
@@ -156,7 +161,7 @@ if ($action == 'edit' && isset($_GET['id'])) {
                             <input type="hidden" name="id" value="<?php echo $editItem['id'] ?? ''; ?>">
                             <input type="hidden" name="current_image" value="<?php echo $editItem['client_image'] ?? ''; ?>">
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            <div class="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10">
                                 <div class="space-y-3">
                                     <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">Client Name</label>
                                     <input type="text" name="client_name" required value="<?php echo $editItem['client_name'] ?? ''; ?>" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl focus:border-primary focus:bg-white focus:outline-none transition-all font-bold">
@@ -167,7 +172,7 @@ if ($action == 'edit' && isset($_GET['id'])) {
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            <div class="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10">
                                 <div class="space-y-3">
                                     <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">Rating (1-5)</label>
                                     <select name="rating" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl focus:border-primary focus:bg-white focus:outline-none transition-all font-bold appearance-none">

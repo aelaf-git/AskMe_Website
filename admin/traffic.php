@@ -51,9 +51,13 @@ $totalPages = ceil($totalTraffic / $limit);
     <?php include 'includes/sidebar.php'; ?>
 
     <div class="flex-1 flex flex-col min-w-0">
-        <header class="bg-white border-b border-slate-100 px-10 py-8 flex items-center justify-between sticky top-0 z-50">
-            <div>
-                <h2 class="text-3xl font-black text-secondary tracking-tighter italic uppercase">Traffic <span class="text-primary">Intelligence</span></h2>
+        <header class="bg-white border-b border-slate-100 px-6 py-6 lg:px-10 lg:py-8 flex flex-wrap items-center justify-between sticky top-0 z-40 gap-4">
+            <div class="flex items-center gap-4 w-full lg:w-auto">
+                <button onclick="toggleSidebar()" type="button" class="lg:hidden w-10 h-10 bg-slate-50 text-slate-400 rounded-xl border border-slate-100 flex items-center justify-center hover:text-secondary focus:outline-none shrink-0">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div>
+                    <h2 class="text-3xl font-black text-secondary tracking-tighter italic uppercase">Traffic <span class="text-primary">Intelligence</span></h2>
                 <p class="text-slate-400 text-[10px] font-black uppercase tracking-[5px] mt-1">Detailed visitor forensics</p>
             </div>
             <div class="flex items-center space-x-4">
@@ -64,7 +68,7 @@ $totalPages = ceil($totalTraffic / $limit);
             </div>
         </header>
 
-        <main class="p-10 space-y-10">
+        <main class="p-6 lg:p-10 space-y-10">
             <!-- Table Container -->
             <div class="bg-white rounded-[50px] shadow-sm border border-slate-100 overflow-hidden">
                 <div class="p-10 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">

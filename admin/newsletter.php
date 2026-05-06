@@ -49,9 +49,14 @@ $subscribers = $stmt->fetchAll();
 
     <div class="flex-1 flex flex-col">
         <header class="h-24 bg-white border-b border-slate-100 flex items-center justify-between px-10">
-            <div>
-                <h2 class="text-3xl font-black text-secondary tracking-tighter">Newsletter <span class="text-primary">Subscribers</span></h2>
+            <div class="flex items-center gap-4 w-full lg:w-auto">
+                <button onclick="toggleSidebar()" type="button" class="lg:hidden w-10 h-10 bg-slate-50 text-slate-400 rounded-xl border border-slate-100 flex items-center justify-center hover:text-secondary focus:outline-none shrink-0">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div>
+                    <h2 class="text-3xl font-black text-secondary tracking-tighter">Newsletter <span class="text-primary">Subscribers</span></h2>
                 <p class="text-slate-400 text-xs font-black uppercase tracking-[4px] mt-1">Direct audience reach</p>
+            </div>
             </div>
             <div class="flex items-center space-x-6">
                 <a href="#" onclick="alert('Export functionality coming soon!')" class="px-6 py-2.5 bg-primary text-white text-xs font-black rounded-xl uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-all">

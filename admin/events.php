@@ -89,9 +89,13 @@ if ($action == 'edit' && isset($_GET['id'])) {
     <?php include 'includes/sidebar.php'; ?>
 
     <div class="flex-1 flex flex-col min-w-0">
-        <header class="bg-white border-b border-slate-100 px-10 py-8 flex items-center justify-between sticky top-0 z-50">
-            <div>
-                <h2 class="text-3xl font-black text-secondary tracking-tighter italic uppercase">Global <span class="text-primary">Events</span></h2>
+        <header class="bg-white border-b border-slate-100 px-6 py-6 lg:px-10 lg:py-8 flex flex-wrap items-center justify-between sticky top-0 z-40 gap-4">
+            <div class="flex items-center gap-4 w-full lg:w-auto">
+                <button onclick="toggleSidebar()" type="button" class="lg:hidden w-10 h-10 bg-slate-50 text-slate-400 rounded-xl border border-slate-100 flex items-center justify-center hover:text-secondary focus:outline-none shrink-0">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div>
+                    <h2 class="text-3xl font-black text-secondary tracking-tighter italic uppercase">Global <span class="text-primary">Events</span></h2>
                 <p class="text-slate-400 text-[10px] font-black uppercase tracking-[5px] mt-1">Cultural & Adventure Highlights</p>
             </div>
             <div class="flex items-center space-x-4">
@@ -103,7 +107,7 @@ if ($action == 'edit' && isset($_GET['id'])) {
             </div>
         </header>
 
-        <main class="p-10 flex-1 overflow-y-auto">
+        <main class="p-6 lg:p-10 flex-1 overflow-y-auto">
             <?php if (isset($_GET['msg'])): ?>
                 <div class="bg-emerald-50 text-emerald-600 p-4 rounded-2xl mb-8 font-black border border-emerald-100 flex items-center">
                     <i class="fas fa-check-circle mr-3"></i> <?php echo isset($_GET['msg']) ? htmlspecialchars($_GET['msg'], ENT_QUOTES, 'UTF-8') : ''; ?>

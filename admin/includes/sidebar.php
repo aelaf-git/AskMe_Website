@@ -1,7 +1,7 @@
 <?php
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
-<aside class="w-80 bg-white border-r border-slate-100 flex flex-col sticky top-0 h-screen overflow-y-auto custom-scrollbar">
+<aside id="adminSidebar" class="w-80 bg-white border-r border-slate-100 flex flex-col fixed lg:sticky top-0 h-screen overflow-y-auto custom-scrollbar z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300">
     <div class="p-10">
         <div class="flex items-center space-x-3 mb-10">
             <div class="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center shadow-lg shadow-secondary/20">
@@ -85,3 +85,24 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </a>
     </div>
 </aside>
+
+<!-- Mobile Overlay -->
+<div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/50 z-40 hidden lg:hidden opacity-0 transition-opacity duration-300"></div>
+
+<script>
+function toggleSidebar() {
+    const sidebar = document.getElementById('adminSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const isClosed = sidebar.classList.contains('-translate-x-full');
+    
+    if (isClosed) {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+        setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+    } else {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('opacity-0');
+        setTimeout(() => overlay.classList.add('hidden'), 300);
+    }
+}
+</script>
