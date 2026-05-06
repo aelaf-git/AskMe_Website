@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS events (
 );
 
 -- Table for Event Registrations (Applications)
+-- NOTE: If the table already exists, DROP it before re-importing to apply new schema changes.
 CREATE TABLE IF NOT EXISTS event_registrations (
     id INT AUTO_INCREMENT PRIMARY KEY,
     event_id INT NOT NULL,

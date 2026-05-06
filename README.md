@@ -1,7 +1,7 @@
 # 🌍 AskMe Tour & Travel
 > **A Premium, End-to-End Travel Management & Registration Platform**
 
-![AskMe Banner](assets/img/carousel-1.jpg)
+![AskMe Banner](assets/img/screenshot.png)
 
 AskMe is a high-performance, aesthetically driven web application designed for modern tour and travel agencies. It seamlessly blends a stunning user experience with a powerful administrative infrastructure, enabling immersive storytelling, dynamic event management, and secure registration workflows.
 
