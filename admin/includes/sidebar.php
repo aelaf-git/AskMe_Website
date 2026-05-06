@@ -108,22 +108,27 @@ function toggleSidebar() {
 }
 
 // Initialize TinyMCE for all textareas except those marked with 'no-editor'
-document.addEventListener('DOMContentLoaded', function() {
-    tinymce.init({
-        selector: 'textarea:not(.no-editor)',
-        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-        height: 400,
-        border_radius: '24px',
-        skin: 'oxide',
-        content_css: 'default',
-        branding: false,
-        promotion: false,
-        setup: function (editor) {
-            editor.on('change', function () {
-                editor.save(); // Sync with textarea
-            });
-        }
-    });
-});
+function initTinyMCE() {
+    if (typeof tinymce !== 'undefined') {
+        tinymce.init({
+            selector: 'textarea:not(.no-editor)',
+            plugins: 'advlist autolink lists link image charmap preview anchor searchreplace verticalbreak visualblocks code fullscreen insertdatetime media table code help wordcount emoticons',
+            toolbar: 'undo redo | blocks | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons | removeformat | help',
+            height: 400,
+            border_radius: '24px',
+            skin: 'oxide',
+            content_css: 'default',
+            branding: false,
+            promotion: false,
+            menubar: true,
+            setup: function (editor) {
+                editor.on('change', function () {
+                    editor.save(); 
+                });
+            }
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', initTinyMCE);
 </script>
