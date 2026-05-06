@@ -181,7 +181,7 @@
                         ?>
                         <div class="group relative hover-lift">
                             <div class="relative h-[500px] overflow-hidden rounded-[40px] shadow-2xl">
-                                <img src="<?php echo $event['image_path']; ?>" alt="<?php echo $event['title']; ?>" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                                <img src="<?php echo htmlspecialchars($event['image_path']); ?>" alt="<?php echo htmlspecialchars($event['title']); ?>" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
                                 <div class="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/20 to-transparent p-10 flex flex-col justify-end">
                                     <div class="backdrop-blur-md bg-white/10 p-2 rounded-2xl border border-white/20 inline-block w-fit mb-6">
                                         <div class="bg-primary px-4 py-2 rounded-xl text-white font-black text-center">
@@ -189,8 +189,8 @@
                                             <span class="text-[10px] uppercase tracking-widest"><?php echo $date->format('M'); ?></span>
                                         </div>
                                     </div>
-                                    <h3 class="text-3xl font-black text-white mb-4 leading-tight group-hover:text-primary transition-colors"><?php echo $event['title']; ?></h3>
-                                    <p class="text-white/70 line-clamp-2 font-medium mb-8"><?php echo $event['short_description']; ?></p>
+                                    <h3 class="text-3xl font-black text-white mb-4 leading-tight group-hover:text-primary transition-colors"><?php echo htmlspecialchars($event['title']); ?></h3>
+                                    <p class="text-white/70 line-clamp-2 font-medium mb-8"><?php echo htmlspecialchars($event['short_description']); ?></p>
                                     <a href="index.php?p=event_detail&id=<?php echo $event['id']; ?>" class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-secondary hover:bg-primary hover:text-white transition-all duration-300">
                                         <i class="fas fa-arrow-right"></i>
                                     </a>
@@ -261,12 +261,12 @@
                                 foreach ($destinations as $dest):
                         ?>
                         <div class="relative group overflow-hidden h-[400px] rounded-[40px] shadow-xl hover-lift">
-                            <img src="<?php echo $dest['image_path']; ?>" alt="<?php echo $dest['name']; ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                            <img src="<?php echo htmlspecialchars($dest['image_path']); ?>" alt="<?php echo htmlspecialchars($dest['name']); ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
                             <div class="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent flex flex-col items-center justify-end p-8">
-                                <h5 class="text-white text-2xl font-black mb-1"><?php echo $dest['name']; ?></h5>
-                                <span class="text-primary font-bold text-sm tracking-widest uppercase"><?php echo $dest['category']; ?></span>
+                                <h5 class="text-white text-2xl font-black mb-1"><?php echo htmlspecialchars($dest['name']); ?></h5>
+                                <span class="text-primary font-bold text-sm tracking-widest uppercase"><?php echo htmlspecialchars($dest['category']); ?></span>
                                 <?php if ($dest['discount_tag']): ?>
-                                    <div class="mt-2 px-3 py-1 bg-rose-500 text-white text-[10px] font-black rounded-lg"><?php echo $dest['discount_tag']; ?></div>
+                                    <div class="mt-2 px-3 py-1 bg-rose-500 text-white text-[10px] font-black rounded-lg"><?php echo htmlspecialchars($dest['discount_tag']); ?></div>
                                 <?php endif; ?>
                                 <div class="h-0.5 w-0 bg-primary mt-4 group-hover:w-full transition-all duration-500 rounded-full"></div>
                             </div>
@@ -309,10 +309,10 @@
                         ?>
                         <div class="glass p-12 rounded-[50px] text-center group hover:bg-primary transition-all duration-500 hover:shadow-xl hover:-translate-y-4">
                             <div class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center text-primary mx-auto mb-8 group-hover:bg-white group-hover:text-primary transition-colors">
-                                <i class="<?php echo $service['icon_class']; ?> text-3xl"></i>
+                                <i class="<?php echo htmlspecialchars($service['icon_class']); ?> text-3xl"></i>
                             </div>
-                            <h5 class="text-2xl font-black mb-4 group-hover:text-white transition-colors"><?php echo $service['title']; ?></h5>
-                            <p class="text-slate-500 group-hover:text-white/80 transition-colors"><?php echo $service['description']; ?></p>
+                            <h5 class="text-2xl font-black mb-4 group-hover:text-white transition-colors"><?php echo htmlspecialchars($service['title']); ?></h5>
+                            <p class="text-slate-500 group-hover:text-white/80 transition-colors"><?php echo htmlspecialchars($service['description']); ?></p>
                         </div>
                         <?php 
                                 endforeach;
@@ -403,21 +403,21 @@
                         ?>
                         <div class="group relative hover-lift">
                             <div class="relative overflow-hidden aspect-[4/5] rounded-[40px] shadow-2xl bg-slate-100">
-                                <img src="<?php echo $member['image_path']; ?>" alt="<?php echo $member['name']; ?>" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+                                <img src="<?php echo htmlspecialchars($member['image_path']); ?>" alt="<?php echo htmlspecialchars($member['name']); ?>" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
                                 <div class="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/40 to-transparent flex flex-col justify-end p-8 translate-y-8 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
                                     <div class="flex flex-col space-y-1 mb-4">
-                                        <h5 class="text-xl font-black text-white"><?php echo $member['name']; ?></h5>
-                                        <p class="text-primary text-xs font-bold uppercase tracking-widest"><?php echo $member['designation']; ?></p>
+                                        <h5 class="text-xl font-black text-white"><?php echo htmlspecialchars($member['name']); ?></h5>
+                                        <p class="text-primary text-xs font-bold uppercase tracking-widest"><?php echo htmlspecialchars($member['designation']); ?></p>
                                     </div>
                                     <div class="flex space-x-3">
                                         <?php if ($member['facebook_url']): ?>
-                                            <a href="<?php echo $member['facebook_url']; ?>" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-facebook-f text-sm"></i></a>
+                                            <a href="<?php echo htmlspecialchars($member['facebook_url']); ?>" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-facebook-f text-sm"></i></a>
                                         <?php endif; ?>
                                         <?php if ($member['instagram_url']): ?>
-                                            <a href="<?php echo $member['instagram_url']; ?>" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-instagram text-sm"></i></a>
+                                            <a href="<?php echo htmlspecialchars($member['instagram_url']); ?>" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-instagram text-sm"></i></a>
                                         <?php endif; ?>
                                         <?php if ($member['linkedin_url']): ?>
-                                            <a href="<?php echo $member['linkedin_url']; ?>" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-linkedin-in text-sm"></i></a>
+                                            <a href="<?php echo htmlspecialchars($member['linkedin_url']); ?>" class="w-10 h-10 glass rounded-xl flex items-center justify-center text-white hover:bg-primary transition-all"><i class="fab fa-linkedin-in text-sm"></i></a>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -464,15 +464,15 @@
                                 <i class="fa fa-quote-right text-6xl"></i>
                             </div>
                             <p class="text-xl text-slate-600 italic mb-10 leading-relaxed font-medium relative z-10">
-                                <?php echo $t['feedback']; ?>
+                                <?php echo htmlspecialchars($t['feedback']); ?>
                             </p>
                             <div class="flex items-center space-x-5">
                                 <div class="w-16 h-16 rounded-2xl overflow-hidden shadow-lg border-2 border-white">
-                                    <img src="<?php echo $t['client_image']; ?>" class="w-full h-full object-cover">
+                                    <img src="<?php echo htmlspecialchars($t['client_image']); ?>" class="w-full h-full object-cover">
                                 </div>
                                 <div>
-                                    <h5 class="text-xl font-black text-secondary leading-tight"><?php echo $t['client_name']; ?></h5>
-                                    <small class="text-primary font-bold uppercase tracking-widest text-[10px]"><?php echo $t['profession']; ?></small>
+                                    <h5 class="text-xl font-black text-secondary leading-tight"><?php echo htmlspecialchars($t['client_name']); ?></h5>
+                                    <small class="text-primary font-bold uppercase tracking-widest text-[10px]"><?php echo htmlspecialchars($t['profession']); ?></small>
                                 </div>
                             </div>
                         </div>

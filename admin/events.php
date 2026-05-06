@@ -185,9 +185,11 @@ if ($action == 'edit' && isset($_GET['id'])) {
                                 <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">Event Banner Image</label>
                                 <div class="flex items-center space-x-8 p-6 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
                                     <?php if (isset($editEvent['image_path'])): ?>
-                                        <img src="../<?php echo $editEvent['image_path']; ?>" class="w-40 h-24 rounded-2xl object-cover shadow-md">
+                                        <img id="eventPreview" src="../<?php echo $editEvent['image_path']; ?>" class="w-40 h-24 rounded-2xl object-cover shadow-md">
+                                    <?php else: ?>
+                                        <img id="eventPreview" src="../assets/img/carousel-1.jpg" class="w-40 h-24 rounded-2xl object-cover shadow-md">
                                     <?php endif; ?>
-                                    <input type="file" name="image" class="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-primary file:text-white hover:file:bg-primary/80 transition-all">
+                                    <input type="file" name="image" onchange="openCropModal(this, document.getElementById('eventPreview'), 16/9)" class="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-primary file:text-white hover:file:bg-primary/80 transition-all">
                                 </div>
                             </div>
 

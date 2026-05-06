@@ -89,6 +89,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <!-- Mobile Overlay -->
 <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/50 z-40 hidden lg:hidden opacity-0 transition-opacity duration-300"></div>
 
+<!-- Cropper.js -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
 function toggleSidebar() {
@@ -107,28 +110,81 @@ function toggleSidebar() {
     }
 }
 
-// Initialize TinyMCE for all textareas except those marked with 'no-editor'
-function initTinyMCE() {
-    if (typeof tinymce !== 'undefined') {
-        tinymce.init({
-            selector: 'textarea:not(.no-editor)',
-            plugins: 'advlist autolink lists link image charmap preview anchor searchreplace verticalbreak visualblocks code fullscreen insertdatetime media table code help wordcount emoticons',
-            toolbar: 'undo redo | blocks | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image emoticons | removeformat | help',
-            height: 400,
-            border_radius: '24px',
-            skin: 'oxide',
-            content_css: 'default',
-            branding: false,
-            promotion: false,
-            menubar: true,
-            setup: function (editor) {
-                editor.on('change', function () {
-                    editor.save(); 
-                });
-            }
+document.addEventListener('DOMContentLoaded', initTinyMCE);
+
+// Universal Image Cropping System
+let cropper = null;
+let currentCropInput = null;
+let currentCropPreview = null;
+
+function openCropModal(input, preview, ratio = 16/9) {
+    currentCropInput = input;
+    currentCropPreview = preview;
+    const file = input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const modal = document.getElementById('cropperModal');
+        const image = document.getElementById('cropperImage');
+        image.src = e.target.result;
+        
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        
+        if (cropper) cropper.destroy();
+        cropper = new Cropper(image, {
+            aspectRatio: ratio,
+            viewMode: 2,
+            dragMode: 'move',
+            background: false
         });
-    }
+    };
+    reader.readAsDataURL(file);
 }
 
-document.addEventListener('DOMContentLoaded', initTinyMCE);
+function applyCrop() {
+    if (!cropper) return;
+    const canvas = cropper.getCroppedCanvas({
+        width: 1200,
+        height: 675,
+    });
+    
+    canvas.toBlob((blob) => {
+        const file = new File([blob], 'cropped_image.jpg', { type: 'image/jpeg' });
+        const container = new DataTransfer();
+        container.items.add(file);
+        currentCropInput.files = container.files;
+        
+        if (currentCropPreview) {
+            currentCropPreview.src = URL.createObjectURL(blob);
+        }
+        
+        closeCropModal();
+    }, 'image/jpeg', 0.9);
+}
+
+function closeCropModal() {
+    document.getElementById('cropperModal').classList.add('hidden');
+    document.getElementById('cropperModal').classList.remove('flex');
+    if (cropper) cropper.destroy();
+}
 </script>
+
+<!-- Cropper Modal -->
+<div id="cropperModal" class="fixed inset-0 bg-slate-900/90 z-[200] hidden items-center justify-center p-4">
+    <div class="bg-white rounded-[40px] w-full max-w-4xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+        <div class="p-8 border-b border-slate-100 flex justify-between items-center bg-white">
+            <h3 class="text-xl font-black text-secondary uppercase tracking-tighter">Adjust <span class="text-primary">Image</span></h3>
+            <button onclick="closeCropModal()" class="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 hover:text-rose-500 transition-all"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="flex-1 overflow-hidden bg-slate-900 flex items-center justify-center">
+            <img id="cropperImage" class="max-w-full">
+        </div>
+        <div class="p-8 border-t border-slate-100 bg-white flex justify-end space-x-4">
+            <button onclick="closeCropModal()" class="px-8 py-4 bg-slate-100 text-slate-400 font-black rounded-2xl uppercase tracking-widest text-xs">Cancel</button>
+            <button onclick="applyCrop()" class="px-10 py-4 bg-primary text-white font-black rounded-2xl shadow-xl shadow-primary/20 hover:-translate-y-1 transition-all uppercase tracking-widest text-xs">Apply Crop</button>
+        </div>
+    </div>
+</div>
+

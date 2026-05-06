@@ -133,7 +133,7 @@ try {
     </div>
     <div class="max-w-7xl mx-auto px-4 relative z-10 text-center">
         <div class="inline-block px-4 py-2 glass rounded-xl text-xs font-black uppercase tracking-[3px] text-primary mb-6">AskMe Experience</div>
-        <h1 class="text-5xl md:text-8xl font-black text-white tracking-tighter mb-8"><?php echo $event['title']; ?></h1>
+        <h1 class="text-5xl md:text-8xl font-black text-white tracking-tighter mb-8"><?php echo htmlspecialchars($event['title']); ?></h1>
         <div class="flex items-center justify-center space-x-4">
             <a href="index.php" class="text-white/50 hover:text-primary font-bold transition-colors">Home</a>
             <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
@@ -165,10 +165,10 @@ try {
                             <span class="text-gray-200">|</span>
                             <span><i class="fas fa-users mr-2"></i> <?php echo $total_registered; ?> Registered</span>
                         </div>
-                        <h2 class="text-3xl md:text-5xl font-black text-secondary mb-10 leading-tight"><?php echo $event['title']; ?></h2>
+                        <h2 class="text-3xl md:text-5xl font-black text-secondary mb-10 leading-tight"><?php echo htmlspecialchars($event['title']); ?></h2>
                         <div class="prose prose-xl max-w-none text-gray-600 leading-relaxed space-y-8">
-                            <p class="font-semibold text-xl text-secondary leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 rounded-r-xl"><?php echo $event['short_description']; ?></p>
-                            <div class="text-lg whitespace-pre-line"><?php echo $event['long_description']; ?></div>
+                            <p class="font-semibold text-xl text-secondary leading-relaxed italic border-l-4 border-primary pl-6 py-2 bg-gray-50 rounded-r-xl"><?php echo htmlspecialchars($event['short_description']); ?></p>
+                            <div class="text-lg"><?php echo $event['long_description']; ?></div>
                         </div>
                         <div class="mt-16 pt-10 border-t border-gray-100 flex items-center justify-between flex-wrap gap-6">
                             <div class="flex items-center space-x-4">

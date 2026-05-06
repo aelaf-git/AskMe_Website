@@ -44,9 +44,9 @@
                             <span class="px-3 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-[2px] rounded-lg">Featured</span>
                             <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-[10px] font-bold rounded-lg"><?php echo $date->format('Y'); ?></span>
                         </div>
-                        <h3 class="text-2xl font-black text-white mb-3 line-clamp-2"><?php echo $event['title']; ?></h3>
+                        <h3 class="text-2xl font-black text-white mb-3 line-clamp-2"><?php echo htmlspecialchars($event['title']); ?></h3>
                         <p class="text-slate-200 text-sm font-medium line-clamp-2 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                            <?php echo $event['short_description']; ?>
+                            <?php echo htmlspecialchars($event['short_description']); ?>
                         </p>
                         <a href="index.php?p=event_detail&id=<?php echo $event['id']; ?>" class="inline-flex items-center space-x-2 text-white font-bold group/btn">
                             <span class="text-sm uppercase tracking-widest relative">

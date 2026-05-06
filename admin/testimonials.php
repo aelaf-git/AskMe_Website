@@ -183,12 +183,14 @@ if ($action == 'edit' && isset($_GET['id'])) {
                                 </div>
                                 <div class="space-y-3">
                                     <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">Client Image</label>
-                                    <div class="flex items-center space-x-6 p-2 bg-slate-50 rounded-2xl border border-slate-100">
-                                        <?php if (isset($editItem['client_image'])): ?>
-                                            <img src="../<?php echo $editItem['client_image']; ?>" class="w-12 h-12 rounded-xl object-cover shadow-sm">
-                                        <?php endif; ?>
-                                        <input type="file" name="image" class="text-[10px] text-slate-500">
-                                    </div>
+                                <div class="flex items-center space-x-6 p-2 bg-slate-50 rounded-2xl border border-slate-100">
+                                    <?php if (isset($editItem['client_image'])): ?>
+                                        <img id="testiPreview" src="../<?php echo $editItem['client_image']; ?>" class="w-12 h-12 rounded-xl object-cover shadow-sm">
+                                    <?php else: ?>
+                                        <img id="testiPreview" src="../assets/img/user.jpg" class="w-12 h-12 rounded-xl object-cover shadow-sm">
+                                    <?php endif; ?>
+                                    <input type="file" name="image" onchange="openCropModal(this, document.getElementById('testiPreview'), 1/1)" class="text-[10px] text-slate-500">
+                                </div>
                                 </div>
                             </div>
 

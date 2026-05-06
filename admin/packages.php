@@ -216,9 +216,11 @@ if ($action == 'edit' && isset($_GET['id'])) {
                                 <label class="text-[10px] uppercase tracking-[3px] font-black text-slate-400">Package Image</label>
                                 <div class="flex items-center space-x-8 p-6 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
                                     <?php if (isset($editItem['image_path'])): ?>
-                                        <img src="../<?php echo $editItem['image_path']; ?>" class="w-24 h-24 rounded-2xl object-cover shadow-md">
+                                        <img id="packagePreview" src="../<?php echo $editItem['image_path']; ?>" class="w-24 h-24 rounded-2xl object-cover shadow-md">
+                                    <?php else: ?>
+                                        <img id="packagePreview" src="../assets/img/package-1.jpg" class="w-24 h-24 rounded-2xl object-cover shadow-md">
                                     <?php endif; ?>
-                                    <input type="file" name="image" class="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-primary file:text-white hover:file:bg-primary/80 transition-all">
+                                    <input type="file" name="image" onchange="openCropModal(this, document.getElementById('packagePreview'), 1/1)" class="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-primary file:text-white hover:file:bg-primary/80 transition-all">
                                 </div>
                             </div>
 
