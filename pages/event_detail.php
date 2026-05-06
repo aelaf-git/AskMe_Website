@@ -12,6 +12,12 @@ function normalize_upload_name($name) {
 }
 
 function save_registration_upload($fileKey, $required = false) {
+    // Check if we have a pre-uploaded path first
+    $hiddenKey = $fileKey . '_path';
+    if (isset($_POST[$hiddenKey]) && !empty($_POST[$hiddenKey])) {
+        return ['ok' => true, 'path' => $_POST[$hiddenKey], 'error' => null];
+    }
+
     if (!isset($_FILES[$fileKey]) || !is_array($_FILES[$fileKey])) {
         return ['ok' => !$required, 'path' => null, 'error' => $required ? 'Missing required upload.' : null];
     }
@@ -19,6 +25,7 @@ function save_registration_upload($fileKey, $required = false) {
     if ($file['error'] === UPLOAD_ERR_NO_FILE) {
         return ['ok' => !$required, 'path' => null, 'error' => $required ? 'Missing required upload.' : null];
     }
+    // ... rest of the existing validation for non-AJAX fallback ...
     if ($file['error'] !== UPLOAD_ERR_OK) {
         return ['ok' => false, 'path' => null, 'error' => 'Upload failed.'];
     }
@@ -60,10 +67,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
 
         $passportUpload = save_registration_upload('passport_scan', true);
         $photoUpload = save_registration_upload('profile_photo', true);
+        $insuranceUpload = save_registration_upload('insurance_doc', false);
 
         $uploadErrors = [];
         if (!$passportUpload['ok']) $uploadErrors[] = $passportUpload['error'];
         if (!$photoUpload['ok']) $uploadErrors[] = $photoUpload['error'];
+        if (!$insuranceUpload['ok']) $uploadErrors[] = $insuranceUpload['error'];
 
         if (!empty($uploadErrors)) {
             $form_message = implode(' ', array_unique($uploadErrors));
@@ -75,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
             $insertValues = [
                 $eid, $_POST['full_name'], $_POST['gender'], $_POST['dob'], $_POST['nationality'],
                 $_POST['passport_number'], $_POST['passport_issue_date'], $_POST['passport_expiry'], $_POST['passport_issuing_country'],
-                $passportUpload['path'], $photoUpload['path'],
+                $passportUpload['path'], $photoUpload['path'], $insuranceUpload['path'],
                 $_POST['phone'], $_POST['whatsapp'] ?? '', $_POST['email'], $_POST['address'], $_POST['city'], $_POST['country'],
                 $_POST['emergency_name'], $_POST['emergency_phone'], $_POST['emergency_relation'],
                 $_POST['purpose'],
@@ -89,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
             $stmt = $pdo->prepare("INSERT INTO event_registrations (
                 event_id, full_name, gender, dob, nationality,
                 passport_number, passport_issue_date, passport_expiry, passport_issuing_country,
-                passport_scan, profile_photo,
+                passport_scan, profile_photo, insurance_doc_path,
                 phone, whatsapp, email, address, city, country,
                 emergency_name, emergency_phone, emergency_relation,
                 purpose,
@@ -250,6 +259,9 @@ try {
         <form action="index.php?p=event_detail&id=<?php echo $id; ?>" method="POST" enctype="multipart/form-data" class="bg-white rounded-[40px] shadow-2xl border border-gray-100 overflow-hidden">
             <input type="hidden" name="event_id" value="<?php echo $id; ?>">
             <input type="hidden" name="event_register" value="1">
+            <input type="hidden" name="passport_scan_path" id="passport_scan_path">
+            <input type="hidden" name="profile_photo_path" id="profile_photo_path">
+            <input type="hidden" name="insurance_doc_path" id="insurance_doc_path">
 
             <!-- Section 1: Personal -->
             <div class="p-10 md:p-16 border-b border-gray-100">
@@ -325,9 +337,30 @@ try {
                 <h3 class="text-2xl font-black text-secondary mb-2">6. Document Uploads</h3>
                 <p class="text-gray-400 text-sm mb-8">Upload clear files (PDF/JPG/PNG, max 5MB each).</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Passport Scan (Required) *</label><input type="file" name="passport_scan" accept=".pdf,.jpg,.jpeg,.png" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
-                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Recent Photo (Required) *</label><input type="file" name="profile_photo" accept=".jpg,.jpeg,.png,.pdf" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
-                    <div><label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Travel Insurance Document</label><input type="file" name="insurance_doc" accept=".pdf,.jpg,.jpeg,.png" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium"></div>
+                    <div class="upload-field" data-name="passport_scan">
+                        <label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Passport Scan (Required) *</label>
+                        <input type="file" name="passport_scan" accept=".pdf,.jpg,.jpeg,.png" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium">
+                        <div class="progress-container hidden mt-3 h-2 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="progress-bar h-full bg-primary w-0 transition-all duration-300"></div>
+                        </div>
+                        <div class="status-msg text-[10px] font-bold mt-1 uppercase tracking-wider"></div>
+                    </div>
+                    <div class="upload-field" data-name="profile_photo">
+                        <label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Recent Photo (Required) *</label>
+                        <input type="file" name="profile_photo" accept=".jpg,.jpeg,.png,.pdf" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium">
+                        <div class="progress-container hidden mt-3 h-2 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="progress-bar h-full bg-primary w-0 transition-all duration-300"></div>
+                        </div>
+                        <div class="status-msg text-[10px] font-bold mt-1 uppercase tracking-wider"></div>
+                    </div>
+                    <div class="upload-field" data-name="insurance_doc">
+                        <label class="block text-[10px] font-black uppercase tracking-[2px] text-gray-400 mb-2">Travel Insurance Document</label>
+                        <input type="file" name="insurance_doc" accept=".pdf,.jpg,.jpeg,.png" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary focus:outline-none transition font-medium">
+                        <div class="progress-container hidden mt-3 h-2 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="progress-bar h-full bg-primary w-0 transition-all duration-300"></div>
+                        </div>
+                        <div class="status-msg text-[10px] font-bold mt-1 uppercase tracking-wider"></div>
+                    </div>
                 </div>
             </div>
 
@@ -357,3 +390,92 @@ try {
 </div>
 <?php endif; ?>
 <!-- Registration Form End -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadFields = document.querySelectorAll('.upload-field');
+    const submitBtn = document.querySelector('button[type="submit"]');
+    let activeUploads = 0;
+
+    uploadFields.forEach(field => {
+        const input = field.querySelector('input[type="file"]');
+        const progressContainer = field.querySelector('.progress-container');
+        const progressBar = field.querySelector('.progress-bar');
+        const statusMsg = field.querySelector('.status-msg');
+        const fieldName = field.getAttribute('data-name');
+        const pathInput = document.getElementById(fieldName + '_path');
+
+        input.addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+
+            // Size validation (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                statusMsg.textContent = 'Error: File too large (Max 5MB)';
+                statusMsg.className = 'status-msg text-[10px] font-bold mt-1 uppercase tracking-wider text-rose-500';
+                this.value = '';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'api/upload_document.php', true);
+
+            xhr.upload.onprogress = function(e) {
+                if (e.lengthComputable) {
+                    const percent = Math.round((e.loaded / e.total) * 100);
+                    progressBar.style.width = percent + '%';
+                }
+            };
+
+            xhr.onloadstart = function() {
+                activeUploads++;
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.5';
+                progressContainer.classList.remove('hidden');
+                progressBar.style.width = '0%';
+                statusMsg.textContent = 'Uploading...';
+                statusMsg.className = 'status-msg text-[10px] font-bold mt-1 uppercase tracking-wider text-primary';
+            };
+
+            xhr.onload = function() {
+                activeUploads--;
+                if (activeUploads === 0) {
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                }
+
+                if (xhr.status === 200) {
+                    const res = JSON.parse(xhr.responseText);
+                    if (res.success) {
+                        pathInput.value = res.path;
+                        statusMsg.textContent = 'Uploaded: ' + res.filename;
+                        statusMsg.className = 'status-msg text-[10px] font-bold mt-1 uppercase tracking-wider text-emerald-500';
+                        // Remove required attribute from the file input since it's already uploaded
+                        input.required = false;
+                    } else {
+                        statusMsg.textContent = 'Error: ' + res.message;
+                        statusMsg.className = 'status-msg text-[10px] font-bold mt-1 uppercase tracking-wider text-rose-500';
+                    }
+                } else {
+                    statusMsg.textContent = 'Error: Upload failed';
+                    statusMsg.className = 'status-msg text-[10px] font-bold mt-1 uppercase tracking-wider text-rose-500';
+                }
+            };
+
+            xhr.onerror = function() {
+                activeUploads--;
+                if (activeUploads === 0) {
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                }
+                statusMsg.textContent = 'Error: Connection error';
+                statusMsg.className = 'status-msg text-[10px] font-bold mt-1 uppercase tracking-wider text-rose-500';
+            };
+
+            xhr.send(formData);
+        });
+    });
+});
+</script>

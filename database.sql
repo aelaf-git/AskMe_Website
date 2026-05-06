@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS event_registrations (
     emergency_phone VARCHAR(50) DEFAULT NULL,
     emergency_relation VARCHAR(100) DEFAULT NULL,
     -- Professional
-    occupation VARCHAR(255) NOT NULL,
+    occupation VARCHAR(255) DEFAULT NULL,
     company VARCHAR(255) DEFAULT NULL,
     industry VARCHAR(255) DEFAULT NULL,
     experience_years INT DEFAULT 0,
@@ -127,11 +127,12 @@ CREATE TABLE IF NOT EXISTS event_registrations (
     requires_visa TINYINT(1) DEFAULT 0,
     needs_invitation TINYINT(1) DEFAULT 0,
     accommodation_preference VARCHAR(100) DEFAULT NULL,
-    room_type_preference VARCHAR(100) DEFAULT NULL,
+    room_preference VARCHAR(100) DEFAULT NULL,
     dietary_requirements TEXT,
     medical_conditions TEXT,
-    insurance_provider VARCHAR(255) NOT NULL,
-    insurance_policy_number VARCHAR(120) NOT NULL,
+    special_notes TEXT,
+    insurance_provider VARCHAR(255) DEFAULT NULL,
+    insurance_policy_number VARCHAR(120) DEFAULT NULL,
     insurance_doc_path VARCHAR(255) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
@@ -219,5 +220,8 @@ CREATE TABLE IF NOT EXISTS site_traffic (
 --     DROP COLUMN additional_doc_path,
 --     ADD COLUMN previous_international_destinations TEXT NULL AFTER traveled_before,
 --     ADD COLUMN has_trip_visa TINYINT(1) DEFAULT 0 AFTER previous_international_destinations,
---     MODIFY insurance_provider VARCHAR(255) NOT NULL,
---     MODIFY insurance_policy_number VARCHAR(120) NOT NULL;
+--     MODIFY insurance_provider VARCHAR(255) DEFAULT NULL,
+--     MODIFY insurance_policy_number VARCHAR(120) DEFAULT NULL,
+--     MODIFY occupation VARCHAR(255) DEFAULT NULL,
+--     CHANGE room_type_preference room_preference VARCHAR(100) DEFAULT NULL,
+--     ADD COLUMN special_notes TEXT AFTER room_preference;
