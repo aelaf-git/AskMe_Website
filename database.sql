@@ -121,22 +121,12 @@ CREATE TABLE IF NOT EXISTS event_registrations (
     experience_years INT DEFAULT 0,
     -- Travel
     purpose TEXT NOT NULL,
-    areas_of_interest TEXT,
-    has_valid_passport TINYINT(1) DEFAULT 1,
-    traveled_before TINYINT(1) DEFAULT 0,
-    requires_visa TINYINT(1) DEFAULT 0,
-    needs_invitation TINYINT(1) DEFAULT 0,
-    accommodation_preference VARCHAR(100) DEFAULT NULL,
-    room_preference VARCHAR(100) DEFAULT NULL,
-    dietary_requirements TEXT,
-    medical_conditions TEXT,
-    special_notes TEXT,
-    insurance_provider VARCHAR(255) DEFAULT NULL,
-    insurance_policy_number VARCHAR(120) DEFAULT NULL,
+
     insurance_doc_path VARCHAR(255) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
 );
+
 
 -- Table for Tour Packages
 CREATE TABLE IF NOT EXISTS packages (

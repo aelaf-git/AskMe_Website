@@ -6,46 +6,31 @@ $form_success = false;
 
 
 
-function normalize_upload_name($name) {
-    $safe = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($name));
-    return $safe ?: 'document';
-}
-
 function save_registration_upload($fileKey, $required = false) {
-    // Check if we have a pre-uploaded path first
     $hiddenKey = $fileKey . '_path';
     if (isset($_POST[$hiddenKey]) && !empty($_POST[$hiddenKey])) {
         return ['ok' => true, 'path' => $_POST[$hiddenKey], 'error' => null];
     }
 
-    if (!isset($_FILES[$fileKey]) || !is_array($_FILES[$fileKey])) {
+    if (!isset($_FILES[$fileKey]) || !is_array($_FILES[$fileKey]) || $_FILES[$fileKey]['error'] === UPLOAD_ERR_NO_FILE) {
         return ['ok' => !$required, 'path' => null, 'error' => $required ? 'Missing required upload.' : null];
     }
+    
     $file = $_FILES[$fileKey];
-    if ($file['error'] === UPLOAD_ERR_NO_FILE) {
-        return ['ok' => !$required, 'path' => null, 'error' => $required ? 'Missing required upload.' : null];
-    }
-    // ... rest of the existing validation for non-AJAX fallback ...
-    if ($file['error'] !== UPLOAD_ERR_OK) {
-        return ['ok' => false, 'path' => null, 'error' => 'Upload failed.'];
-    }
-    if ($file['size'] > 5 * 1024 * 1024) {
-        return ['ok' => false, 'path' => null, 'error' => 'File is too large (max 5MB).'];
-    }
+    if ($file['error'] !== UPLOAD_ERR_OK) return ['ok' => false, 'path' => null, 'error' => 'Upload failed.'];
+    if ($file['size'] > 5 * 1024 * 1024) return ['ok' => false, 'path' => null, 'error' => 'File too large (max 5MB).'];
+    
     $allowed = ['pdf', 'jpg', 'jpeg', 'png'];
     $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    if (!in_array($ext, $allowed, true)) {
-        return ['ok' => false, 'path' => null, 'error' => 'Invalid file type. Use PDF/JPG/JPEG/PNG.'];
-    }
+    if (!in_array($ext, $allowed, true)) return ['ok' => false, 'path' => null, 'error' => 'Invalid file type.'];
+
     $uploadDir = __DIR__ . '/../uploads/event_registrations/' . date('Y/m');
-    if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true)) {
-        return ['ok' => false, 'path' => null, 'error' => 'Could not prepare upload directory.'];
-    }
-    $targetName = date('YmdHis') . '_' . bin2hex(random_bytes(4)) . '_' . normalize_upload_name($file['name']);
+    if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true)) return ['ok' => false, 'path' => null, 'error' => 'Upload error.'];
+
+    $targetName = date('YmdHis') . '_' . bin2hex(random_bytes(4)) . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($file['name']));
     $targetPath = $uploadDir . '/' . $targetName;
-    if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
-        return ['ok' => false, 'path' => null, 'error' => 'Could not save uploaded file.'];
-    }
+    
+    if (!move_uploaded_file($file['tmp_name'], $targetPath)) return ['ok' => false, 'path' => null, 'error' => 'Save failed.'];
     return ['ok' => true, 'path' => 'uploads/event_registrations/' . date('Y/m') . '/' . $targetName, 'error' => null];
 }
 
@@ -88,8 +73,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
                 $_POST['phone'], $_POST['whatsapp'] ?? '', $_POST['email'], $_POST['address'], $_POST['city'], $_POST['country'],
                 $_POST['emergency_name'], $_POST['emergency_phone'], $_POST['emergency_relation'],
                 $_POST['purpose'],
-                isset($_POST['has_valid_passport']) ? 1 : 0, isset($_POST['traveled_before']) ? 1 : 0,
-                isset($_POST['requires_visa']) ? 1 : 0, isset($_POST['needs_invitation']) ? 1 : 0,
+                isset($_POST['has_valid_passport']) ? 1 : 0, 
+                isset($_POST['traveled_before']) ? 1 : 0,
+                isset($_POST['has_trip_visa']) ? 1 : 0,
+                $_POST['previous_international_destinations'] ?? '',
+                isset($_POST['requires_visa']) ? 1 : 0, 
+                isset($_POST['needs_invitation']) ? 1 : 0,
                 $_POST['dietary_requirements'] ?? '', $_POST['medical_conditions'] ?? '', $_POST['room_preference'] ?? '',
                 $_POST['special_notes'] ?? ''
             ];
@@ -102,7 +91,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_register'])) {
                 phone, whatsapp, email, address, city, country,
                 emergency_name, emergency_phone, emergency_relation,
                 purpose,
-                has_valid_passport, traveled_before, requires_visa, needs_invitation,
+                has_valid_passport, traveled_before, has_trip_visa, previous_international_destinations, 
+                requires_visa, needs_invitation,
                 dietary_requirements, medical_conditions, room_preference, special_notes
             ) VALUES ({$placeholders})");
             $stmt->execute($insertValues);
@@ -373,6 +363,17 @@ try {
                 <button type="submit" class="w-full py-6 bg-secondary text-white font-black rounded-3xl transition-all uppercase tracking-[4px] text-sm">
                     <i class="fas fa-paper-plane mr-3"></i> Submit Application
                 </button>
+
+                <!-- Status Messages after Submit Button -->
+                <?php if ($form_success): ?>
+                <div class="mt-6 p-6 bg-emerald-50 rounded-2xl border border-emerald-200 text-center">
+                    <p class="text-emerald-700 font-bold"><i class="fas fa-check-circle mr-2"></i> Registration Successful!</p>
+                </div>
+                <?php elseif ($form_message): ?>
+                <div class="mt-6 p-6 bg-rose-50 rounded-2xl border border-rose-200 text-center">
+                    <p class="text-rose-700 font-bold"><i class="fas fa-exclamation-circle mr-2"></i> <?php echo $form_message; ?></p>
+                </div>
+                <?php endif; ?>
             </div>
         </form>
         <?php endif; ?>
